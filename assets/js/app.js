@@ -32,7 +32,7 @@ let currentMusicIndex = 0;
 let isMusicPlaying = false;
 let musicAudio = null;
 let musicProgressInterval = null;
-let musicVolume = 0.5;
+let musicVolume = 0.2; // Volume mặc định 20%
 
 // Thêm biến quản lý trạng thái âm thanh
 let audioLoadingPromise = null;
@@ -1123,7 +1123,7 @@ function openGitHubProject() {
  * Xử lý thao tác tài khoản công khai WeChat
  */
 function handleWeChatAction() {
-  const wechatName = "硅基茶水间";
+  const wechatName = "Chủ tịch Hồ Chí Minh muôn năm";
 
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard
@@ -1283,10 +1283,21 @@ function showPoetryMessage() {
   });
 
   document.body.appendChild(poetryDiv);
+  
+  // Force reflow để đảm bảo element được render
+  poetryDiv.offsetHeight;
 
+  // Đảm bảo element được render trước khi thay đổi opacity
   requestAnimationFrame(() => {
-    poetryDiv.style.opacity = "1";
-    poetryDiv.style.transform = "translate(-50%, -50%) scale(1)";
+    requestAnimationFrame(() => {
+      if (poetryDiv.parentNode && isPoetryAnimationPlaying) {
+        poetryDiv.style.opacity = "1";
+        poetryDiv.style.transform = "translate(-50%, -50%) scale(1)";
+        poetryDiv.style.pointerEvents = "none"; // Giữ pointer-events none để không chặn tương tác
+        poetryDiv.style.visibility = "visible"; // Đảm bảo visibility là visible
+        console.log("Poetry message hiển thị:", poetryDiv.textContent);
+      }
+    });
   });
 
   setTimeout(() => {
@@ -3496,11 +3507,19 @@ function loadMusicAudio(song, autoPlay = false) {
         console.log("Tải âm thanh thành công:", url);
         cleanup();
 
+        // Đảm bảo volume được set đúng
+        if (musicAudio) {
+          musicAudio.volume = musicVolume;
+        }
+
         updatePlayButton();
         updateMusicBtnState();
 
         if (autoPlay) {
           autoPlayWhenReady(true).then((success) => {
+            if (!success) {
+              console.warn("Tự động phát nhạc thất bại, có thể do browser autoplay policy");
+            }
             resolve(success);
           });
         } else {
@@ -3800,7 +3819,7 @@ function initMusicPlaylist() {
   });
 
   if (MUSIC_PLAYLIST.length > 0) {
-    selectSong(0, false); // Mặc định chọn bài đầu tiên, nhưng không tự động phát
+    selectSong(0, false); // Mặc định chọn bài đầu tiên, sẽ tự động phát sau khi initApp hoàn thành
   }
 }
 
@@ -4029,9 +4048,14 @@ function restoreMusicSettings() {
     if (savedVolume !== null) {
       musicVolume = parseFloat(savedVolume);
       setMusicVolume(musicVolume);
+    } else {
+      // Nếu chưa có volume trong localStorage, đặt mặc định 20%
+      setMusicVolume(0.2);
     }
   } catch (error) {
     console.warn("Không thể đọc cài đặt nhạc:", error);
+    // Nếu có lỗi, đặt volume mặc định 20%
+    setMusicVolume(0.2);
   }
 }
 
@@ -4497,6 +4521,28 @@ async function initApp() {
       mapEl.classList.add("panel-visible");
     }
 
+    // Tự động phát nhạc nền sau khi trang đã load xong
+    setTimeout(() => {
+      if (MUSIC_PLAYLIST.length > 0 && musicAudio) {
+        console.log("Tự động phát nhạc nền với volume 20%");
+        // Đảm bảo volume là 20% (nếu chưa được set)
+        if (Math.abs(musicVolume - 0.2) > 0.01) {
+          setMusicVolume(0.2);
+        }
+        // Đảm bảo musicAudio có volume đúng
+        if (musicAudio) {
+          musicAudio.volume = 0.2;
+        }
+        // Tự động phát bài đầu tiên
+        selectSong(0, true);
+      } else {
+        console.warn("Không thể tự động phát nhạc:", {
+          playlistLength: MUSIC_PLAYLIST.length,
+          musicAudio: !!musicAudio
+        });
+      }
+    }, 2000); // Đợi 2 giây để đảm bảo music player đã được khởi tạo hoàn toàn
+
     window.addEventListener("beforeunload", () => {
       forceStopPoetryAnimation();
 
@@ -4526,9 +4572,92 @@ async function initApp() {
   }
 }
 
+// ==================== Bộ đếm lượt truy cập ====================
+/**
+ * Định dạng lại style của counter từ freevisitorcounters.com
+ */
+function styleVisitorCounter() {
+  // Đợi một chút để counter được load và render
+  setTimeout(() => {
+    const counterContainer = document.getElementById("visitor-counter-container");
+    if (!counterContainer) return;
+    
+    // Tìm counter được tạo bởi freevisitorcounters.com (có thể ở body hoặc các vị trí khác)
+    const possibleCounterSelectors = [
+      'a[href*="freevisitorcounters.com"]',
+      'div[id*="counter"]',
+      'span[id*="counter"]',
+      'div[class*="counter"]',
+      'span[class*="counter"]'
+    ];
+    
+    let counterElement = null;
+    
+    // Tìm counter trong body
+    for (const selector of possibleCounterSelectors) {
+      const elements = document.querySelectorAll(selector);
+      for (const el of elements) {
+        if (el.textContent && /^\d+/.test(el.textContent.trim())) {
+          counterElement = el;
+          break;
+        }
+      }
+      if (counterElement) break;
+    }
+    
+    // Nếu tìm thấy counter ở vị trí khác, di chuyển vào container
+    if (counterElement && !counterContainer.contains(counterElement)) {
+      counterElement.style.display = "inline-block";
+      counterElement.style.fontWeight = "700";
+      counterElement.style.color = "#c8102e";
+      counterElement.style.fontSize = "16px";
+      counterElement.style.textDecoration = "none";
+      counterContainer.appendChild(counterElement);
+    }
+    
+    // Áp dụng style cho tất cả các element trong container
+    const counterElements = counterContainer.querySelectorAll("*");
+    counterElements.forEach(el => {
+      if (el.tagName === "A" || el.tagName === "SPAN" || el.tagName === "DIV") {
+        el.style.fontWeight = "700";
+        el.style.color = "#c8102e";
+        el.style.fontSize = "16px";
+        el.style.textDecoration = "none";
+        el.style.display = "inline-block";
+      }
+    });
+    
+    // Nếu có link, loại bỏ underline và màu mặc định
+    const links = counterContainer.querySelectorAll("a");
+    links.forEach(link => {
+      link.style.textDecoration = "none";
+      link.style.color = "#c8102e";
+    });
+  }, 500);
+  
+  // Thử lại sau 1 giây và 2 giây nếu chưa có
+  setTimeout(() => {
+    const counterContainer = document.getElementById("visitor-counter-container");
+    if (counterContainer && counterContainer.children.length === 0) {
+      styleVisitorCounter();
+    }
+  }, 1000);
+  
+  setTimeout(() => {
+    const counterContainer = document.getElementById("visitor-counter-container");
+    if (counterContainer && counterContainer.children.length === 0) {
+      styleVisitorCounter();
+    }
+  }, 2000);
+}
+
 // ==================== Khởi động ứng dụng ====================
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initApp);
+  document.addEventListener("DOMContentLoaded", () => {
+    styleVisitorCounter();
+    initApp();
+  });
 } else {
+  styleVisitorCounter();
   initApp();
 }

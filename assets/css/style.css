@@ -2250,6 +2250,64 @@ body {
     }
 }
 
+/* ==================== Bộ đếm lượt truy cập ==================== */
+.visitor-counter-section {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.visitor-counter-section .stats-item {
+    transition: all 0.3s ease;
+}
+
+.visitor-counter-section .stats-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(200, 16, 46, 0.15);
+}
+
+#visitor-counter-container {
+    animation: pulse 2s ease-in-out infinite;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Style cho counter từ freevisitorcounters.com */
+#visitor-counter-container a,
+#visitor-counter-container span,
+#visitor-counter-container div {
+    font-weight: 700 !important;
+    color: #c8102e !important;
+    font-size: 16px !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+}
+
+/* Tìm và style counter nếu được tạo ở vị trí khác */
+body > a[href*="freevisitorcounters.com"],
+body > div[id*="counter"],
+body > span[id*="counter"] {
+    display: none !important;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
 .poetry-message {
     position: fixed !important;
     top: 50% !important;
