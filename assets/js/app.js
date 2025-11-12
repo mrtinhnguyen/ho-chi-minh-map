@@ -1,10 +1,10 @@
 /*!
- * 毛泽东生平地理轨迹可视化 - 主脚本文件
- * Author: sansan0
- * GitHub: https://github.com/sansan0/mao-map
+ * Hồ Chí Minh - Hành trình tìm đường cứu nước và giải phóng dân tộc - File script chính
+ * Author: mrtinhnguyen
+ * GitHub: https://github.com/mrtinhnguyen/ho-chi-minh-map
  */
 
-// ==================== 全局变量 ====================
+// ==================== Biến toàn cục ====================
 let map = null;
 let regionsData = null;
 let trajectoryData = null;
@@ -34,7 +34,7 @@ let musicAudio = null;
 let musicProgressInterval = null;
 let musicVolume = 0.5;
 
-// 添加音频状态管理变量
+// Thêm biến quản lý trạng thái âm thanh
 let audioLoadingPromise = null;
 let isAutoPlayPending = false;
 let currentAudioEventListeners = new Set();
@@ -43,37 +43,41 @@ let highlightedPaths = [];
 let highlightTimeout = null;
 let currentHighlightedEventIndex = -1;
 
+let eventPopupTimeout = null;
+let eventPopupProgressInterval = null;
+let eventPopupRemainingTime = 0;
+
 let animationConfig = {
-  pathDuration: 5000, // 控制路径绘制速度
-  timelineDuration: 1500, // 时间轴动画时长
-  cameraFollowDuration: 2000, // 镜头跟随动画时长
-  cameraPanDuration: 1500, //镜头平移动画时长
+  pathDuration: 5000, // Điều khiển tốc độ vẽ đường đi
+  timelineDuration: 1500, // Thời lượng animation dòng thời gian
+  cameraFollowDuration: 2000, // Thời lượng animation camera theo dõi
+  cameraPanDuration: 1500, // Thời lượng animation camera di chuyển
   isAnimating: false,
   motionOptions: {
-    auto: false, // 手动控制动画
+    auto: false, // Điều khiển animation thủ công
     easing: L.Motion.Ease.easeInOutQuart,
   },
 };
 
-// 镜头速度档位配置
+// Cấu hình mức tốc độ camera
 const CAMERA_SPEED_LEVELS = [
   {
-    name: "极快",
+    name: "Rất nhanh",
     cameraFollowDuration: 600,
     cameraPanDuration: 400,
   },
   {
-    name: "正常",
+    name: "Bình thường",
     cameraFollowDuration: 2000,
     cameraPanDuration: 1500,
   },
   {
-    name: "慢速",
+    name: "Chậm",
     cameraFollowDuration: 3500,
     cameraPanDuration: 2800,
   },
   {
-    name: "极慢",
+    name: "Rất chậm",
     cameraFollowDuration: 5000,
     cameraPanDuration: 4000,
   },
@@ -83,21 +87,43 @@ let motionPaths = new Map();
 let animationQueue = [];
 let isAnimationInProgress = false;
 
-// ==================== 全局常量 ====================
+// ==================== Hằng số toàn cục ====================
 const INTERNATIONAL_COORDINATES = {
-  "俄罗斯 莫斯科": [37.6176, 55.7558],
+  "Nga Moscow": [37.6176, 55.7558],
 };
 
+// Cấu hình loại bản đồ: 'openstreetmap' hoặc 'google'
+// Để sử dụng Google Maps, đặt MAP_TYPE = 'google'
+// Để sử dụng OpenStreetMap, đặt MAP_TYPE = 'openstreetmap'
+const MAP_TYPE = 'google'; // 'openstreetmap' hoặc 'google'
+
+// Cấu hình phương thức Google Maps: 'tiles', 'googlemutant', hoặc 'custom'
+// 'tiles': Sử dụng Google Maps tiles trực tiếp (không cần API key, đơn giản nhất) - KHUYẾN NGHỊ
+// 'googlemutant': Sử dụng plugin GoogleMutant (không cần API key)
+// 'custom': Sử dụng custom GridLayer (cần Google Maps API key, nhiều tùy chọn hơn)
+const GOOGLE_MAPS_METHOD = 'tiles'; // 'tiles', 'googlemutant', hoặc 'custom'
+
+// Loại bản đồ Google Maps (chỉ áp dụng cho phương thức 'tiles'):
+// 'm' = roadmap (bản đồ đường phố)
+// 's' = satellite (ảnh vệ tinh)
+// 't' = terrain (bản đồ địa hình)
+// 'y' = hybrid (kết hợp vệ tinh và đường phố)
+// 'p' = terrain only (chỉ địa hình)
+const GOOGLE_MAPS_TYPE = 'm'; // 'm', 's', 't', 'y', hoặc 'p'
+
+// API Key Google Maps (chỉ cần nếu sử dụng GOOGLE_MAPS_METHOD = 'custom')
+const GOOGLE_MAPS_API_KEY = ''; // Thay bằng API key của bạn nếu dùng phương thức custom
+
 /**
- * 检测是否为移动设备
+ * Kiểm tra xem có phải thiết bị di động không
  */
 function isMobileDevice() {
   return window.innerWidth <= 768;
 }
 
-// ==================== 移动端交互 ====================
+// ==================== Tương tác thiết bị di động ====================
 /**
- * 切换控制面板显示/隐藏状态
+ * Chuyển đổi trạng thái hiển thị/ẩn bảng điều khiển
  */
 function toggleControlPanel() {
   const panel = document.getElementById("timeline-control");
@@ -129,7 +155,7 @@ function toggleControlPanel() {
 }
 
 /**
- * 获取控制面板高度
+ * Lấy chiều cao bảng điều khiển
  */
 function getControlPanelHeight() {
   const panel = document.getElementById("timeline-control");
@@ -142,7 +168,7 @@ function getControlPanelHeight() {
 }
 
 /**
- * 初始化移动端交互功能
+ * Khởi tạo chức năng tương tác thiết bị di động
  */
 function initMobileInteractions() {
   const toggleBtn = document.getElementById("toggle-panel-btn");
@@ -161,7 +187,7 @@ function initMobileInteractions() {
 }
 
 /**
- * 初始化详细面板拖拽关闭功能（移动端）
+ * Khởi tạo chức năng đóng bảng chi tiết bằng cách kéo (thiết bị di động)
  */
 function initPanelDragClose() {
   if (!isMobileDevice()) return;
@@ -237,7 +263,7 @@ function initPanelDragClose() {
       try {
         hideDetailPanel();
       } catch (error) {
-        console.error("关闭面板时出错:", error);
+        console.error("Lỗi khi đóng bảng:", error);
       }
 
       setTimeout(() => {
@@ -423,35 +449,329 @@ function initPanelDragClose() {
 }
 
 /**
- * 初始化Leaflet地图
+ * Khởi tạo bản đồ Leaflet
  */
 function initMap() {
-  map = L.map("map", {
-    center: [35.8617, 104.1954],
-    zoom: 5,
-    minZoom: 4,
-    maxZoom: 10,
-    zoomControl: true,
-    attributionControl: false,
-    tap: true,
-    tapTolerance: 15,
-  });
+  // Kiểm tra xem element map có tồn tại không
+  const mapElement = document.getElementById("map");
+  if (!mapElement) {
+    console.error("Không tìm thấy element #map");
+    return;
+  }
 
-  L.tileLayer(
-    "https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}",
-    {
-      subdomains: "1234",
-      attribution: "© 高德地图",
-      maxZoom: 18,
+  // Kiểm tra xem Leaflet đã được tải chưa
+  if (typeof L === 'undefined') {
+    console.error("Leaflet chưa được tải, vui lòng kiểm tra script tag");
+    return;
+  }
+
+  try {
+    map = L.map("map", {
+      center: [16.0544, 108.2772],
+      zoom: 5,
+      minZoom: 3,
+      maxZoom: 10,
+      zoomControl: true,
+      attributionControl: false,
+      tap: true,
+      tapTolerance: 15,
+    });
+
+    console.log("Leaflet map instance đã được tạo");
+
+    // Chọn loại bản đồ dựa trên cấu hình
+    if (MAP_TYPE === 'google') {
+      // Sử dụng Google Maps
+      if (GOOGLE_MAPS_METHOD === 'tiles') {
+        // Sử dụng Google Maps tiles trực tiếp (đơn giản nhất, không cần API key)
+        initGoogleMapsWithTiles();
+      } else if (GOOGLE_MAPS_METHOD === 'custom' && GOOGLE_MAPS_API_KEY) {
+        // Sử dụng phương thức custom với API key
+        initGoogleMapsCustom();
+      } else {
+        // Sử dụng GoogleMutant (fallback)
+        initGoogleMapsWithMutant();
+      }
+    } else {
+      // Sử dụng OpenStreetMap (mặc định)
+      initOpenStreetMap();
     }
-  ).addTo(map);
-
-  console.log("地图初始化完成");
+  } catch (error) {
+    console.error("Lỗi khi khởi tạo map:", error);
+    // Fallback sang OpenStreetMap nếu có lỗi
+    if (map) {
+      try {
+        initOpenStreetMap();
+      } catch (fallbackError) {
+        console.error("Lỗi khi fallback sang OpenStreetMap:", fallbackError);
+      }
+    }
+  }
 }
 
-// ==================== 统计面板控制 ====================
 /**
- * 初始化PC端统计面板悬停交互
+ * Khởi tạo Google Maps sử dụng tiles trực tiếp (không cần API key, đơn giản nhất)
+ * Phương thức này sử dụng Google Maps tile URL trực tiếp
+ */
+function initGoogleMapsWithTiles() {
+  if (!map) {
+    console.error("Map instance chưa được khởi tạo");
+    return;
+  }
+
+  try {
+    // Các loại bản đồ Google Maps:
+    // 'm' = roadmap (bản đồ đường phố)
+    // 's' = satellite (ảnh vệ tinh)
+    // 't' = terrain (bản đồ địa hình)
+    // 'y' = hybrid (kết hợp vệ tinh và đường phố)
+    // 'p' = terrain only (chỉ địa hình)
+    const mapType = GOOGLE_MAPS_TYPE || 'm';
+    
+    // Sử dụng HTTPS để tránh lỗi mixed content
+    const googleLayer = L.tileLayer('https://{s}.google.com/vt/lyrs={type}&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      type: mapType,
+      attribution: '© Google Maps'
+    });
+
+    googleLayer.addTo(map);
+    console.log(`Bản đồ Google Maps (Tiles - loại: ${mapType}) khởi tạo hoàn tất`);
+    
+    // Kiểm tra xem layer có được thêm thành công không
+    setTimeout(() => {
+      if (!map.hasLayer(googleLayer)) {
+        console.warn("Google Maps tiles layer không được thêm vào map, chuyển sang OpenStreetMap");
+        map.removeLayer(googleLayer);
+        initOpenStreetMap();
+      } else {
+        console.log("Google Maps tiles layer đã được thêm thành công");
+      }
+    }, 500);
+  } catch (error) {
+    console.error("Lỗi khi khởi tạo Google Maps với tiles:", error);
+    console.warn("Chuyển sang OpenStreetMap");
+    try {
+      initOpenStreetMap();
+    } catch (fallbackError) {
+      console.error("Lỗi khi fallback sang OpenStreetMap:", fallbackError);
+    }
+  }
+}
+
+/**
+ * Khởi tạo Google Maps sử dụng plugin GoogleMutant (không cần API key)
+ */
+function initGoogleMapsWithMutant() {
+  if (!map) {
+    console.error("Map instance chưa được khởi tạo");
+    return;
+  }
+
+  try {
+    // Kiểm tra xem plugin GoogleMutant đã được tải chưa
+    if (typeof L !== 'undefined' && L.gridLayer && typeof L.gridLayer.googleMutant === 'function') {
+      const googleLayer = L.gridLayer.googleMutant({
+        type: 'roadmap', // 'roadmap', 'satellite', 'terrain', 'hybrid'
+        maxZoom: 20,
+      });
+      
+      googleLayer.addTo(map);
+      console.log("Bản đồ Google Maps (GoogleMutant) khởi tạo hoàn tất");
+      
+      // Kiểm tra xem layer có được thêm thành công không
+      setTimeout(() => {
+        if (!map.hasLayer(googleLayer)) {
+          console.warn("GoogleMutant layer không được thêm vào map, chuyển sang OpenStreetMap");
+          map.removeLayer(googleLayer);
+          initOpenStreetMap();
+        }
+      }, 1000);
+    } else {
+      console.warn("Plugin GoogleMutant chưa được tải, chuyển sang OpenStreetMap");
+      console.warn("Kiểm tra: L.gridLayer =", typeof L !== 'undefined' ? L.gridLayer : 'undefined');
+      console.warn("Kiểm tra: L.gridLayer.googleMutant =", typeof L !== 'undefined' && L.gridLayer ? typeof L.gridLayer.googleMutant : 'undefined');
+      initOpenStreetMap();
+    }
+  } catch (error) {
+    console.error("Lỗi khi khởi tạo Google Maps:", error);
+    console.warn("Chuyển sang OpenStreetMap");
+    try {
+      initOpenStreetMap();
+    } catch (fallbackError) {
+      console.error("Lỗi khi fallback sang OpenStreetMap:", fallbackError);
+    }
+  }
+}
+
+/**
+ * Khởi tạo Google Maps sử dụng custom GridLayer (cần API key)
+ * Dựa trên phương pháp tham khảo từ người dùng
+ */
+function initGoogleMapsCustom() {
+  if (!GOOGLE_MAPS_API_KEY) {
+    console.warn("Chưa có Google Maps API Key, chuyển sang OpenStreetMap");
+    initOpenStreetMap();
+    return;
+  }
+
+  // Kiểm tra xem Google Maps API đã được tải chưa
+  if (typeof google === 'undefined' || !google.maps) {
+    console.warn("Google Maps API chưa được tải, vui lòng thêm script vào HTML");
+    console.warn("Chuyển sang OpenStreetMap");
+    initOpenStreetMap();
+    return;
+  }
+
+  try {
+    // Tạo Google Map ẩn để lấy tiles
+    const googleMapDiv = document.createElement('div');
+    googleMapDiv.id = 'google-map-hidden-' + Date.now();
+    googleMapDiv.style.position = 'absolute';
+    googleMapDiv.style.visibility = 'hidden';
+    googleMapDiv.style.width = '256px';
+    googleMapDiv.style.height = '256px';
+    document.body.appendChild(googleMapDiv);
+
+    const googleMap = new google.maps.Map(googleMapDiv, {
+      center: { lat: 0, lng: 0 },
+      zoom: 1,
+      disableDefaultUI: true,
+      keyboardShortcuts: false,
+      draggable: false,
+      disableDoubleClickZoom: true,
+      scrollwheel: false,
+      mapTypeId: google.maps.MapTypeId.ROADMAP, // Có thể thay đổi: ROADMAP, SATELLITE, TERRAIN, HYBRID
+    });
+
+    // Tạo custom GridLayer để lấy tiles từ Google Map
+    const GoogleGridLayer = L.GridLayer.extend({
+      initialize: function(googleMapInstance, mapType) {
+        this.googleMap = googleMapInstance;
+        this.mapType = mapType || 'roadmap';
+        this.tileCache = new Map();
+      },
+
+      createTile: function(coords, done) {
+        const img = L.DomUtil.create('img');
+        const tileKey = `${coords.z}_${coords.x}_${coords.y}`;
+
+        // Kiểm tra cache
+        if (this.tileCache.has(tileKey)) {
+          img.src = this.tileCache.get(tileKey);
+          done(null, img);
+          return img;
+        }
+
+        // Chuyển đổi tọa độ Leaflet sang Google Maps
+        const nw = this._tileCoordsToLatLng(coords);
+        const se = this._tileCoordsToLatLng({ x: coords.x + 1, y: coords.y + 1, z: coords.z });
+
+        // Tạo overlay để lấy tile
+        const overlay = new google.maps.GroundOverlay(
+          '',
+          new google.maps.LatLngBounds(
+            new google.maps.LatLng(nw.lat, nw.lng),
+            new google.maps.LatLng(se.lat, se.lng)
+          )
+        );
+
+        // Sử dụng Static Maps API để lấy tile (phương án đơn giản hơn)
+        const tileUrl = this._getGoogleTileUrl(coords);
+        img.onload = () => {
+          this.tileCache.set(tileKey, tileUrl);
+          done(null, img);
+        };
+        img.onerror = () => {
+          done(new Error('Không thể tải tile Google Maps'), img);
+        };
+        img.src = tileUrl;
+
+        return img;
+      },
+
+      _tileCoordsToLatLng: function(coords) {
+        const n = Math.pow(2, coords.z);
+        const lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * coords.y / n))) * 180 / Math.PI;
+        const lng = coords.x / n * 360 - 180;
+        return { lat, lng };
+      },
+
+      _getGoogleTileUrl: function(coords) {
+        // Sử dụng Google Static Maps API để lấy tile
+        // Lưu ý: Cách này có giới hạn về số lượng request
+        const scale = window.devicePixelRatio > 1 ? 2 : 1;
+        const size = 256 * scale;
+        const center = this._tileCoordsToLatLng({ x: coords.x + 0.5, y: coords.y + 0.5, z: coords.z });
+        
+        // Sử dụng Maps Static API (cần API key)
+        return `https://maps.googleapis.com/maps/api/staticmap?center=${center.lat},${center.lng}&zoom=${coords.z}&size=${size}x${size}&maptype=${this.mapType}&key=${GOOGLE_MAPS_API_KEY}&scale=${scale}`;
+      }
+    });
+
+    const googleLayer = new GoogleGridLayer(googleMap, 'roadmap');
+    googleLayer.addTo(map);
+    
+    // Dọn dẹp element ẩn sau khi khởi tạo
+    setTimeout(() => {
+      if (googleMapDiv.parentNode) {
+        googleMapDiv.parentNode.removeChild(googleMapDiv);
+      }
+    }, 1000);
+
+    console.log("Bản đồ Google Maps (Custom GridLayer) khởi tạo hoàn tất");
+  } catch (error) {
+    console.warn("Lỗi khi khởi tạo Google Maps Custom:", error, "Chuyển sang OpenStreetMap");
+    initOpenStreetMap();
+  }
+}
+
+/**
+ * Khởi tạo bản đồ OpenStreetMap
+ */
+function initOpenStreetMap() {
+  if (!map) {
+    console.error("Map instance chưa được khởi tạo, không thể thêm OpenStreetMap layer");
+    return;
+  }
+
+  try {
+    // Xóa các layer hiện có trước khi thêm layer mới
+    map.eachLayer((layer) => {
+      if (layer instanceof L.TileLayer || (layer.options && layer.options.url)) {
+        map.removeLayer(layer);
+      }
+    });
+
+    const osmLayer = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        subdomains: "abc",
+        attribution: "© OpenStreetMap",
+        maxZoom: 18,
+      }
+    );
+
+    osmLayer.addTo(map);
+    console.log("Bản đồ OpenStreetMap khởi tạo hoàn tất");
+    
+    // Kiểm tra xem layer có được thêm thành công không
+    setTimeout(() => {
+      if (!map.hasLayer(osmLayer)) {
+        console.error("OpenStreetMap layer không được thêm vào map");
+      } else {
+        console.log("OpenStreetMap layer đã được thêm thành công");
+      }
+    }, 500);
+  } catch (error) {
+    console.error("Lỗi khi khởi tạo OpenStreetMap:", error);
+  }
+}
+
+// ==================== Điều khiển bảng thống kê ====================
+/**
+ * Khởi tạo tương tác hover bảng thống kê PC
  */
 function initStatsHover() {
   const statsPanel = document.getElementById("stats-panel");
@@ -479,9 +799,9 @@ function initStatsHover() {
   statsPanel.addEventListener("mouseleave", hideStatsPanel);
 }
 
-// ==================== 详细信息面板控制 ====================
+// ==================== Điều khiển bảng thông tin chi tiết ====================
 /**
- * 初始化详细信息面板交互
+ * Khởi tạo tương tác bảng thông tin chi tiết
  */
 function initDetailPanel() {
   const panel = document.getElementById("location-detail-panel");
@@ -517,7 +837,7 @@ function initDetailPanel() {
 }
 
 /**
- * 显示地点详细信息面板
+ * Hiển thị bảng thông tin chi tiết địa điểm
  */
 function showDetailPanel(locationGroup) {
   const panel = document.getElementById("location-detail-panel");
@@ -530,25 +850,25 @@ function showDetailPanel(locationGroup) {
 
   const { location, events } = locationGroup;
   const visitCount = events.length;
-  const transitCount = events.filter((e) => e.visitType === "途径").length;
-  const destCount = events.filter((e) => e.visitType === "目的地").length;
-  const startCount = events.filter((e) => e.visitType === "起点").length;
-  const activityCount = events.filter((e) => e.visitType === "活动").length;
-  const birthCount = events.filter((e) => e.visitType === "出生").length;
+  const transitCount = events.filter((e) => e.visitType === "Đi qua").length;
+  const destCount = events.filter((e) => e.visitType === "Điểm đến").length;
+  const startCount = events.filter((e) => e.visitType === "Khởi hành").length;
+  const activityCount = events.filter((e) => e.visitType === "Hoạt động").length;
+  const birthCount = events.filter((e) => e.visitType === "Sinh ra").length;
 
-  titleEl.textContent = `📍 ${location}`;
+  titleEl.textContent = location;
 
-  let summaryText = `截止当前时间点共 <span class="visit-count-highlight">${visitCount}</span> 次相关记录`;
+  let summaryText = `Tính đến thời điểm hiện tại có tổng cộng <span class="visit-count-highlight">${visitCount}</span> bản ghi liên quan`;
 
   let descParts = [];
-  if (birthCount > 0) descParts.push(`${birthCount}次出生`);
-  if (destCount > 0) descParts.push(`${destCount}次到达`);
-  if (startCount > 0) descParts.push(`${startCount}次出发`);
-  if (transitCount > 0) descParts.push(`${transitCount}次途径`);
-  if (activityCount > 0) descParts.push(`${activityCount}次活动`);
+  if (birthCount > 0) descParts.push(`${birthCount} lần sinh ra`);
+  if (destCount > 0) descParts.push(`${destCount} lần đến`);
+  if (startCount > 0) descParts.push(`${startCount} lần khởi hành`);
+  if (transitCount > 0) descParts.push(`${transitCount} lần đi qua`);
+  if (activityCount > 0) descParts.push(`${activityCount} lần hoạt động`);
 
   if (descParts.length > 0) {
-    summaryText += ` (${descParts.join("，")})`;
+    summaryText += ` (${descParts.join(", ")})`;
   }
 
   summaryEl.innerHTML = summaryText;
@@ -566,31 +886,31 @@ function showDetailPanel(locationGroup) {
       let visitTypeLabel = "";
       let visitOrderClass = "";
 
-      const orderNumber = `第${index + 1}次`;
+      const orderNumber = `Lần thứ ${index + 1}`;
 
       switch (event.visitType) {
-        case "出生":
+        case "Sinh ra":
           visitTypeClass = "birth-event";
-          visitTypeLabel = "出生";
+          visitTypeLabel = "Sinh ra";
           visitOrderClass = "birth-order";
           break;
-        case "起点":
+        case "Khởi hành":
           visitTypeClass = "start-event";
-          visitTypeLabel = "出发";
+          visitTypeLabel = "Khởi hành";
           visitOrderClass = "start-order";
           break;
-        case "目的地":
-          visitTypeLabel = "到达";
+        case "Điểm đến":
+          visitTypeLabel = "Đến";
           visitOrderClass = "";
           break;
-        case "途径":
+        case "Đi qua":
           visitTypeClass = "transit-event";
-          visitTypeLabel = "途径";
+          visitTypeLabel = "Đi qua";
           visitOrderClass = "transit-order";
           break;
-        case "活动":
+        case "Hoạt động":
           visitTypeClass = "activity-event";
-          visitTypeLabel = "活动";
+          visitTypeLabel = "Hoạt động";
           visitOrderClass = "activity-order";
           break;
       }
@@ -607,7 +927,7 @@ function showDetailPanel(locationGroup) {
         <div class="event-description">${
           event.originalEvent || event.event
         }</div>
-        ${event.age ? `<div class="event-age">年龄: ${event.age}岁</div>` : ""}
+        ${event.age ? `<div class="event-age">Tuổi: ${event.age}</div>` : ""}
       </div>
     `;
     })
@@ -665,7 +985,7 @@ function showDetailPanel(locationGroup) {
 }
 
 /**
- * 隐藏详细信息面板
+ * Ẩn bảng thông tin chi tiết
  */
 function hideDetailPanel() {
   const panel = document.getElementById("location-detail-panel");
@@ -687,14 +1007,14 @@ function hideDetailPanel() {
     try {
       window.cleanupDragListeners();
     } catch (error) {
-      console.warn("清理拖拽监听器时出错:", error);
+      console.warn("Lỗi khi dọn dẹp trình nghe kéo:", error);
     }
   }
 }
 
-// ==================== 反馈功能控制 ====================
+// ==================== Điều khiển chức năng phản hồi ====================
 /**
- * 初始化反馈功能
+ * Khởi tạo chức năng phản hồi
  */
 function initFeedbackModal() {
   const feedbackBtn = document.getElementById("feedback-btn");
@@ -752,7 +1072,7 @@ function initFeedbackModal() {
 }
 
 /**
- * 显示反馈弹窗
+ * Hiển thị cửa sổ phản hồi
  */
 function showFeedbackModal() {
   const feedbackModal = document.getElementById("feedback-modal");
@@ -768,7 +1088,7 @@ function showFeedbackModal() {
 }
 
 /**
- * 隐藏反馈弹窗
+ * Ẩn cửa sổ phản hồi
  */
 function hideFeedbackModal() {
   const feedbackModal = document.getElementById("feedback-modal");
@@ -784,23 +1104,23 @@ function hideFeedbackModal() {
 }
 
 /**
- * 打开GitHub Issues页面
+ * Mở trang GitHub Issues
  */
 function openGitHubIssues() {
-  const issuesUrl = "https://github.com/sansan0/mao-map/issues";
+  const issuesUrl = "https://github.com/mrtinhnguyen/ho-chi-minh-map/issues";
   window.open(issuesUrl, "_blank", "noopener,noreferrer");
 }
 
 /**
- * 打开GitHub项目主页
+ * Mở trang chủ dự án GitHub
  */
 function openGitHubProject() {
-  const projectUrl = "https://github.com/sansan0/mao-map";
+  const projectUrl = "https://github.com/mrtinhnguyen/ho-chi-minh-map";
   window.open(projectUrl, "_blank", "noopener,noreferrer");
 }
 
 /**
- * 处理微信公众号操作
+ * Xử lý thao tác tài khoản công khai WeChat
  */
 function handleWeChatAction() {
   const wechatName = "硅基茶水间";
@@ -810,12 +1130,12 @@ function handleWeChatAction() {
       .writeText(wechatName)
       .then(() => {
         showTemporaryMessage(
-          "公众号名称已复制到剪贴板：" + wechatName,
+          "Tên tài khoản công khai đã được sao chép vào clipboard: " + wechatName,
           "success"
         );
       })
       .catch(() => {
-        showTemporaryMessage("请搜索微信公众号：" + wechatName, "info");
+        showTemporaryMessage("Vui lòng tìm kiếm tài khoản công khai WeChat: " + wechatName, "info");
       });
   } else {
     try {
@@ -829,11 +1149,11 @@ function handleWeChatAction() {
       document.execCommand("copy");
       document.body.removeChild(textArea);
       showTemporaryMessage(
-        "公众号名称已复制到剪贴板：" + wechatName,
+        "Tên tài khoản công khai đã được sao chép vào clipboard: " + wechatName,
         "success"
       );
     } catch (err) {
-      showTemporaryMessage("请搜索微信公众号：" + wechatName, "info");
+      showTemporaryMessage("Vui lòng tìm kiếm tài khoản công khai WeChat: " + wechatName, "info");
     }
   }
 
@@ -841,7 +1161,7 @@ function handleWeChatAction() {
 }
 
 /**
- * 显示临时提示消息
+ * Hiển thị thông báo tạm thời
  */
 function showTemporaryMessage(message, type = "info") {
   const existingMessage = document.querySelector(".temp-message");
@@ -899,16 +1219,16 @@ function showTemporaryMessage(message, type = "info") {
 }
 
 /**
- * 显示诗句动画消息（带状态控制）
+ * Hiển thị thông báo animation thơ (có kiểm soát trạng thái)
  */
 function showPoetryMessage() {
   if (isPoetryAnimationPlaying) {
-    console.log("诗句动画正在播放中，忽略新的触发");
+    console.log("Animation thơ đang phát, bỏ qua kích hoạt mới");
     return;
   }
 
   isPoetryAnimationPlaying = true;
-  console.log("开始播放诗句动画");
+  console.log("Bắt đầu phát animation thơ");
 
   if (poetryAnimationTimeout) {
     clearTimeout(poetryAnimationTimeout);
@@ -924,10 +1244,10 @@ function showPoetryMessage() {
   poetryDiv.className = "poetry-message";
 
   const poetryTexts = [
-    "俱往矣，数风流人物，还看今朝",
-    "一万年太久，只争朝夕",
-    "雄关漫道真如铁，而今迈步从头越",
-    "江山如此多娇，引无数英雄竞折腰",
+    "Không có gì quý hơn độc lập tự do",
+    "Độc lập tự do là trên hết",
+    "Việt Nam muôn năm",
+    "Đảng ta thật là vĩ đại",
   ];
 
   const randomPoetry =
@@ -948,7 +1268,7 @@ function showPoetryMessage() {
     zIndex: "9999",
     fontSize: "18px",
     fontWeight: "700",
-    fontFamily: "'KaiTi', '楷体', serif",
+    fontFamily: "'Times New Roman', serif",
     boxShadow:
       "0 8px 32px rgba(200, 16, 46, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.2)",
     backdropFilter: "blur(12px)",
@@ -976,7 +1296,7 @@ function showPoetryMessage() {
     }
   }, 800);
 
-  // 第三阶段：放大到最大并开始淡出
+  // Giai đoạn ba: Phóng to tối đa và bắt đầu mờ dần
   setTimeout(() => {
     if (poetryDiv.parentNode && isPoetryAnimationPlaying) {
       poetryDiv.style.transform = "translate(-50%, -50%) scale(1.3)";
@@ -986,7 +1306,7 @@ function showPoetryMessage() {
     }
   }, 2200);
 
-  // 第四阶段：完全消失
+  // Giai đoạn bốn: Hoàn toàn biến mất
   setTimeout(() => {
     if (poetryDiv.parentNode && isPoetryAnimationPlaying) {
       poetryDiv.style.transform = "translate(-50%, -50%) scale(1.8)";
@@ -998,7 +1318,7 @@ function showPoetryMessage() {
           poetryDiv.remove();
         }
         isPoetryAnimationPlaying = false;
-        console.log("诗句动画播放完成，状态已重置");
+        console.log("Animation thơ phát xong, trạng thái đã được đặt lại");
       }, 800);
     } else if (!isPoetryAnimationPlaying) {
       if (poetryDiv.parentNode) {
@@ -1023,7 +1343,7 @@ function showPoetryMessage() {
 
   poetryAnimationTimeout = setTimeout(() => {
     if (isPoetryAnimationPlaying) {
-      console.warn("诗句动画超时保护触发，强制重置状态");
+      console.warn("Bảo vệ timeout animation thơ được kích hoạt, buộc đặt lại trạng thái");
       isPoetryAnimationPlaying = false;
 
       const remainingPoetry = document.querySelector(".poetry-message");
@@ -1036,7 +1356,7 @@ function showPoetryMessage() {
 }
 
 /**
- * 强制停止诗句动画
+ * Buộc dừng animation thơ
  */
 function forceStopPoetryAnimation() {
   if (isPoetryAnimationPlaying) {
@@ -1056,12 +1376,12 @@ function forceStopPoetryAnimation() {
   }
 }
 
-// ==================== 坐标数据处理 ====================
+// ==================== Xử lý dữ liệu tọa độ ====================
 /**
- * 从地区数据构建坐标映射表
+ * Xây dựng bảng ánh xạ tọa độ từ dữ liệu khu vực
  */
 function buildCoordinateMapFromRegions() {
-  console.log("建立坐标映射...");
+  console.log("Đang thiết lập ánh xạ tọa độ...");
 
   if (regionsData && regionsData.regions) {
     regionsData.regions.forEach((region) => {
@@ -1083,46 +1403,46 @@ function buildCoordinateMapFromRegions() {
     coordinateMap.set(name, coords);
   });
 
-  console.log("坐标映射建立完成，共", coordinateMap.size, "个地点");
-  console.log("国际坐标:", Object.keys(INTERNATIONAL_COORDINATES));
+  console.log("Ánh xạ tọa độ thiết lập hoàn tất, tổng cộng", coordinateMap.size, "địa điểm");
+  console.log("Tọa độ quốc tế:", Object.keys(INTERNATIONAL_COORDINATES));
 }
 
-// ==================== 数据加载 ====================
+// ==================== Tải dữ liệu ====================
 /**
- * 加载地理坐标数据
+ * Tải dữ liệu tọa độ địa lý
  */
 async function loadGeographicData() {
   try {
-    const response = await fetch("data/china_regions_coordinates.json");
+    const response = await fetch("data/global_regions_coordinates.json");
 
     if (response.ok) {
       regionsData = await response.json();
       buildCoordinateMapFromRegions();
-      console.log("china_regions_coordinates.json 加载成功");
+      console.log("global_regions_coordinates.json tải thành công");
     } else {
-      throw new Error("china_regions_coordinates.json 加载失败");
+      throw new Error("global_regions_coordinates.json tải thất bại");
     }
 
     return true;
   } catch (error) {
-    console.warn("外部地理数据加载失败:", error.message);
+    console.warn("Tải dữ liệu địa lý bên ngoài thất bại:", error.message);
     Object.entries(INTERNATIONAL_COORDINATES).forEach(([name, coords]) => {
       coordinateMap.set(name, coords);
     });
-    console.log("已加载备用国际坐标数据");
+    console.log("Đã tải dữ liệu tọa độ quốc tế dự phòng");
     return true;
   }
 }
 
 /**
- * 加载轨迹事件数据
+ * Tải dữ liệu sự kiện hành trình
  */
 async function loadTrajectoryData() {
   try {
-    const response = await fetch("data/mao_trajectory_events.json");
+    const response = await fetch("data/hochiminh_events.json");
     if (!response.ok) {
       throw new Error(
-        `加载事件数据失败: ${response.status} - ${response.statusText}`
+        `Tải dữ liệu sự kiện thất bại: ${response.status} - ${response.statusText}`
       );
     }
 
@@ -1133,31 +1453,36 @@ async function loadTrajectoryData() {
       !Array.isArray(rawData.events) ||
       rawData.events.length === 0
     ) {
-      throw new Error("mao_trajectory_events.json 格式错误或事件数据为空");
+      throw new Error("hochiminh_events.json định dạng sai hoặc dữ liệu sự kiện trống");
     }
 
     return processTrajectoryData(rawData);
   } catch (error) {
-    console.error("加载轨迹数据失败:", error);
+    console.error("Tải dữ liệu hành trình thất bại:", error);
     throw error;
   }
 }
 
-// ==================== 坐标匹配 ====================
+// ==================== Khớp tọa độ ====================
 /**
- * 构建完整的行政区划路径
+ * Xây dựng đường dẫn đầy đủ của đơn vị hành chính
  */
 function buildFullLocationPath(locationInfo) {
   if (!locationInfo) return null;
 
   let parts = [];
 
-  if (locationInfo.country && locationInfo.country !== "中国") {
+  if (locationInfo.country && locationInfo.country !== "Việt Nam") {
+    // Địa điểm quốc tế: Country + City
     parts.push(locationInfo.country);
     if (locationInfo.city) {
       parts.push(locationInfo.city);
     }
   } else {
+    // Địa điểm Việt Nam: Việt Nam + Province + City + District
+    // Thêm "Việt Nam" vào đầu để khớp với ext_path trong JSON
+    parts.push("Việt Nam");
+    
     if (locationInfo.province) {
       parts.push(locationInfo.province);
     }
@@ -1175,7 +1500,7 @@ function buildFullLocationPath(locationInfo) {
 }
 
 /**
- * 根据位置信息获取坐标
+ * Lấy tọa độ dựa trên thông tin vị trí
  */
 function getCoordinates(locationInfo) {
   if (!locationInfo) return null;
@@ -1185,19 +1510,45 @@ function getCoordinates(locationInfo) {
   }
 
   const fullPath = buildFullLocationPath(locationInfo);
+  
+  // Thử khớp với path đầy đủ trước
   if (fullPath && coordinateMap.has(fullPath)) {
     return coordinateMap.get(fullPath);
   }
 
-  console.warn("无法匹配坐标:", locationInfo, "构建路径:", fullPath);
+  // Fallback: Thử khớp với các path ngắn hơn (bỏ district, city, v.v.)
+  // Chỉ áp dụng cho địa điểm Việt Nam
+  if (fullPath && (!locationInfo.country || locationInfo.country === "Việt Nam")) {
+    const pathParts = fullPath.split(" ");
+    
+    // Thử bỏ phần cuối (district)
+    if (pathParts.length > 3) {
+      const pathWithoutDistrict = pathParts.slice(0, -1).join(" ");
+      if (coordinateMap.has(pathWithoutDistrict)) {
+        console.log(`Khớp tọa độ với path ngắn hơn (bỏ district): ${pathWithoutDistrict}`);
+        return coordinateMap.get(pathWithoutDistrict);
+      }
+    }
+    
+    // Thử bỏ phần cuối thứ hai (city)
+    if (pathParts.length > 2) {
+      const pathWithoutCity = pathParts.slice(0, -2).join(" ");
+      if (coordinateMap.has(pathWithoutCity)) {
+        console.log(`Khớp tọa độ với path ngắn hơn (bỏ city): ${pathWithoutCity}`);
+        return coordinateMap.get(pathWithoutCity);
+      }
+    }
+  }
+
+  console.warn("Không thể khớp tọa độ:", locationInfo, "Đường dẫn đã xây dựng:", fullPath);
   return null;
 }
 
 /**
- * 获取坐标和格式化地点名称
+ * Lấy tọa độ và định dạng tên địa điểm
  */
 function getCoordinatesWithLocation(locationInfo) {
-  if (!locationInfo) return { coordinates: null, location: "未知地点" };
+  if (!locationInfo) return { coordinates: null, location: "Địa điểm không xác định" };
 
   if (locationInfo.coordinates) {
     return {
@@ -1206,11 +1557,8 @@ function getCoordinatesWithLocation(locationInfo) {
     };
   }
 
-  const fullPath = buildFullLocationPath(locationInfo);
-  const coordinates =
-    fullPath && coordinateMap.has(fullPath)
-      ? coordinateMap.get(fullPath)
-      : null;
+  // Sử dụng getCoordinates để có fallback logic
+  const coordinates = getCoordinates(locationInfo);
 
   return {
     coordinates: coordinates,
@@ -1219,14 +1567,14 @@ function getCoordinatesWithLocation(locationInfo) {
 }
 
 /**
- * 格式化地点名称显示
+ * Định dạng hiển thị tên địa điểm
  */
 function formatLocationName(locationInfo) {
-  if (!locationInfo) return "未知地点";
+  if (!locationInfo) return "Địa điểm không xác định";
 
   let parts = [];
 
-  if (locationInfo.country && locationInfo.country !== "中国") {
+  if (locationInfo.country && locationInfo.country !== "Việt Nam") {
     parts.push(locationInfo.country);
     if (locationInfo.city) parts.push(locationInfo.city);
   } else {
@@ -1239,12 +1587,12 @@ function formatLocationName(locationInfo) {
     }
   }
 
-  return parts.length > 0 ? parts.join(" ") : "未知地点";
+  return parts.length > 0 ? parts.join(" ") : "Địa điểm không xác định";
 }
 
-// ==================== 轨迹数据处理 ====================
+// ==================== Xử lý dữ liệu hành trình ====================
 /**
- * 处理原始轨迹数据，添加坐标信息
+ * Xử lý dữ liệu hành trình gốc, thêm thông tin tọa độ
  */
 function processTrajectoryData(data) {
   const processedEvents = data.events.map((event, index) => {
@@ -1290,9 +1638,9 @@ function processTrajectoryData(data) {
   };
 }
 
-// ==================== 位置聚合 ====================
+// ==================== Tổng hợp vị trí ====================
 /**
- * 按地理位置聚合事件
+ * Tổng hợp sự kiện theo vị trí địa lý
  */
 function groupEventsByLocation(events, maxIndex) {
   const groups = new Map();
@@ -1300,7 +1648,7 @@ function groupEventsByLocation(events, maxIndex) {
   for (let i = 0; i <= maxIndex; i++) {
     const event = events[i];
 
-    if (event.movementType === "出生") {
+    if (event.movementType === "Sinh ra") {
       if (event.endCoords && event.endLocation) {
         const coordKey = `${event.endCoords[0]},${event.endCoords[1]}`;
 
@@ -1320,12 +1668,12 @@ function groupEventsByLocation(events, maxIndex) {
           date: event.date,
           event: event.event,
           age: event.age,
-          visitType: "出生",
+          visitType: "Sinh ra",
         });
 
         group.types.add(event.movementType);
       }
-    } else if (event.movementType === "原地活动") {
+    } else if (event.movementType === "Hoạt động tại chỗ") {
       if (event.endCoords && event.endLocation) {
         const coordKey = `${event.endCoords[0]},${event.endCoords[1]}`;
 
@@ -1345,7 +1693,7 @@ function groupEventsByLocation(events, maxIndex) {
           date: event.date,
           event: event.event,
           age: event.age,
-          visitType: "活动",
+          visitType: "Hoạt động",
         });
 
         group.types.add(event.movementType);
@@ -1370,7 +1718,7 @@ function groupEventsByLocation(events, maxIndex) {
           date: event.date,
           event: event.event,
           age: event.age,
-          visitType: "起点",
+          visitType: "Khởi hành",
         });
 
         group.types.add(event.movementType);
@@ -1395,7 +1743,7 @@ function groupEventsByLocation(events, maxIndex) {
           date: event.date,
           event: event.event,
           age: event.age,
-          visitType: "目的地",
+          visitType: "Điểm đến",
         });
 
         group.types.add(event.movementType);
@@ -1429,9 +1777,9 @@ function groupEventsByLocation(events, maxIndex) {
                 ...event,
                 index: i,
                 date: event.date,
-                event: `途经：${event.event}`,
+                event: `Đi qua: ${event.event}`,
                 age: event.age,
-                visitType: "途径",
+                visitType: "Đi qua",
                 originalEvent: event.event,
               });
 
@@ -1447,7 +1795,7 @@ function groupEventsByLocation(events, maxIndex) {
 }
 
 /**
- * 根据访问次数获取标记样式类
+ * Lấy lớp kiểu đánh dấu dựa trên số lần truy cập
  */
 function getVisitCountClass(visitCount) {
   if (visitCount === 1) return "visits-1";
@@ -1457,29 +1805,29 @@ function getVisitCountClass(visitCount) {
 }
 
 /**
- * 根据事件类型获取主要标记类型
+ * Lấy loại đánh dấu chính dựa trên loại sự kiện
  */
 function getPrimaryMarkerType(types) {
-  if (types.has("出生")) return "marker-birth";
+  if (types.has("Sinh ra")) return "marker-birth";
 
-  if (types.has("国际移动")) return "marker-international";
+  if (types.has("Di chuyển quốc tế")) return "marker-international";
 
-  if (types.has("长途移动")) return "marker-long-distance";
+  if (types.has("Di chuyển ngắn")) return "marker-long-distance";
 
-  if (types.has("短途移动")) return "marker-short-distance";
+  if (types.has("Di chuyển ngắn")) return "marker-short-distance";
 
-  const movementTypes = ["国际移动", "长途移动", "短途移动"].filter((type) =>
+  const movementTypes = ["Di chuyển quốc tế", "Di chuyển ngắn", "Di chuyển ngắn"].filter((type) =>
     types.has(type)
   );
   if (movementTypes.length > 1) return "marker-mixed";
 
-  if (types.has("原地活动")) return "marker-activity";
+  if (types.has("Hoạt động tại chỗ")) return "marker-activity";
 
   return "marker-movement";
 }
 
 /**
- * 创建地点标记
+ * Tạo đánh dấu địa điểm
  */
 function createLocationMarker(
   locationGroup,
@@ -1549,26 +1897,24 @@ function createLocationMarker(
   let tooltipText;
   if (visitCount === 1) {
     const event = events[0];
-    tooltipText = `${event.date} - ${event.visitType === "途径" ? "途经" : ""}${
+    tooltipText = `${event.date} - ${event.visitType === "Đi qua" ? "Đi qua: " : ""}${
       event.originalEvent || event.event
     }`;
   } else {
-    const transitCount = events.filter((e) => e.visitType === "途径").length;
-    const destCount = events.filter((e) => e.visitType === "目的地").length;
-    const startCount = events.filter((e) => e.visitType === "起点").length;
-    const activityCount = events.filter((e) => e.visitType === "活动").length;
-    const birthCount = events.filter((e) => e.visitType === "出生").length;
+    const transitCount = events.filter((e) => e.visitType === "Đi qua").length;
+    const destCount = events.filter((e) => e.visitType === "Điểm đến").length;
+    const startCount = events.filter((e) => e.visitType === "Khởi hành").length;
+    const activityCount = events.filter((e) => e.visitType === "Hoạt động").length;
+    const birthCount = events.filter((e) => e.visitType === "Sinh ra").length;
 
     let descParts = [];
-    if (birthCount > 0) descParts.push(`${birthCount}次出生`);
-    if (destCount > 0) descParts.push(`${destCount}次到达`);
-    if (startCount > 0) descParts.push(`${startCount}次出发`);
-    if (transitCount > 0) descParts.push(`${transitCount}次途径`);
-    if (activityCount > 0) descParts.push(`${activityCount}次活动`);
+    if (birthCount > 0) descParts.push(`${birthCount} lần sinh ra`);
+    if (destCount > 0) descParts.push(`${destCount} lần đến`);
+    if (startCount > 0) descParts.push(`${startCount} lần khởi hành`);
+    if (transitCount > 0) descParts.push(`${transitCount} lần đi qua`);
+    if (activityCount > 0) descParts.push(`${activityCount} lần hoạt động`);
 
-    tooltipText = `${location} (${descParts.join(
-      "，"
-    )})`;
+    tooltipText = `${location} (${descParts.join(", ")})`;
   }
 
   marker.bindTooltip(tooltipText, {
@@ -1580,9 +1926,9 @@ function createLocationMarker(
   return marker;
 }
 
-// ==================== 地图标记和路径  ====================
+// ==================== Đánh dấu và đường đi trên bản đồ  ====================
 /**
- * 创建 motion 动画路径
+ * Tạo đường đi animation motion
  */
 function createMotionPath(
   fromCoords,
@@ -1598,10 +1944,10 @@ function createMotionPath(
   const pathCoords = [];
 
   if (isReverse) {
-    // 反向路径：从终点到起点
+    // Đường đi ngược: từ điểm cuối đến điểm đầu
     pathCoords.push([toCoords[1], toCoords[0]]);
 
-    // 反向添加 transit 点
+    // Thêm điểm transit theo chiều ngược
     if (!isConnectionPath && transitCoords && transitCoords.length > 0) {
       for (let i = transitCoords.length - 1; i >= 0; i--) {
         pathCoords.push([transitCoords[i][1], transitCoords[i][0]]);
@@ -1610,7 +1956,7 @@ function createMotionPath(
 
     pathCoords.push([fromCoords[1], fromCoords[0]]);
   } else {
-    // 正向路径：从起点到终点
+    // Đường đi thuận: từ điểm đầu đến điểm cuối
     pathCoords.push([fromCoords[1], fromCoords[0]]);
 
     if (!isConnectionPath && transitCoords && transitCoords.length > 0) {
@@ -1623,14 +1969,14 @@ function createMotionPath(
   }
 
   const polylineOptions = {
-    color: isLatest ? "#c0392b" : "#85c1e9",
+    color: isLatest ? "#c0392b" : "#000000", // Đường mới nhất: đỏ, đường đã qua: đen
     weight: isConnectionPath ? 2 : 3,
-    opacity: isLatest ? 0.9 : isConnectionPath ? 0.4 : 0.6,
+    opacity: isLatest ? 0.9 : isConnectionPath ? 0.4 : 0.7, // Tăng opacity cho đường đen để dễ nhìn hơn
     smoothFactor: 1,
     dashArray: isConnectionPath ? "4, 8" : "8, 8",
   };
 
-  // 拖动时使用极短的动画时间，实现快速显示
+  // Khi kéo, sử dụng thời gian animation cực ngắn để hiển thị nhanh
   let effectiveDuration = isDragging ? 1 : animationConfig.pathDuration;
 
   const motionOptions = {
@@ -1647,7 +1993,7 @@ function createMotionPath(
     motionOptions
   );
 
-  // 保存路径元数据
+  // Lưu metadata đường đi
   motionPath._isAnimated = true;
   motionPath._isLatest = isLatest;
   motionPath._needsAnimation = isLatest && !isDragging;
@@ -1661,13 +2007,13 @@ function createMotionPath(
 }
 
 /**
- * 更新路径样式
+ * Cập nhật kiểu đường đi
  */
 function updatePathStyle(path, isLatest) {
   if (!path) return;
 
-  const color = isLatest ? "#c0392b" : "#85c1e9";
-  const opacity = isLatest ? 0.9 : 0.6;
+  const color = isLatest ? "#c0392b" : "#000000"; // Đường mới nhất: đỏ, đường đã qua: đen
+  const opacity = isLatest ? 0.9 : 0.7; // Tăng opacity cho đường đen để dễ nhìn hơn
 
   path.setStyle({
     color: color,
@@ -1684,7 +2030,7 @@ function updatePathStyle(path, isLatest) {
 }
 
 /**
- * 静态更新路径（无动画）
+ * Cập nhật đường đi tĩnh (không có animation)
  */
 function updatePathsStatic(targetIndex) {
   pathLayers.forEach((path) => {
@@ -1701,10 +2047,10 @@ function updatePathsStatic(targetIndex) {
     if (
       currentEvent.startCoords &&
       currentEvent.endCoords &&
-      currentEvent.movementType !== "原地活动"
+      currentEvent.movementType !== "Hoạt động tại chỗ"
     ) {
-      console.log(
-        `${isDragging ? "拖动" : "静态"}添加路径: 事件 ${i}: ${
+        console.log(
+        `${isDragging ? "Kéo" : "Tĩnh"} thêm đường đi: Sự kiện ${i}: ${
           currentEvent.event
         }`
       );
@@ -1727,23 +2073,23 @@ function updatePathsStatic(targetIndex) {
         pathLayers.push(motionPath);
         motionPaths.set(i, motionPath);
 
-        // 如果是拖动状态，立即启动动画以快速显示
+        // Nếu đang ở trạng thái kéo, khởi động animation ngay để hiển thị nhanh
         if (isDragging && motionPath.motionStart) {
           motionPath.motionStart();
         }
 
-        console.log(`成功添加${isDragging ? "拖动" : "静态"}路径: 事件 ${i}`);
+        console.log(`Thêm thành công ${isDragging ? "kéo" : "tĩnh"} đường đi: Sự kiện ${i}`);
       } else {
-        console.warn(`路径创建失败: 事件 ${i}`);
+        console.warn(`Tạo đường đi thất bại: Sự kiện ${i}`);
       }
     } else {
-      console.log(`跳过事件 ${i}: ${currentEvent.event} (原地活动或缺少坐标)`);
+      console.log(`Bỏ qua sự kiện ${i}: ${currentEvent.event} (Hoạt động tại chỗ hoặc thiếu tọa độ)`);
     }
   }
 }
 
 /**
- * 创建路径消失动画
+ * Tạo animation đường đi biến mất
  */
 function animatePathDisappear(path) {
   if (!path || !path._map) return;
@@ -1773,7 +2119,7 @@ function animatePathDisappear(path) {
 }
 
 /**
- * 批量执行路径消失动画
+ * Thực thi animation đường đi biến mất hàng loạt
  */
 function batchAnimatePathsDisappear(paths, staggerDelay = 200) {
   if (!paths || paths.length === 0) return;
@@ -1798,17 +2144,17 @@ function batchAnimatePathsDisappear(paths, staggerDelay = 200) {
 }
 
 /**
- * 动画更新路径
+ * Cập nhật đường đi với animation
  */
 function updatePathsAnimated(targetIndex, isReverse = false) {
   if (isReverse) {
-    // 反向动画：让后面的路径逐渐消失
+    // Animation ngược: làm các đường đi phía sau dần biến mất
     const pathsToRemove = pathLayers.filter(
       (path) => path._eventIndex > targetIndex
     );
 
     if (pathsToRemove.length > 0) {
-      console.log(`开始反向消失动画，移除 ${pathsToRemove.length} 条路径`);
+      console.log(`Bắt đầu animation biến mất ngược, xóa ${pathsToRemove.length} đường đi`);
 
       pathsToRemove.forEach((path, index) => {
         setTimeout(() => {
@@ -1816,7 +2162,7 @@ function updatePathsAnimated(targetIndex, isReverse = false) {
         }, index * 100);
       });
 
-      // 延迟清理路径数组和映射
+      // Trì hoãn dọn dẹp mảng và ánh xạ đường đi
       setTimeout(() => {
         pathsToRemove.forEach((pathToRemove) => {
           const pathIndex = pathLayers.indexOf(pathToRemove);
@@ -1830,7 +2176,7 @@ function updatePathsAnimated(targetIndex, isReverse = false) {
       }, pathsToRemove.length * 200 + animationConfig.pathDuration);
     }
   } else {
-    // 正向动画：添加新路径
+    // Animation thuận: thêm đường đi mới
     const currentEvent = trajectoryData.events[targetIndex];
 
     pathLayers.forEach((path) => {
@@ -1842,10 +2188,10 @@ function updatePathsAnimated(targetIndex, isReverse = false) {
     if (
       currentEvent.startCoords &&
       currentEvent.endCoords &&
-      currentEvent.movementType !== "原地活动"
+      currentEvent.movementType !== "Hoạt động tại chỗ"
     ) {
       console.log(
-        `Motion 添加路径: 事件 ${targetIndex} - ${currentEvent.event}`
+        `Motion thêm đường đi: Sự kiện ${targetIndex} - ${currentEvent.event}`
       );
 
       const motionPath = createMotionPath(
@@ -1870,7 +2216,7 @@ function updatePathsAnimated(targetIndex, isReverse = false) {
 }
 
 /**
- * 更新事件标记
+ * Cập nhật đánh dấu sự kiện
  */
 function updateEventMarkers(targetIndex) {
   eventMarkers.forEach((marker) => map.removeLayer(marker));
@@ -1903,7 +2249,7 @@ function updateEventMarkers(targetIndex) {
 }
 
 /**
- * 确保标记交互性正常工作
+ * Đảm bảo tính tương tác của đánh dấu hoạt động bình thường
  */
 function ensureMarkersInteractivity() {
   eventMarkers.forEach((marker) => {
@@ -1934,9 +2280,9 @@ function ensureMarkersInteractivity() {
   }
 }
 
-// ==================== 动画控制 ====================
+// ==================== Điều khiển animation ====================
 /**
- * 显示指定索引的事件
+ * Hiển thị sự kiện tại chỉ mục được chỉ định
  */
 function showEventAtIndex(index, animated = true, isUserDrag = false) {
   if (!trajectoryData || index >= trajectoryData.events.length || index < 0)
@@ -1974,13 +2320,20 @@ function showEventAtIndex(index, animated = true, isUserDrag = false) {
   if (animated) {
     setTimeout(() => {
       ensureMarkersInteractivity();
+      // Hiển thị popup event sau khi animation đường đi hoàn thành
+      if (isMovingForward && !isUserDrag) {
+        showEventPopup(event, index);
+      }
     }, animationConfig.pathDuration + 100);
+  } else if (!isUserDrag) {
+    // Hiển thị popup ngay cả khi không có animation (khi tải trang lần đầu)
+    showEventPopup(event, index);
   }
 }
 
-// ==================== 镜头跟随控制 ====================
+// ==================== Điều khiển camera theo dõi ====================
 /**
- * 处理镜头跟随逻辑
+ * Xử lý logic camera theo dõi
  */
 function handleCameraFollow(currentEvent, previousIndex, animated = true) {
   if (!currentEvent) return;
@@ -1989,7 +2342,7 @@ function handleCameraFollow(currentEvent, previousIndex, animated = true) {
   if (bounds && bounds.isValid()) {
     const panOptions = {
       animate: animated,
-      duration: animated ? animationConfig.cameraFollowDuration / 1000 : 0, // 镜头时长
+      duration: animated ? animationConfig.cameraFollowDuration / 1000 : 0, // Thời lượng camera
       paddingTopLeft: [50, 50],
       paddingBottomRight: [50, 100],
       maxZoom: 8,
@@ -2001,7 +2354,7 @@ function handleCameraFollow(currentEvent, previousIndex, animated = true) {
     const [lng, lat] = currentEvent.endCoords;
     const panOptions = {
       animate: animated,
-      duration: animated ? animationConfig.cameraPanDuration / 1000 : 0, // 平移时长
+      duration: animated ? animationConfig.cameraPanDuration / 1000 : 0, // Thời lượng di chuyển
       easeLinearity: 0.5,
     };
     map.setView([lat, lng], Math.max(map.getZoom(), 6), panOptions);
@@ -2009,7 +2362,7 @@ function handleCameraFollow(currentEvent, previousIndex, animated = true) {
 }
 
 /**
- * 计算路径边界框
+ * Tính toán khung giới hạn đường đi
  */
 function calculatePathBounds(currentEvent, previousIndex) {
   const coordinates = [];
@@ -2051,7 +2404,7 @@ function calculatePathBounds(currentEvent, previousIndex) {
     try {
       return L.latLngBounds(coordinates);
     } catch (error) {
-      console.warn("计算边界框失败:", error);
+      console.warn("Tính toán khung giới hạn thất bại:", error);
       return null;
     }
   }
@@ -2060,7 +2413,7 @@ function calculatePathBounds(currentEvent, previousIndex) {
 }
 
 /**
- * 切换镜头跟随状态
+ * Chuyển đổi trạng thái camera theo dõi
  */
 function toggleCameraFollow() {
   isCameraFollowEnabled = !isCameraFollowEnabled;
@@ -2072,12 +2425,12 @@ function toggleCameraFollow() {
       isCameraFollowEnabled.toString()
     );
   } catch (error) {
-    console.warn("无法保存镜头跟随设置:", error);
+    console.warn("Không thể lưu cài đặt camera theo dõi:", error);
   }
 }
 
 /**
- * 更新镜头跟随UI状态
+ * Cập nhật trạng thái UI camera theo dõi
  */
 function updateCameraFollowUI() {
   const cameraSwitch = document.getElementById("camera-follow-switch");
@@ -2092,12 +2445,12 @@ function updateCameraFollowUI() {
   }
 
   if (cameraStatus) {
-    cameraStatus.textContent = isCameraFollowEnabled ? "开启" : "关闭";
+    cameraStatus.textContent = isCameraFollowEnabled ? "Bật" : "Tắt";
   }
 }
 
 /**
- * 初始化镜头跟随控制
+ * Khởi tạo điều khiển camera theo dõi
  */
 function initCameraFollowControl() {
   try {
@@ -2106,7 +2459,7 @@ function initCameraFollowControl() {
       isCameraFollowEnabled = saved === "true";
     }
   } catch (error) {
-    console.warn("无法读取镜头跟随设置:", error);
+    console.warn("Không thể đọc cài đặt camera theo dõi:", error);
   }
 
   const cameraSwitch = document.getElementById("camera-follow-switch");
@@ -2117,9 +2470,9 @@ function initCameraFollowControl() {
   updateCameraFollowUI();
 }
 
-// ==================== 路径高亮功能 ====================
+// ==================== Chức năng làm nổi bật đường đi ====================
 /**
- * 高亮指定事件的路径
+ * Làm nổi bật đường đi của sự kiện được chỉ định
  */
 function highlightEventPath(eventIndex) {
   if (
@@ -2166,7 +2519,7 @@ function highlightEventPath(eventIndex) {
       clearPathHighlight();
     }, 4000);
 
-    // 聚焦到路径
+    // Tập trung vào đường đi
     if (motionPath.getBounds && isCameraFollowEnabled) {
       try {
         const bounds = motionPath.getBounds();
@@ -2175,19 +2528,19 @@ function highlightEventPath(eventIndex) {
             padding: [50, 50],
             maxZoom: 8,
             animate: true,
-            duration: animationConfig.cameraFollowDuration / 1000, // 镜头时长
+            duration: animationConfig.cameraFollowDuration / 1000, // Thời lượng camera
             easeLinearity: 0.5,
           });
         }
       } catch (error) {
-        console.warn("聚焦路径失败:", error);
+        console.warn("Tập trung vào đường đi thất bại:", error);
       }
     }
   }
 }
 
 /**
- * 清除路径高亮
+ * Xóa làm nổi bật đường đi
  */
 function clearPathHighlight() {
   if (highlightTimeout) {
@@ -2201,7 +2554,7 @@ function clearPathHighlight() {
         path.setStyle(originalStyle);
         path.motionStart();
       } catch (error) {
-        console.warn("恢复路径样式失败:", error);
+        console.warn("Khôi phục kiểu đường đi thất bại:", error);
       }
     }
   });
@@ -2211,7 +2564,7 @@ function clearPathHighlight() {
 }
 
 /**
- * 快速清除路径高亮
+ * Xóa nhanh làm nổi bật đường đi
  */
 function quickClearPathHighlight() {
   if (highlightTimeout) {
@@ -2234,7 +2587,7 @@ function quickClearPathHighlight() {
           }
         }, 200);
       } catch (error) {
-        console.warn("快速清除路径高亮失败:", error);
+        console.warn("Xóa nhanh làm nổi bật đường đi thất bại:", error);
       }
     }
   });
@@ -2243,9 +2596,123 @@ function quickClearPathHighlight() {
   currentHighlightedEventIndex = -1;
 }
 
-// ==================== UI更新 ====================
+// ==================== Popup hiển thị thông tin event ====================
 /**
- * 更新当前事件信息显示
+ * Hiển thị popup thông tin event khi đến địa điểm
+ */
+function showEventPopup(event, eventIndex) {
+  // Chỉ hiển thị khi đang phát tự động hoặc khi có endCoords
+  if (!event || !event.endCoords) return;
+
+  // Xóa popup cũ nếu có
+  hideEventPopup();
+
+  const popup = document.getElementById("event-popup");
+  const popupDate = document.getElementById("event-popup-date");
+  const popupAge = document.getElementById("event-popup-age");
+  const popupLocation = document.getElementById("event-popup-location");
+  const popupTitle = document.getElementById("event-popup-title");
+  const popupProgressFill = document.getElementById("event-popup-progress-fill");
+  const popupProgressText = document.getElementById("event-popup-progress-text");
+
+  if (!popup || !popupDate || !popupAge || !popupLocation || !popupTitle) return;
+
+  // Định dạng ngày tháng
+  const dateStr = event.date || "Không xác định";
+  const formattedDate = formatEventDate(dateStr);
+
+  // Cập nhật nội dung popup
+  popupDate.textContent = formattedDate;
+  popupAge.textContent = `Tuổi: ${event.age || 0}`;
+  popupLocation.textContent = event.endLocation || "Địa điểm không xác định";
+  popupTitle.textContent = event.event || "Không có mô tả";
+
+  // Hiển thị popup với animation
+  popup.classList.add("visible");
+
+  // Đếm ngược 6 giây
+  eventPopupRemainingTime = 6;
+  updatePopupProgress();
+
+  // Cập nhật thanh tiến độ mỗi giây
+  eventPopupProgressInterval = setInterval(() => {
+    eventPopupRemainingTime--;
+    updatePopupProgress();
+
+    if (eventPopupRemainingTime <= 0) {
+      hideEventPopup();
+      // Nếu đang phát tự động, tiếp tục với event tiếp theo
+      if (isPlaying && eventIndex < trajectoryData.events.length - 1) {
+        // playNextEvent sẽ được gọi tự động
+      }
+    }
+  }, 1000);
+
+  // Tự động ẩn sau 6 giây
+  eventPopupTimeout = setTimeout(() => {
+    hideEventPopup();
+  }, 6000);
+}
+
+/**
+ * Ẩn popup thông tin event
+ */
+function hideEventPopup() {
+  const popup = document.getElementById("event-popup");
+  if (popup) {
+    popup.classList.remove("visible");
+  }
+
+  if (eventPopupTimeout) {
+    clearTimeout(eventPopupTimeout);
+    eventPopupTimeout = null;
+  }
+
+  if (eventPopupProgressInterval) {
+    clearInterval(eventPopupProgressInterval);
+    eventPopupProgressInterval = null;
+  }
+
+  eventPopupRemainingTime = 0;
+}
+
+/**
+ * Cập nhật thanh tiến độ popup
+ */
+function updatePopupProgress() {
+  const popupProgressFill = document.getElementById("event-popup-progress-fill");
+  const popupProgressText = document.getElementById("event-popup-progress-text");
+
+  if (popupProgressFill && popupProgressText) {
+    const progress = (eventPopupRemainingTime / 6) * 100;
+    popupProgressFill.style.width = `${progress}%`;
+    popupProgressText.textContent = `${eventPopupRemainingTime}s`;
+  }
+}
+
+/**
+ * Định dạng ngày tháng cho hiển thị
+ */
+function formatEventDate(dateStr) {
+  if (!dateStr) return "Không xác định";
+
+  // Nếu là định dạng YYYY-MM-DD
+  if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    const [year, month, day] = dateStr.split("-");
+    return `${day}/${month}/${year}`;
+  }
+
+  // Nếu chỉ có năm
+  if (dateStr.match(/^\d{4}$/)) {
+    return dateStr;
+  }
+
+  return dateStr;
+}
+
+// ==================== Cập nhật UI ====================
+/**
+ * Cập nhật hiển thị thông tin sự kiện hiện tại
  */
 function updateCurrentEventInfo(event) {
   const pcElements = {
@@ -2278,7 +2745,7 @@ function updateCurrentEventInfo(event) {
 }
 
 /**
- * 更新进度信息
+ * Cập nhật thông tin tiến độ
  */
 function updateProgress() {
   const progress = trajectoryData
@@ -2317,29 +2784,24 @@ function updateProgress() {
 }
 
 /**
- * 更新统计数据
+ * Cập nhật dữ liệu thống kê
  */
 function updateStatistics() {
   if (!trajectoryData || !trajectoryData.events) return;
 
   const events = trajectoryData.events;
   const movementEvents = events.filter(
-    (e) => e.movementType !== "出生" && e.movementType !== "原地活动"
+    (e) => e.movementType !== "Sinh ra" && e.movementType !== "Hoạt động tại chỗ"
   );
   const internationalEvents = events.filter(
-    (e) => e.movementType === "国际移动"
+    (e) => e.movementType === "Di chuyển quốc tế"
   );
 
   const visitedPlaces = new Set();
   events.forEach((event) => {
     if (event.endLocation) {
-      let location = event.endLocation;
-      if (location.includes("省")) {
-        location = location.split("省")[0] + "省";
-      } else if (location.includes("市")) {
-        location = location.split("市")[0] + "市";
-      }
-      visitedPlaces.add(location);
+      // Thêm địa điểm vào danh sách đã đến
+      visitedPlaces.add(event.endLocation);
     }
   });
 
@@ -2352,7 +2814,7 @@ function updateStatistics() {
     "movement-count": movementEvents.length,
     "visited-places": visitedPlaces.size,
     "international-count": internationalEvents.length,
-    "time-span": timeSpan + "年",
+    "time-span": timeSpan + " năm",
   };
 
   Object.entries(pcStats).forEach(([id, value]) => {
@@ -2363,9 +2825,9 @@ function updateStatistics() {
   });
 }
 
-// ==================== 播放控制 ====================
+// ==================== Điều khiển phát ====================
 /**
- * 切换播放/暂停状态
+ * Chuyển đổi trạng thái phát/tạm dừng
  */
 function togglePlay() {
   const btn = document.getElementById("play-btn");
@@ -2378,17 +2840,17 @@ function togglePlay() {
       playInterval = null;
     }
     btn.textContent = "▶";
-    btn.title = "播放";
+    btn.title = "Phát";
   } else {
     isPlaying = true;
     btn.textContent = "⏸";
-    btn.title = "暂停";
+    btn.title = "Tạm dừng";
 
     playNextEvent();
   }
 }
 
-// 递归播放下一个事件
+// Phát đệ quy sự kiện tiếp theo
 function playNextEvent() {
   if (!isPlaying || currentEventIndex >= trajectoryData.events.length - 1) {
     if (currentEventIndex >= trajectoryData.events.length - 1) {
@@ -2396,7 +2858,7 @@ function playNextEvent() {
       const btn = document.getElementById("play-btn");
       if (btn) {
         btn.textContent = "▶";
-        btn.title = "播放";
+        btn.title = "Phát";
       }
     }
     return;
@@ -2404,9 +2866,10 @@ function playNextEvent() {
 
   showEventAtIndex(currentEventIndex + 1, true);
 
+  // Chờ popup hiển thị 6 giây + thời gian animation đường đi trước khi chuyển event tiếp theo
   const waitTime = Math.max(
     currentPlaySpeed,
-    animationConfig.pathDuration + 200
+    animationConfig.pathDuration + 6000 + 200 // 6 giây cho popup + animation đường đi
   );
 
   playInterval = setTimeout(() => {
@@ -2415,7 +2878,7 @@ function playNextEvent() {
 }
 
 /**
- * 下一个事件
+ * Sự kiện tiếp theo
  */
 function nextEvent() {
   if (currentEventIndex < trajectoryData.events.length - 1) {
@@ -2424,7 +2887,7 @@ function nextEvent() {
 }
 
 /**
- * 上一个事件
+ * Sự kiện trước đó
  */
 function previousEvent() {
   if (currentEventIndex > 0) {
@@ -2432,9 +2895,9 @@ function previousEvent() {
   }
 }
 
-// ==================== 键盘控制 ====================
+// ==================== Điều khiển bàn phím ====================
 /**
- * 统一的键盘事件处理函数
+ * Hàm xử lý sự kiện bàn phím thống nhất
  */
 function handleTimelineKeydown(e) {
   if (!trajectoryData || !trajectoryData.events) return;
@@ -2461,12 +2924,12 @@ function handleTimelineKeydown(e) {
       handled = true;
       break;
     case "End":
-      // 检查是否有动画正在播放
+      // Kiểm tra xem có animation đang phát không
       if (isPoetryAnimationPlaying) {
         e.preventDefault();
         return;
       }
-      // 不跳转，只显示诗句动画
+      // Không chuyển, chỉ hiển thị animation thơ
       e.preventDefault();
       showPoetryMessage();
       return;
@@ -2484,9 +2947,9 @@ function handleTimelineKeydown(e) {
   }
 }
 
-// ==================== 动画设置控制 ====================
+// ==================== Điều khiển cài đặt animation ====================
 /**
- * 初始化动画控制滑块
+ * Khởi tạo thanh trượt điều khiển animation
  */
 function initAnimationControls() {
   const pathDurationSlider = document.getElementById("path-duration");
@@ -2514,7 +2977,7 @@ function initAnimationControls() {
   }
 
   if (cameraSpeedSlider && cameraSpeedDisplay) {
-    // 从本地存储恢复设置
+    // Khôi phục cài đặt từ lưu trữ cục bộ
     let savedSpeedLevel = 1;
     try {
       const saved = localStorage.getItem("cameraSpeedLevel");
@@ -2528,7 +2991,7 @@ function initAnimationControls() {
         }
       }
     } catch (error) {
-      console.warn("无法读取镜头速度设置:", error);
+      console.warn("Không thể đọc cài đặt tốc độ camera:", error);
     }
 
     cameraSpeedSlider.value = savedSpeedLevel;
@@ -2541,18 +3004,18 @@ function initAnimationControls() {
       try {
         localStorage.setItem("cameraSpeedLevel", levelIndex.toString());
       } catch (error) {
-        console.warn("无法保存镜头速度设置:", error);
+        console.warn("Không thể lưu cài đặt tốc độ camera:", error);
       }
     });
   }
 }
 
 /**
- * 更新镜头速度配置
+ * Cập nhật cấu hình tốc độ camera
  */
 function updateCameraSpeed(levelIndex) {
   if (levelIndex < 0 || levelIndex >= CAMERA_SPEED_LEVELS.length) {
-    console.warn("无效的镜头速度档位:", levelIndex);
+    console.warn("Mức tốc độ camera không hợp lệ:", levelIndex);
     return;
   }
 
@@ -2566,14 +3029,14 @@ function updateCameraSpeed(levelIndex) {
     cameraSpeedDisplay.textContent = speedConfig.name;
   }
 
-  console.log(`镜头跟随速度已调整为: ${speedConfig.name}`, {
-    跟随时长: speedConfig.cameraFollowDuration + "ms",
-    平移时长: speedConfig.cameraPanDuration + "ms",
+  console.log(`Tốc độ camera theo dõi đã được điều chỉnh: ${speedConfig.name}`, {
+    "Thời lượng theo dõi": speedConfig.cameraFollowDuration + "ms",
+    "Thời lượng di chuyển": speedConfig.cameraPanDuration + "ms",
   });
 }
 
 /**
- * 更新动画时长配置
+ * Cập nhật cấu hình thời lượng animation
  */
 function updateAnimationDuration(duration) {
   document.documentElement.style.setProperty(
@@ -2582,7 +3045,7 @@ function updateAnimationDuration(duration) {
   );
 }
 
-// 更新播放速度UI
+// Cập nhật UI tốc độ phát
 function updateSpeedUI() {
   const speedSelect = document.getElementById("custom-speed-select");
   if (speedSelect) {
@@ -2595,25 +3058,25 @@ function updateSpeedUI() {
 }
 
 /**
- * 获取速度标签
+ * Lấy nhãn tốc độ
  */
 function getSpeedLabel(speed) {
   const speedLabels = {
-    500: "极快",
-    1000: "快速",
-    2000: "正常",
-    3000: "慢速",
-    5000: "极慢",
+    500: "Rất nhanh",
+    1000: "Nhanh",
+    2000: "Bình thường",
+    3000: "Chậm",
+    5000: "Rất chậm",
   };
   return speedLabels[speed] || `${speed}ms`;
 }
 
 /**
- * 复制当前事件数据到剪贴板
+ * Sao chép dữ liệu sự kiện hiện tại vào clipboard
  */
 function copyCurrentEventData() {
   if (!trajectoryData || !trajectoryData.events || currentEventIndex < 0) {
-    showTemporaryMessage("当前没有可复制的事件数据", "warning");
+    showTemporaryMessage("Hiện tại không có dữ liệu sự kiện để sao chép", "warning");
     return;
   }
 
@@ -2633,9 +3096,9 @@ function copyCurrentEventData() {
     if (cleanEventData.userVerification.length === 0) {
       cleanEventData.userVerification = [
         {
-          username: "考据者署名 (可选)",
-          comment: "考据补充或感言 (可选)",
-          date: "考据日期 (可选)",
+          username: "Tên người nghiên cứu (tùy chọn)",
+          comment: "Bổ sung nghiên cứu hoặc cảm nghĩ (tùy chọn)",
+          date: "Ngày nghiên cứu (tùy chọn)",
         },
       ];
     }
@@ -2650,7 +3113,7 @@ function copyCurrentEventData() {
         .then(() => {
           const eventNumber = currentEventIndex + 1;
           showTemporaryMessage(
-            `事件 ${eventNumber} 数据已复制到剪贴板`,
+            `Dữ liệu sự kiện ${eventNumber} đã được sao chép vào clipboard`,
             "success"
           );
         })
@@ -2661,13 +3124,13 @@ function copyCurrentEventData() {
       fallbackCopyToClipboard(formattedJson);
     }
   } catch (error) {
-    console.error("复制事件数据时出错:", error);
-    showTemporaryMessage("复制失败，请重试", "warning");
+    console.error("Lỗi khi sao chép dữ liệu sự kiện:", error);
+    showTemporaryMessage("Sao chép thất bại, vui lòng thử lại", "warning");
   }
 }
 
 /**
- * 兼容性剪贴板复制方案
+ * Phương án sao chép clipboard tương thích
  */
 function fallbackCopyToClipboard(text) {
   try {
@@ -2684,18 +3147,18 @@ function fallbackCopyToClipboard(text) {
 
     if (successful) {
       const eventNumber = currentEventIndex + 1;
-      showTemporaryMessage(`事件 ${eventNumber} 数据已复制到剪贴板`, "success");
+      showTemporaryMessage(`Dữ liệu sự kiện ${eventNumber} đã được sao chép vào clipboard`, "success");
     } else {
-      showTemporaryMessage("复制失败，请手动选择并复制", "warning");
+      showTemporaryMessage("Sao chép thất bại, vui lòng chọn và sao chép thủ công", "warning");
     }
   } catch (err) {
-    console.error("传统复制方法也失败:", err);
-    showTemporaryMessage("复制失败，浏览器不支持自动复制", "warning");
+    console.error("Phương pháp sao chép truyền thống cũng thất bại:", err);
+    showTemporaryMessage("Sao chép thất bại, trình duyệt không hỗ trợ sao chép tự động", "warning");
   }
 }
 
 /**
- * 隐藏加载提示
+ * Ẩn thông báo tải
  */
 function hideLoading() {
   const loading = document.getElementById("loading");
@@ -2704,9 +3167,9 @@ function hideLoading() {
   }
 }
 
-// ==================== 自定义下拉选择器 ====================
+// ==================== Bộ chọn dropdown tùy chỉnh ====================
 /**
- * 初始化自定义速度选择器
+ * Khởi tạo bộ chọn tốc độ tùy chỉnh
  */
 function initCustomSpeedSelect() {
   const customSelect = document.getElementById("custom-speed-select");
@@ -2845,38 +3308,47 @@ function initCustomSpeedSelect() {
   }
 }
 
-// ==================== 音乐播放功能 ====================
+// ==================== Chức năng phát nhạc ====================
 const MUSIC_PLAYLIST = [
   {
-    id: "internationale",
-    title: "国际歌",
-    artist: "经典革命歌曲",
-    duration: "04:55",
+    id: "viettiepcauchuyenhoabinh",
+    title: "Viết tiếp câu chuyện hòa bình",
+    artist: "Nhạc sĩ Nguyễn Văn Chung",
+    duration: "04:57",
     urls: [
-      // 第二个是维基百科的公共版权音乐
-      "https://raw.githubusercontent.com/sansan0/mao-map/refs/heads/master/data/music/Internationale-cmn_(英特纳雄耐尔).ogg",
-      "https://upload.wikimedia.org/wikipedia/commons/5/5b/Internationale-cmn_%28%E8%8B%B1%E7%89%B9%E7%BA%B3%E9%9B%84%E8%80%90%E5%B0%94%29.ogg",
+      "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1762971495/Viet-tiep-cau-chuyen-hoa-binh_vsxqyz.mp3",
+      "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1762971495/Viet-tiep-cau-chuyen-hoa-binh_vsxqyz.mp3",
     ],
   },
   {
-    id: "dongfanghong",
-    title: "东方红",
-    artist: "经典红色歌曲",
-    duration: "02:25",
+    id: "cangoihochiminh",
+    title: "Ca Ngợi Hồ Chủ Tịch",
+    artist: "Nhạc sĩ Văn Cao",
+    duration: "04:24",
     urls: [
-      "https://raw.githubusercontent.com/sansan0/mao-map/refs/heads/master/data/music/东方红_-_The_East_Is_Red_(1950).ogg",
-      "https://upload.wikimedia.org/wikipedia/commons/d/d8/%E4%B8%9C%E6%96%B9%E7%BA%A2_-_The_East_Is_Red_%281950%29.ogg",
+      "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1762971494/Ca-Ngoi-Ho-Chu-Tich_ffywf1.mp3",
+      "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1762971494/Ca-Ngoi-Ho-Chu-Tich_ffywf1.mp3",
+    ],
+  },
+  {
+    id: "bacdangcungchungchauhanhquan",
+    title: "Bác đang cùng chúng cháu hành quân",
+    artist: "Nhạc sĩ Huy Thục",
+    duration: "03:36",
+    urls: [
+      "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1762971494/Bac-Dang-Cung-Chung-Chau-Hanh-Quan_lgeqlw.mp3",
+      "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1762971494/Bac-Dang-Cung-Chung-Chau-Hanh-Quan_lgeqlw.mp3",
     ],
   },
 ];
 
 /**
- * 清理音频事件监听器
+ * Dọn dẹp trình nghe sự kiện âm thanh
  */
 function cleanupMusicEventListeners() {
   if (!musicAudio) return;
 
-  console.log("清理音频事件监听器");
+  console.log("Dọn dẹp trình nghe sự kiện âm thanh");
 
   const eventsToClean = [
     "loadedmetadata",
@@ -2894,7 +3366,7 @@ function cleanupMusicEventListeners() {
 }
 
 /**
- * 等待音频准备就绪后自动播放
+ * Chờ âm thanh sẵn sàng rồi tự động phát
  */
 function autoPlayWhenReady(shouldPlay = true) {
   if (!musicAudio || !shouldPlay) {
@@ -2906,7 +3378,7 @@ function autoPlayWhenReady(shouldPlay = true) {
 
   return new Promise((resolve) => {
     const timeoutId = setTimeout(() => {
-      console.warn("音频加载超时，取消自动播放");
+      console.warn("Tải âm thanh quá thời gian, hủy phát tự động");
       isAutoPlayPending = false;
       cleanup();
       resolve(false);
@@ -2923,7 +3395,7 @@ function autoPlayWhenReady(shouldPlay = true) {
       cleanup();
 
       if (isAutoPlayPending) {
-        console.log("音频准备就绪，开始自动播放");
+        console.log("Âm thanh đã sẵn sàng, bắt đầu phát tự động");
         musicAudio
           .play()
           .then(() => {
@@ -2936,7 +3408,7 @@ function autoPlayWhenReady(shouldPlay = true) {
             resolve(true);
           })
           .catch((error) => {
-            console.warn("自动播放失败:", error);
+            console.warn("Phát tự động thất bại:", error);
             isAutoPlayPending = false;
             updatePlayButton();
             updateMusicBtnState();
@@ -2949,13 +3421,13 @@ function autoPlayWhenReady(shouldPlay = true) {
     };
 
     const handleError = (error) => {
-      console.warn("音频加载出错，取消自动播放:", error);
+      console.warn("Lỗi tải âm thanh, hủy phát tự động:", error);
       cleanup();
       isAutoPlayPending = false;
       resolve(false);
     };
 
-    // 检查音频是否已经可以播放
+    // Kiểm tra xem âm thanh đã sẵn sàng phát chưa
     if (musicAudio.readyState >= 3) {
       cleanup();
       handleCanPlay();
@@ -2972,12 +3444,12 @@ function autoPlayWhenReady(shouldPlay = true) {
 }
 
 /**
- * 加载音频文件
+ * Tải file âm thanh
  */
 function loadMusicAudio(song, autoPlay = false) {
   if (!musicAudio) return Promise.resolve(false);
 
-  console.log(`加载音频: ${song.title}, 自动播放: ${autoPlay}`);
+  console.log(`Tải âm thanh: ${song.title}, Phát tự động: ${autoPlay}`);
 
   isAutoPlayPending = false;
 
@@ -2999,17 +3471,17 @@ function loadMusicAudio(song, autoPlay = false) {
   function tryLoadUrl() {
     return new Promise((resolve) => {
       if (urlIndex >= song.urls.length) {
-        console.warn("无法加载音频文件:", song.title);
-        showTemporaryMessage("无法加载音频文件，请尝试上传本地文件", "warning");
+      console.warn("Không thể tải file âm thanh:", song.title);
+      showTemporaryMessage("Không thể tải file âm thanh, vui lòng thử tải lên file cục bộ", "warning");
         resolve(false);
         return;
       }
 
       const url = song.urls[urlIndex];
-      console.log("尝试加载音频:", url);
+      console.log("Thử tải âm thanh:", url);
 
       const loadTimeoutId = setTimeout(() => {
-        console.warn("音频加载超时:", url);
+        console.warn("Tải âm thanh quá thời gian:", url);
         handleLoadError();
       }, 8000);
 
@@ -3021,7 +3493,7 @@ function loadMusicAudio(song, autoPlay = false) {
       };
 
       const handleLoadSuccess = () => {
-        console.log("音频加载成功:", url);
+        console.log("Tải âm thanh thành công:", url);
         cleanup();
 
         updatePlayButton();
@@ -3037,7 +3509,7 @@ function loadMusicAudio(song, autoPlay = false) {
       };
 
       const handleLoadError = () => {
-        console.warn("音频加载失败:", url);
+        console.warn("Tải âm thanh thất bại:", url);
         cleanup();
         urlIndex++;
         tryLoadUrl().then(resolve);
@@ -3062,38 +3534,38 @@ function loadMusicAudio(song, autoPlay = false) {
 }
 
 /**
- * 播放上一首
+ * Phát bài trước
  */
 function playPreviousSong() {
   const prevIndex =
     currentMusicIndex > 0 ? currentMusicIndex - 1 : MUSIC_PLAYLIST.length - 1;
   const wasPlaying = isMusicPlaying;
 
-  console.log(`播放上一首: 索引 ${prevIndex}, 之前在播放: ${wasPlaying}`);
+  console.log(`Phát bài trước: Chỉ mục ${prevIndex}, Trước đó đang phát: ${wasPlaying}`);
 
   selectSong(prevIndex, wasPlaying);
 }
 
 /**
- * 播放下一首
+ * Phát bài tiếp theo
  */
 function playNextSong() {
   const nextIndex =
     currentMusicIndex < MUSIC_PLAYLIST.length - 1 ? currentMusicIndex + 1 : 0;
   const wasPlaying = isMusicPlaying;
 
-  console.log(`播放下一首: 索引 ${nextIndex}, 之前在播放: ${wasPlaying}`);
+  console.log(`Phát bài tiếp theo: Chỉ mục ${nextIndex}, Trước đó đang phát: ${wasPlaying}`);
 
   selectSong(nextIndex, wasPlaying);
 }
 
 /**
- * 选择歌曲
+ * Chọn bài hát
  */
 function selectSong(index, autoPlay = false) {
   if (index < 0 || index >= MUSIC_PLAYLIST.length) return;
 
-  console.log(`选择歌曲: 索引 ${index}, 自动播放: ${autoPlay}`);
+  console.log(`Chọn bài hát: Chỉ mục ${index}, Phát tự động: ${autoPlay}`);
 
   currentMusicIndex = index;
   const song = MUSIC_PLAYLIST[index];
@@ -3117,13 +3589,13 @@ function selectSong(index, autoPlay = false) {
 }
 
 /**
- * 切换播放/暂停
+ * Chuyển đổi phát/tạm dừng
  */
 function toggleMusicPlay() {
   if (!musicAudio) return;
 
   if (isMusicPlaying) {
-    console.log("暂停音乐播放");
+    console.log("Tạm dừng phát nhạc");
     musicAudio.pause();
     isMusicPlaying = false;
     clearInterval(musicProgressInterval);
@@ -3131,18 +3603,18 @@ function toggleMusicPlay() {
     updateMusicBtnState();
     updateTimelineControlBackground();
   } else {
-    console.log("开始音乐播放");
+    console.log("Bắt đầu phát nhạc");
     const playBtn = document.getElementById("music-play-btn");
     if (playBtn) {
       playBtn.textContent = "⏳";
-      playBtn.title = "加载中...";
+      playBtn.title = "Đang tải...";
     }
 
     if (musicAudio.readyState < 3) {
-      console.log("音频未准备好，等待加载...");
+      console.log("Âm thanh chưa sẵn sàng, chờ tải...");
       autoPlayWhenReady(true);
     } else {
-      console.log("音频已准备好，直接播放");
+      console.log("Âm thanh đã sẵn sàng, phát trực tiếp");
       musicAudio
         .play()
         .then(() => {
@@ -3153,8 +3625,8 @@ function toggleMusicPlay() {
           updateTimelineControlBackground();
         })
         .catch((error) => {
-          console.error("音频播放失败:", error);
-          showTemporaryMessage("音频播放失败，请检查文件格式", "warning");
+          console.error("Phát âm thanh thất bại:", error);
+          showTemporaryMessage("Phát âm thanh thất bại, vui lòng kiểm tra định dạng file", "warning");
 
           isMusicPlaying = false;
           updatePlayButton();
@@ -3165,10 +3637,10 @@ function toggleMusicPlay() {
 }
 
 /**
- * 处理音乐播放结束
+ * Xử lý khi nhạc phát xong
  */
 function handleMusicEnded() {
-  console.log("音乐播放结束，准备播放下一首");
+  console.log("Nhạc phát xong, chuẩn bị phát bài tiếp theo");
 
   isMusicPlaying = false;
   clearInterval(musicProgressInterval);
@@ -3176,7 +3648,7 @@ function handleMusicEnded() {
   updateMusicBtnState();
   updateTimelineControlBackground();
 
-  // 自动播放下一首
+  // Tự động phát bài tiếp theo
   setTimeout(() => {
     const nextIndex =
       currentMusicIndex < MUSIC_PLAYLIST.length - 1 ? currentMusicIndex + 1 : 0;
@@ -3185,7 +3657,7 @@ function handleMusicEnded() {
 }
 
 /**
- * 初始化音乐播放功能
+ * Khởi tạo chức năng phát nhạc
  */
 function initMusicPlayer() {
   const musicBtn = document.getElementById("music-btn");
@@ -3227,7 +3699,7 @@ function initMusicPlayer() {
 }
 
 /**
- * 显示音乐弹窗
+ * Hiển thị cửa sổ nhạc
  */
 function showMusicModal() {
   const musicModal = document.getElementById("music-modal");
@@ -3243,7 +3715,7 @@ function showMusicModal() {
 }
 
 /**
- * 隐藏音乐弹窗
+ * Ẩn cửa sổ nhạc
  */
 function hideMusicModal() {
   const musicModal = document.getElementById("music-modal");
@@ -3259,7 +3731,7 @@ function hideMusicModal() {
 }
 
 /**
- * 初始化音乐播放控制
+ * Khởi tạo điều khiển phát nhạc
  */
 function initMusicControls() {
   const playBtn = document.getElementById("music-play-btn");
@@ -3287,7 +3759,7 @@ function initMusicControls() {
     musicAudio = document.getElementById("music-audio");
   }
 
-  // 绑定基础事件监听器（这些不会被清理）
+  // Liên kết trình nghe sự kiện cơ bản (những cái này sẽ không bị dọn dẹp)
   if (musicAudio) {
     musicAudio.addEventListener("loadedmetadata", updateMusicDuration);
     musicAudio.addEventListener("timeupdate", updateMusicProgress);
@@ -3297,7 +3769,7 @@ function initMusicControls() {
 }
 
 /**
- * 初始化播放列表
+ * Khởi tạo danh sách phát
  */
 function initMusicPlaylist() {
   const playlistItems = document.getElementById("music-playlist-items");
@@ -3321,35 +3793,35 @@ function initMusicPlaylist() {
 
     itemEl.addEventListener("click", () => {
       const wasPlaying = isMusicPlaying;
-      selectSong(index, wasPlaying); // 如果之前在播放，则自动播放新选择的歌曲
+      selectSong(index, wasPlaying); // Nếu trước đó đang phát, thì tự động phát bài hát mới được chọn
     });
 
     playlistItems.appendChild(itemEl);
   });
 
   if (MUSIC_PLAYLIST.length > 0) {
-    selectSong(0, false); // 默认选择第一首，但不自动播放
+    selectSong(0, false); // Mặc định chọn bài đầu tiên, nhưng không tự động phát
   }
 }
 
 /**
- * 更新播放按钮状态
+ * Cập nhật trạng thái nút phát
  */
 function updatePlayButton() {
   const playBtn = document.getElementById("music-play-btn");
   if (playBtn) {
     if (isMusicPlaying) {
       playBtn.textContent = "⏸";
-      playBtn.title = "暂停";
+      playBtn.title = "Tạm dừng";
     } else {
       playBtn.textContent = "▶";
-      playBtn.title = "播放";
+      playBtn.title = "Phát";
     }
   }
 }
 
 /**
- * 更新音乐按钮状态
+ * Cập nhật trạng thái nút nhạc
  */
 function updateMusicBtnState() {
   const musicBtn = document.getElementById("music-btn");
@@ -3363,7 +3835,7 @@ function updateMusicBtnState() {
 }
 
 /**
- * 开始进度更新
+ * Bắt đầu cập nhật tiến độ
  */
 function startProgressUpdate() {
   musicProgressInterval = setInterval(() => {
@@ -3372,7 +3844,7 @@ function startProgressUpdate() {
 }
 
 /**
- * 更新音乐进度
+ * Cập nhật tiến độ nhạc
  */
 function updateMusicProgress() {
   if (!musicAudio || !musicAudio.duration) return;
@@ -3399,7 +3871,7 @@ function updateMusicProgress() {
 }
 
 /**
- * 更新音乐总时长
+ * Cập nhật tổng thời lượng nhạc
  */
 function updateMusicDuration() {
   if (!musicAudio || !musicAudio.duration) return;
@@ -3411,7 +3883,7 @@ function updateMusicDuration() {
 }
 
 /**
- * 处理进度条点击
+ * Xử lý click thanh tiến độ
  */
 function handleProgressClick(e) {
   if (!musicAudio || !musicAudio.duration) return;
@@ -3427,11 +3899,11 @@ function handleProgressClick(e) {
 }
 
 /**
- * 处理音频错误
+ * Xử lý lỗi âm thanh
  */
 function handleMusicError(e) {
-  console.error("音频播放错误:", e);
-  showTemporaryMessage("音频播放出错，请尝试其他歌曲", "warning");
+  console.error("Lỗi phát âm thanh:", e);
+  showTemporaryMessage("Lỗi phát âm thanh, vui lòng thử bài hát khác", "warning");
 
   isMusicPlaying = false;
   clearInterval(musicProgressInterval);
@@ -3441,7 +3913,7 @@ function handleMusicError(e) {
 }
 
 /**
- * 格式化时间显示
+ * Định dạng hiển thị thời gian
  */
 function formatTime(seconds) {
   if (isNaN(seconds) || seconds < 0) return "00:00";
@@ -3454,7 +3926,7 @@ function formatTime(seconds) {
 }
 
 /**
- * 初始化音量控制
+ * Khởi tạo điều khiển âm lượng
  */
 function initVolumeControl() {
   const volumeSlider = document.getElementById("music-volume-slider");
@@ -3475,7 +3947,7 @@ function initVolumeControl() {
 }
 
 /**
- * 设置音乐音量
+ * Đặt âm lượng nhạc
  */
 function setMusicVolume(volume) {
   musicVolume = Math.max(0, Math.min(1, volume));
@@ -3492,12 +3964,12 @@ function setMusicVolume(volume) {
   try {
     localStorage.setItem("musicVolume", musicVolume.toString());
   } catch (error) {
-    console.warn("无法保存音量设置:", error);
+    console.warn("Không thể lưu cài đặt âm lượng:", error);
   }
 }
 
 /**
- * 初始化本地音乐上传
+ * Khởi tạo tải lên nhạc cục bộ
  */
 function initMusicUpload() {
   const uploadBtn = document.getElementById("music-upload-btn");
@@ -3515,14 +3987,14 @@ function initMusicUpload() {
 }
 
 /**
- * 处理本地音乐文件上传
+ * Xử lý tải lên file nhạc cục bộ
  */
 function handleMusicFileUpload(e) {
   const file = e.target.files[0];
   if (!file) return;
 
   if (!file.type.startsWith("audio/")) {
-    showTemporaryMessage("请选择有效的音频文件", "warning");
+    showTemporaryMessage("Vui lòng chọn file âm thanh hợp lệ", "warning");
     return;
   }
 
@@ -3531,8 +4003,8 @@ function handleMusicFileUpload(e) {
   const tempSong = {
     id: "local_" + Date.now(),
     title: file.name.replace(/\.[^/.]+$/, ""),
-    artist: "本地音乐",
-    duration: "未知",
+    artist: "Nhạc cục bộ",
+    duration: "Không xác định",
     urls: [tempUrl],
     isLocal: true,
   };
@@ -3541,15 +4013,15 @@ function handleMusicFileUpload(e) {
 
   initMusicPlaylist();
 
-  selectSong(MUSIC_PLAYLIST.length - 1, false); // 选择新上传的歌曲，但不自动播放
+  selectSong(MUSIC_PLAYLIST.length - 1, false); // Chọn bài hát mới tải lên, nhưng không tự động phát
 
-  showTemporaryMessage("本地音乐文件添加成功", "success");
+  showTemporaryMessage("Thêm file nhạc cục bộ thành công", "success");
 
   e.target.value = "";
 }
 
 /**
- * 从本地存储恢复音乐设置
+ * Khôi phục cài đặt nhạc từ lưu trữ cục bộ
  */
 function restoreMusicSettings() {
   try {
@@ -3559,12 +4031,12 @@ function restoreMusicSettings() {
       setMusicVolume(musicVolume);
     }
   } catch (error) {
-    console.warn("无法读取音乐设置:", error);
+    console.warn("Không thể đọc cài đặt nhạc:", error);
   }
 }
 
 /**
- * 更新时间轴控制面板背景色
+ * Cập nhật màu nền bảng điều khiển dòng thời gian
  */
 function updateTimelineControlBackground() {
   const timelineControl = document.getElementById("timeline-control");
@@ -3578,25 +4050,25 @@ function updateTimelineControlBackground() {
   }
 }
 
-// ==================== leaflet.motion 插件检查和性能优化 ====================
+// ==================== Kiểm tra plugin leaflet.motion và tối ưu hiệu suất ====================
 /**
- * 检查 leaflet.motion 插件是否正确加载
+ * Kiểm tra xem plugin leaflet.motion có được tải đúng không
  */
 function checkMotionPlugin() {
   if (
     typeof L.motion !== "undefined" &&
     typeof L.motion.polyline === "function"
   ) {
-    console.log("✅ leaflet.motion 插件加载成功");
+    console.log("✅ Plugin leaflet.motion tải thành công");
     return true;
   } else {
-    console.error("❌ leaflet.motion 插件未正确加载");
+    console.error("❌ Plugin leaflet.motion chưa được tải đúng");
     return false;
   }
 }
 
 /**
- * 清理 motion 资源
+ * Dọn dẹp tài nguyên motion
  */
 function cleanupMotionResources() {
   const allPaths = Array.from(motionPaths.values());
@@ -3609,17 +4081,17 @@ function cleanupMotionResources() {
         animationQueue = [];
         isAnimationInProgress = false;
 
-        console.log("Motion 资源清理完成");
+        console.log("Dọn dẹp tài nguyên Motion hoàn tất");
       })
       .catch((error) => {
-        console.warn("Motion 资源清理失败:", error);
+        console.warn("Dọn dẹp tài nguyên Motion thất bại:", error);
         motionPaths.forEach((path) => {
           if (path && path._map) {
             try {
               path.motionStop();
               map.removeLayer(path);
             } catch (e) {
-              console.warn("强制清理路径失败:", e);
+              console.warn("Buộc dọn dẹp đường đi thất bại:", e);
             }
           }
         });
@@ -3633,12 +4105,12 @@ function cleanupMotionResources() {
     motionPaths.clear();
     animationQueue = [];
     isAnimationInProgress = false;
-    console.log("Motion 资源清理完成");
+    console.log("Dọn dẹp tài nguyên Motion hoàn tất");
   }
 }
 
 /**
- * 预加载关键路径动画
+ * Tải trước animation đường đi quan trọng
  */
 function preloadKeyAnimations() {
   if (!trajectoryData || !trajectoryData.events) return;
@@ -3652,7 +4124,7 @@ function preloadKeyAnimations() {
     if (
       event.startCoords &&
       event.endCoords &&
-      event.movementType !== "原地活动"
+      event.movementType !== "Hoạt động tại chỗ"
     ) {
       const preloadPath = createMotionPath(
         event.startCoords,
@@ -3677,15 +4149,15 @@ function preloadKeyAnimations() {
     }
   });
 
-  console.log("关键路径预加载完成");
+  console.log("Tải trước đường đi quan trọng hoàn tất");
 }
 
 /**
- * 优化 motion 性能配置
+ * Tối ưu cấu hình hiệu suất motion
  */
 function optimizeMotionPerformance() {
   if (!map || !map._renderer) {
-    console.warn("地图未完全初始化，跳过性能优化");
+    console.warn("Bản đồ chưa được khởi tạo hoàn toàn, bỏ qua tối ưu hiệu suất");
     return;
   }
 
@@ -3718,15 +4190,15 @@ function optimizeMotionPerformance() {
 
       window.motionObserver = observer;
 
-      console.log("Motion 性能优化已启用");
+      console.log("Tối ưu hiệu suất Motion đã được bật");
     }
   } catch (error) {
-    console.warn("Motion 性能优化失败:", error);
+    console.warn("Tối ưu hiệu suất Motion thất bại:", error);
   }
 }
 
 /**
- * 动态调整 motion 参数
+ * Điều chỉnh động tham số motion
  */
 function dynamicAdjustMotionParams() {
   const pathCount = motionPaths.size;
@@ -3756,7 +4228,7 @@ function dynamicAdjustMotionParams() {
 }
 
 /**
- * 监听性能指标
+ * Lắng nghe chỉ số hiệu suất
  */
 function monitorMotionPerformance() {
   let frameCount = 0;
@@ -3774,15 +4246,15 @@ function monitorMotionPerformance() {
       frameCount = 0;
       lastTime = currentTime;
 
-      // 如果 FPS 过低，自动调整参数
+      // Nếu FPS quá thấp, tự động điều chỉnh tham số
       if (fps < 30 && motionPaths.size > 0) {
-        console.warn("Motion 性能较低，自动调整参数");
+        console.warn("Hiệu suất Motion thấp, tự động điều chỉnh tham số");
         dynamicAdjustMotionParams();
       }
 
       if (motionPaths.size > 0) {
         console.log(
-          `Motion 性能监控 - FPS: ${fps}, 路径数量: ${motionPaths.size}`
+          `Giám sát hiệu suất Motion - FPS: ${fps}, Số lượng đường đi: ${motionPaths.size}`
         );
       }
     }
@@ -3804,9 +4276,9 @@ function monitorMotionPerformance() {
   };
 }
 
-// ==================== 事件绑定 ====================
+// ==================== Liên kết sự kiện ====================
 /**
- * 绑定所有事件监听器
+ * Liên kết tất cả trình nghe sự kiện
  */
 function bindEvents() {
   const playBtn = document.getElementById("play-btn");
@@ -3821,18 +4293,18 @@ function bindEvents() {
   if (slider) {
     slider.addEventListener("mousedown", () => {
       isDragging = true;
-      console.log("开始拖动 (mousedown)");
+      console.log("Bắt đầu kéo (mousedown)");
     });
 
     slider.addEventListener("touchstart", () => {
       isDragging = true;
-      console.log("开始拖动 (touchstart)");
+      console.log("Bắt đầu kéo (touchstart)");
     });
 
     slider.addEventListener("mouseup", () => {
       if (isDragging) {
         isDragging = false;
-        console.log("结束拖动 (mouseup)");
+        console.log("Kết thúc kéo (mouseup)");
         const finalIndex = parseInt(slider.value);
         if (finalIndex !== currentEventIndex) {
           showEventAtIndex(finalIndex, true, true);
@@ -3843,7 +4315,7 @@ function bindEvents() {
     slider.addEventListener("touchend", () => {
       if (isDragging) {
         isDragging = false;
-        console.log("结束拖动 (touchend)");
+        console.log("Kết thúc kéo (touchend)");
         const finalIndex = parseInt(slider.value);
         if (finalIndex !== currentEventIndex) {
           showEventAtIndex(finalIndex, true, true);
@@ -3854,7 +4326,7 @@ function bindEvents() {
     slider.addEventListener("input", (e) => {
       if (trajectoryData) {
         const newIndex = parseInt(e.target.value);
-        console.log(`滑块输入: ${newIndex}, 拖动状态: ${isDragging}`);
+        console.log(`Đầu vào thanh trượt: ${newIndex}, Trạng thái kéo: ${isDragging}`);
 
         if (isDragging) {
           showEventAtIndex(newIndex, false, true);
@@ -3954,9 +4426,9 @@ function bindEvents() {
   });
 }
 
-// ==================== 启动应用 ====================
+// ==================== Khởi động ứng dụng ====================
 /**
- * 修改初始化应用函数，添加插件检查
+ * Sửa đổi hàm khởi tạo ứng dụng, thêm kiểm tra plugin
  */
 async function initApp() {
   try {
@@ -3965,11 +4437,11 @@ async function initApp() {
     const motionLoaded = checkMotionPlugin();
     if (!motionLoaded) {
       throw new Error(
-        "leaflet.motion 插件未正确加载，请确保已正确引入插件文件"
+        "Plugin leaflet.motion chưa được tải đúng, vui lòng đảm bảo đã nhập đúng file plugin"
       );
     }
 
-    // 等待地图完全加载
+    // Chờ bản đồ tải hoàn toàn
     await new Promise((resolve) => {
       if (map._loaded) {
         resolve();
@@ -3981,7 +4453,7 @@ async function initApp() {
 
     const geoDataLoaded = await loadGeographicData();
     if (!geoDataLoaded) {
-      throw new Error("地理数据加载失败");
+      throw new Error("Tải dữ liệu địa lý thất bại");
     }
 
     trajectoryData = await loadTrajectoryData();
@@ -4014,7 +4486,7 @@ async function initApp() {
         window.motionPerformanceMonitor = performanceMonitor;
       }, 1500);
     } else {
-      throw new Error("轨迹数据为空");
+      throw new Error("Dữ liệu hành trình trống");
     }
 
     bindEvents();
@@ -4037,24 +4509,24 @@ async function initApp() {
       }
     });
 
-    console.log("leaflet.motion 插件状态:", motionLoaded ? "已加载" : "未加载");
+    console.log("Trạng thái plugin leaflet.motion:", motionLoaded ? "Đã tải" : "Chưa tải");
   } catch (error) {
-    console.error("应用初始化失败:", error);
+    console.error("Khởi tạo ứng dụng thất bại:", error);
 
     const loading = document.getElementById("loading");
     if (loading) {
       loading.innerHTML = `
         <div class="error">
-          <h3>加载失败</h3>
-          <p>应用初始化时出现错误，请刷新页面重试。</p>
-          <p>错误信息: ${error.message}</p>
+          <h3>Tải thất bại</h3>
+          <p>Đã xảy ra lỗi khi khởi tạo ứng dụng, vui lòng làm mới trang và thử lại.</p>
+          <p>Thông tin lỗi: ${error.message}</p>
         </div>
       `;
     }
   }
 }
 
-// ==================== 启动应用 ====================
+// ==================== Khởi động ứng dụng ====================
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initApp);
 } else {

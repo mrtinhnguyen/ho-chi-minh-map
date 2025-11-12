@@ -1,10 +1,4 @@
-/*!
- * 毛泽东生平地理轨迹可视化 - 样式文件
- * Author: sansan0
- * GitHub: https://github.com/sansan0
- */
-
-/* ==================== 基础样式 ==================== */
+/* ==================== Kiểu cơ bản ==================== */
 * {
     margin: 0;
     padding: 0;
@@ -27,7 +21,7 @@ input[type="range"],
 }
 
 body {
-    font-family: "Microsoft YaHei", Arial, sans-serif;
+    font-family: "Noto Sans", "Noto Sans Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     background: #f5f7fa;
     overflow: hidden;
     color: #333;
@@ -53,7 +47,7 @@ body {
     transition: height 0.3s ease;
 }
 
-/* ==================== PC端统计面板 ==================== */
+/* ==================== Bảng thống kê PC ==================== */
 #stats-panel {
     position: absolute;
     top: 15px;
@@ -75,7 +69,7 @@ body {
     right: 15px;
 }
 
-/* 统计面板悬停触发按钮 */
+/* Nút kích hoạt hover bảng thống kê */
 #stats-panel::before {
     content: "📊";
     position: absolute;
@@ -122,7 +116,7 @@ body {
     color: #2c3e50;
 }
 
-/* 动画设置面板 */
+/* Bảng cài đặt animation */
 .animation-settings {
     margin-top: 15px;
     padding-top: 10px;
@@ -183,7 +177,7 @@ body {
     border: 1px solid rgba(52, 152, 219, 0.2);
 }
 
-/* 镜头跟随开关 */
+/* Công tắc camera theo dõi */
 .camera-follow-control {
     margin-top: 15px;
     padding-top: 10px;
@@ -266,7 +260,7 @@ body {
     color: #7f8c8d;
 }
 
-/* ==================== 移动端控制按钮 ==================== */
+/* ==================== Nút điều khiển Mobile ==================== */
 .toggle-panel-btn {
     position: fixed;
     bottom: 250px;
@@ -306,7 +300,7 @@ body {
     background: rgba(174, 214, 241, 0.6);
 }
 
-/* ==================== 当前事件信息（移动端）==================== */
+/* ==================== Thông tin sự kiện hiện tại (Mobile) ==================== */
 .current-event-section {
     display: none;
     background: transparent;
@@ -396,7 +390,7 @@ body {
     margin-left: 1px;
 }
 
-/* ==================== 时间轴控制面板 ==================== */
+/* ==================== Bảng điều khiển dòng thời gian ==================== */
 #timeline-control {
     position: fixed;
     bottom: 20px;
@@ -462,7 +456,7 @@ body {
     font-weight: 600;
 }
 
-/* PC端当前事件详情 */
+/* Chi tiết sự kiện hiện tại PC */
 .current-event-details {
     display: flex;
     flex-direction: row;
@@ -513,7 +507,7 @@ body {
     flex-shrink: 0;
 }
 
-/* ==================== 播放器控制区域 ==================== */
+/* ==================== Vùng điều khiển trình phát ==================== */
 .player-controls {
     display: flex;
     align-items: center;
@@ -585,7 +579,7 @@ body {
     align-items: center;
 }
 
-/* 时间轴滑块样式 */
+/* Kiểu thanh trượt dòng thời gian */
 #timeline-slider {
     width: 100%;
     height: 8px;
@@ -650,7 +644,7 @@ body {
     font-weight: 600;
 }
 
-/* PC端速度控制 */
+/* Điều khiển tốc độ PC */
 .player-speed {
     display: flex;
     align-items: center;
@@ -665,7 +659,7 @@ body {
     white-space: nowrap;
 }
 
-/* 自定义下拉选择器 */
+/* Bộ chọn dropdown tùy chỉnh */
 .custom-select-wrapper {
     position: relative;
     z-index: 100;
@@ -730,7 +724,7 @@ body {
     transform: rotate(180deg);
 }
 
-/* 下拉选项容器 - 向上弹出 */
+/* Container tùy chọn dropdown - hiển thị phía trên */
 .select-dropdown {
     position: absolute;
     bottom: 100%;
@@ -756,7 +750,7 @@ body {
     transform: translateY(0);
 }
 
-/* 下拉选项 */
+/* Tùy chọn dropdown */
 .select-option {
     padding: 10px 12px;
     font-size: 12px;
@@ -794,13 +788,13 @@ body {
     border-top: 1px solid rgba(52, 152, 219, 0.1);
 }
 
-/* 点击选中动画效果 */
+/* Hiệu ứng animation khi click chọn */
 .select-option:active {
     background: rgba(52, 152, 219, 0.2);
     transform: scale(0.98);
 }
 
-/* 移动端速度控制 */
+/* Điều khiển tốc độ Mobile */
 .speed-control {
     display: none;
     align-items: center;
@@ -833,7 +827,7 @@ body {
     transform: scale(0.95);
 }
 
-/* ==================== 详细信息面板 ==================== */
+/* ==================== Bảng thông tin chi tiết ==================== */
 .location-detail-panel {
     position: fixed;
     top: 20px;
@@ -843,7 +837,7 @@ body {
     border: 1px solid rgba(52, 152, 219, 0.3);
     border-radius: 12px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    font-family: "Microsoft YaHei", Arial, sans-serif;
+    font-family: "Noto Sans", "Noto Sans Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     z-index: 1500;
     max-width: 400px;
     max-height: 500px;
@@ -882,7 +876,7 @@ body {
     position: relative;
 }
 
-/* 移动端拖拽指示器 */
+/* Chỉ báo kéo Mobile */
 .panel-drag-handle {
     width: 40px;
     height: 4px;
@@ -958,7 +952,7 @@ body {
     overflow-y: auto;
 }
 
-/* 事件列表项 */
+/* Mục danh sách sự kiện */
 .event-item {
     margin: 6px 0;
     padding: 8px 10px;
@@ -986,14 +980,14 @@ body {
     font-weight: 600;
 }
 
-/* 事件项点击反馈动画 */
+/* Animation phản hồi khi click mục sự kiện */
 .event-item-clicked {
     background: rgba(52, 152, 219, 0.2) !important;
     transform: translateX(4px) !important;
     box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3) !important;
 }
 
-/* 可点击提示 */
+/* Gợi ý có thể click */
 .event-item::before {
     content: '';
     position: absolute;
@@ -1075,7 +1069,7 @@ body {
     color: #7f8c8d;
 }
 
-/* 途径事件特殊样式 */
+/* Kiểu đặc biệt cho sự kiện đi qua */
 .transit-event {
     border-left-color: #95a5a6;
     background: rgba(149, 165, 166, 0.05) !important;
@@ -1091,7 +1085,7 @@ body {
 }
 
 
-/* 出生事件特殊样式 */
+/* Kiểu đặc biệt cho sự kiện sinh ra */
 .birth-event {
     border-left-color: #e74c3c;
     background: rgba(231, 76, 60, 0.05) !important;
@@ -1106,7 +1100,7 @@ body {
     color: white;
 }
 
-/* 起点事件特殊样式 */
+/* Kiểu đặc biệt cho sự kiện khởi hành */
 .start-event {
     border-left-color: #27ae60;
     background: rgba(39, 174, 96, 0.05) !important;
@@ -1121,7 +1115,7 @@ body {
     color: white;
 }
 
-/* 活动事件特殊样式 */
+/* Kiểu đặc biệt cho sự kiện hoạt động */
 .activity-event {
     border-left-color: #f39c12;
     background: rgba(243, 156, 18, 0.05) !important;
@@ -1136,7 +1130,7 @@ body {
     color: white;
 }
 
-/* ==================== 地图标记样式 ==================== */
+/* ==================== Kiểu đánh dấu bản đồ ==================== */
 .location-marker {
     border-radius: 50%;
     border: 2px solid #fff;
@@ -1151,7 +1145,7 @@ body {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* 根据访问次数的标记尺寸 */
+/* Kích thước đánh dấu theo số lần truy cập */
 .location-marker.visits-1 {
     width: 14px;
     height: 14px;
@@ -1176,7 +1170,7 @@ body {
     font-size: 11px;
 }
 
-/* 根据事件类型的标记颜色 */
+/* Màu đánh dấu theo loại sự kiện */
 .marker-birth {
     background: linear-gradient(135deg, #e74c3c, #c0392b);
 }
@@ -1233,7 +1227,7 @@ body {
     }
 }
 
-/* ==================== 加载和错误状态 ==================== */
+/* ==================== Trạng thái tải và lỗi ==================== */
 #loading {
     position: absolute;
     top: 50%;
@@ -1292,7 +1286,7 @@ body {
     border: 1px solid #e74c3c;
 }
 
-/* ==================== 滚动条样式 ==================== */
+/* ==================== Kiểu thanh cuộn ==================== */
 .panel-content::-webkit-scrollbar,
 .music-modal::-webkit-scrollbar {
     width: 6px;
@@ -1316,7 +1310,7 @@ body {
     background: #2980b9;
 }
 
-/* 音乐弹窗专用滚动条样式 */
+/* Kiểu thanh cuộn riêng cho cửa sổ nhạc */
 .music-modal::-webkit-scrollbar {
     width: 8px;
 }
@@ -1337,13 +1331,13 @@ body {
     box-shadow: 0 2px 4px rgba(243, 156, 18, 0.3);
 }
 
-/* Firefox 滚动条样式 */
+/* Kiểu thanh cuộn Firefox */
 .music-modal {
     scrollbar-width: thin;
     scrollbar-color: rgba(243, 156, 18, 0.6) rgba(243, 156, 18, 0.1);
 }
 
-/* ==================== 反馈功能样式 ==================== */
+/* ==================== Kiểu chức năng phản hồi ==================== */
 .feedback-btn {
     position: fixed;
     bottom: 300px;
@@ -1379,7 +1373,7 @@ body {
     background: rgba(168, 230, 207, 0.6);
 }
 
-/* 反馈弹窗背景遮罩 */
+/* Lớp phủ nền cửa sổ phản hồi */
 .feedback-backdrop {
     position: fixed;
     top: 0;
@@ -1400,7 +1394,7 @@ body {
     display: block;
 }
 
-/* 反馈弹窗主体 */
+/* Phần chính cửa sổ phản hồi */
 .feedback-modal {
     position: fixed;
     top: 50%;
@@ -1427,7 +1421,7 @@ body {
     display: block;
 }
 
-/* 反馈弹窗头部 */
+/* Phần đầu cửa sổ phản hồi */
 .feedback-modal-header {
     padding: 20px 24px 16px;
     border-bottom: 1px solid rgba(52, 152, 219, 0.1);
@@ -1474,7 +1468,7 @@ body {
     transform: scale(0.9);
 }
 
-/* 反馈弹窗内容 */
+/* Nội dung cửa sổ phản hồi */
 .feedback-modal-content {
     padding: 8px 0 16px;
 }
@@ -1541,7 +1535,7 @@ body {
     transform: translateX(2px);
 }
 
-/* ==================== 音乐播放功能样式 ==================== */
+/* ==================== Kiểu chức năng phát nhạc ==================== */
 .music-btn {
     position: fixed;
     bottom: 370px;
@@ -1597,7 +1591,7 @@ body {
     }
 }
 
-/* 音乐弹窗背景遮罩 */
+/* Lớp phủ nền cửa sổ nhạc */
 .music-backdrop {
     position: fixed;
     top: 0;
@@ -1618,7 +1612,7 @@ body {
     display: block;
 }
 
-/* 音乐弹窗主体 */
+/* Phần chính cửa sổ nhạc */
 .music-modal {
     position: fixed;
     top: 50%;
@@ -1647,7 +1641,7 @@ body {
     display: block;
 }
 
-/* 音乐弹窗头部 */
+/* Phần đầu cửa sổ nhạc */
 .music-modal-header {
     padding: 20px 24px 16px;
     border-bottom: 1px solid rgba(243, 156, 18, 0.1);
@@ -1694,12 +1688,12 @@ body {
     transform: scale(0.9);
 }
 
-/* 音乐弹窗内容 */
+/* Nội dung cửa sổ nhạc */
 .music-modal-content {
     padding: 20px 24px;
 }
 
-/* 当前歌曲信息 */
+/* Thông tin bài hát hiện tại */
 .current-song-info {
     text-align: center;
     padding: 20px 0;
@@ -1719,7 +1713,7 @@ body {
     color: #7f8c8d;
 }
 
-/* 音乐播放控制 */
+/* Điều khiển phát nhạc */
 .music-controls {
     display: flex;
     justify-content: center;
@@ -1768,7 +1762,7 @@ body {
     box-shadow: none;
 }
 
-/* 音乐进度条 */
+/* Thanh tiến độ nhạc */
 .music-progress-container {
     margin-bottom: 20px;
 }
@@ -1797,7 +1791,7 @@ body {
     color: #7f8c8d;
 }
 
-/* 音量控制 */
+/* Điều khiển âm lượng */
 .music-volume-control {
     display: flex;
     align-items: center;
@@ -1850,7 +1844,7 @@ body {
     text-align: right;
 }
 
-/* 播放列表 */
+/* Danh sách phát */
 .music-playlist {
     margin-bottom: 20px;
 }
@@ -1909,7 +1903,7 @@ body {
     font-weight: 500;
 }
 
-/* 本地音乐上传 */
+/* Tải nhạc cục bộ */
 .music-upload-section h4 {
     margin: 0 0 12px 0;
     color: #2c3e50;
@@ -1985,17 +1979,17 @@ body {
     box-shadow: 0 3px 8px rgba(52, 152, 219, 0.5);
 }
 
-/* 镜头速度滑块特殊样式 */
+/* Kiểu đặc biệt thanh trượt tốc độ camera */
 #camera-speed-slider {
     background: linear-gradient(to right,
             #e74c3c 0%, #e74c3c 25%,
-            /* 快速 - 红色 */
+            /* Nhanh - đỏ */
             #f39c12 25%, #f39c12 50%,
-            /* 正常 - 橙色 */
+            /* Bình thường - cam */
             #3498db 50%, #3498db 75%,
-            /* 慢速 - 蓝色 */
+            /* Chậm - xanh dương */
             #9b59b6 75%, #9b59b6 100%
-            /* 极慢 - 紫色 */
+            /* Rất chậm - tím */
         );
     height: 8px;
     border-radius: 4px;
@@ -2033,7 +2027,7 @@ body {
     transition: all 0.2s ease;
 }
 
-/* 镜头速度显示特殊样式 */
+/* Kiểu hiển thị đặc biệt tốc độ camera */
 #camera-speed-display {
     background: rgba(44, 62, 80, 0.1);
     border-color: rgba(44, 62, 80, 0.2);
@@ -2042,7 +2036,220 @@ body {
 }
 
 
-/*  诗句动画样式  */
+/* Kiểu animation thơ */
+/* ==================== Popup hiển thị thông tin event ==================== */
+.event-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    max-width: 90vw;
+    width: 100%;
+    max-width: 500px;
+}
+
+.event-popup.visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: auto;
+}
+
+.event-popup-content {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 249, 250, 0.98));
+    border-radius: 16px;
+    padding: 24px 28px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(200, 16, 46, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.event-popup-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #c8102e, #e74c3c, #c8102e);
+    background-size: 200% 100%;
+    animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.event-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(200, 16, 46, 0.1);
+}
+
+.event-popup-date {
+    font-size: 20px;
+    font-weight: 700;
+    color: #c8102e;
+    letter-spacing: 0.5px;
+    font-family: 'Noto Sans Display', 'Noto Sans', sans-serif;
+}
+
+.event-popup-age {
+    font-size: 14px;
+    font-weight: 600;
+    color: #7f8c8d;
+    background: rgba(200, 16, 46, 0.1);
+    padding: 4px 12px;
+    border-radius: 12px;
+}
+
+.event-popup-location {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.event-popup-location::before {
+    content: '📍';
+    font-size: 18px;
+}
+
+.event-popup-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #34495e;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+}
+
+.event-popup-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.event-popup-progress-bar {
+    flex: 1;
+    height: 6px;
+    background: rgba(200, 16, 46, 0.15);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.event-popup-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #c8102e, #e74c3c);
+    border-radius: 3px;
+    width: 100%;
+    transition: width 0.3s linear;
+    position: relative;
+}
+
+.event-popup-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.event-popup-progress-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #c8102e;
+    min-width: 30px;
+    text-align: right;
+    font-family: 'Noto Sans Display', 'Noto Sans', sans-serif;
+}
+
+/* Responsive cho popup */
+@media (max-width: 768px) {
+    .event-popup {
+        max-width: 85vw;
+        padding: 0;
+    }
+
+    .event-popup-content {
+        padding: 20px 20px;
+        border-radius: 12px;
+    }
+
+    .event-popup-date {
+        font-size: 18px;
+    }
+
+    .event-popup-age {
+        font-size: 12px;
+        padding: 3px 10px;
+    }
+
+    .event-popup-location {
+        font-size: 14px;
+    }
+
+    .event-popup-title {
+        font-size: 16px;
+        min-height: 48px;
+    }
+
+    .event-popup-progress {
+        gap: 8px;
+    }
+
+    .event-popup-progress-text {
+        font-size: 12px;
+        min-width: 25px;
+    }
+}
+
+@media (max-width: 360px) {
+    .event-popup-content {
+        padding: 16px 16px;
+    }
+
+    .event-popup-date {
+        font-size: 16px;
+    }
+
+    .event-popup-title {
+        font-size: 14px;
+    }
+}
+
 .poetry-message {
     position: fixed !important;
     top: 50% !important;
@@ -2054,7 +2261,7 @@ body {
     -moz-user-select: none !important;
     -ms-user-select: none !important;
 
-    font-family: 'KaiTi', '楷体', 'STKaiti', '华文楷体', 'Times New Roman', serif !important;
+    font-family: 'Times New Roman', serif !important;
 
     -webkit-touch-callout: none !important;
     -webkit-tap-highlight-color: transparent !important;
@@ -2067,9 +2274,9 @@ body {
 
 
 
-/* ==================== 响应式媒体查询 ==================== */
+/* ==================== Media query responsive ==================== */
 
-/* 移动端样式 (≤768px) */
+/* Kiểu Mobile (≤768px) */
 @media (max-width: 768px) {
 
     .event-item {
@@ -2088,12 +2295,12 @@ body {
         transform: translateX(2px) scale(0.98);
     }
 
-    /* 基础布局 */
+    /* Bố cục cơ bản */
     .custom-select-wrapper {
         display: none;
     }
 
-    /* 地图高度动态调整 */
+    /* Điều chỉnh chiều cao bản đồ động */
     #map.panel-hidden {
         height: 100vh;
     }
@@ -2102,13 +2309,13 @@ body {
         height: calc(100vh - 240px);
     }
 
-    /* 隐藏PC端元素 */
+    /* Ẩn phần tử PC */
     #stats-panel,
     #stats-hover-area {
         display: none;
     }
 
-    /* 显示移动端元素 */
+    /* Hiển thị phần tử Mobile */
     .toggle-panel-btn {
         display: flex;
     }
@@ -2117,7 +2324,7 @@ body {
         display: block;
     }
 
-    /* 浮动按钮组 */
+    /* Nhóm nút nổi */
     .feedback-btn {
         bottom: 310px;
         width: 44px;
@@ -2132,7 +2339,7 @@ body {
         font-size: 16px;
     }
 
-    /* 弹窗样式 */
+    /* Kiểu cửa sổ popup */
     .feedback-modal,
     .music-modal {
         position: fixed;
@@ -2155,7 +2362,7 @@ body {
         visibility: visible;
     }
 
-    /* 弹窗头部样式统一 */
+    /* Thống nhất kiểu phần đầu cửa sổ */
     .feedback-modal-header,
     .music-modal-header {
         padding: 24px 20px 16px;
@@ -2177,7 +2384,7 @@ body {
         font-size: 24px;
     }
 
-    /* 弹窗内容样式 */
+    /* Kiểu nội dung cửa sổ */
     .feedback-modal-content,
     .music-modal-content {
         padding: 16px 20px;
@@ -2206,7 +2413,7 @@ body {
         font-size: 18px;
     }
 
-    /* 音乐播放控制移动端样式 */
+    /* Kiểu điều khiển phát nhạc Mobile */
     .music-controls {
         gap: 16px;
     }
@@ -2247,7 +2454,7 @@ body {
         padding: 12px 24px;
     }
 
-    /* 时间轴控制移动端样式 */
+    /* Kiểu điều khiển dòng thời gian Mobile */
     #timeline-control {
         position: fixed;
         bottom: 0;
@@ -2281,7 +2488,7 @@ body {
         display: none;
     }
 
-    /* 播放控制移动端样式 */
+    /* Kiểu điều khiển phát Mobile */
     .player-controls {
         display: flex;
         flex-direction: column;
@@ -2311,7 +2518,7 @@ body {
         font-size: 16px;
     }
 
-    /* 进度条移动端样式 */
+    /* Kiểu thanh tiến độ Mobile */
     .progress-section {
         flex: none;
         width: 100%;
@@ -2339,7 +2546,7 @@ body {
         display: none;
     }
 
-    /* 速度控制移动端显示 */
+    /* Hiển thị điều khiển tốc độ Mobile */
     .player-speed {
         display: none;
     }
@@ -2348,7 +2555,7 @@ body {
         display: flex;
     }
 
-    /* 详细信息面板移动端样式 */
+    /* Kiểu bảng thông tin chi tiết Mobile */
     .location-detail-panel {
         position: fixed;
         bottom: 0;
@@ -2359,7 +2566,7 @@ body {
         backdrop-filter: blur(15px);
         border-radius: 16px 16px 0 0;
         box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
-        font-family: "Microsoft YaHei", Arial, sans-serif;
+        font-family: "Noto Sans", "Noto Sans Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         z-index: 2000;
         max-height: 70vh;
         max-width: none;
@@ -2394,7 +2601,7 @@ body {
         will-change: opacity;
     }
 
-    /* 移动端拖拽指示器显示 */
+    /* Hiển thị chỉ báo kéo Mobile */
     .panel-drag-handle {
         display: block;
         width: 40px;
@@ -2418,7 +2625,7 @@ body {
         box-shadow: 0 2px 8px rgba(127, 140, 141, 0.3);
     }
 
-    /* 面板头部拖拽优化 */
+    /* Tối ưu kéo phần đầu bảng */
     .panel-header {
         padding: 16px 20px 12px;
         border-radius: 16px 16px 0 0;
@@ -2454,7 +2661,7 @@ body {
         font-size: 12px;
     }
 
-    /* 关闭按钮移动端 */
+    /* Nút đóng Mobile */
     .panel-close {
         top: 12px;
         right: 16px;
@@ -2472,7 +2679,7 @@ body {
         border-radius: 50%;
     }
 
-    /* 移动端面板内容 */
+    /* Nội dung bảng Mobile */
     .panel-content {
         padding: 12px 16px;
         max-height: calc(70vh - 100px);
@@ -2502,7 +2709,7 @@ body {
         font-size: 11px;
     }
 
-    /* 移动端地图标记尺寸 */
+    /* Kích thước đánh dấu bản đồ Mobile */
     .location-marker.visits-1 {
         width: 16px;
         height: 16px;
@@ -2528,10 +2735,10 @@ body {
     }
 }
 
-/* 超小屏幕优化 (≤360px) */
+/* Tối ưu màn hình rất nhỏ (≤360px) */
 @media (max-width: 360px) {
 
-    /* 时间轴控制 */
+    /* Điều khiển dòng thời gian */
     #timeline-control {
         padding: 12px;
     }
@@ -2542,7 +2749,7 @@ body {
         font-size: 14px;
     }
 
-    /* 当前事件信息 */
+    /* Thông tin sự kiện hiện tại */
     .event-title-mobile {
         font-size: 12px;
     }
@@ -2556,7 +2763,7 @@ body {
         gap: 3px;
     }
 
-    /* 浮动按钮位置 */
+    /* Vị trí nút nổi */
     .toggle-panel-btn {
         bottom: 245px;
     }
@@ -2569,7 +2776,7 @@ body {
         bottom: 365px;
     }
 
-    /* 音乐播放控制 */
+    /* Điều khiển phát nhạc */
     .music-modal-content {
         padding: 12px 16px;
     }
@@ -2591,15 +2798,15 @@ body {
     }
 }
 
-/* 横屏手机优化 (依然有问题，暂时忽略)*/
+/* Tối ưu điện thoại ngang (vẫn còn vấn đề, tạm thời bỏ qua) */
 @media (max-height: 500px) and (orientation: landscape) and (max-width: 768px) {
 
-    /* 地图高度 */
+    /* Chiều cao bản đồ */
     #map.panel-visible {
         height: calc(100vh - 140px);
     }
 
-    /* 时间轴控制 */
+    /* Điều khiển dòng thời gian */
     #timeline-control {
         max-height: 140px;
         padding: 10px;
@@ -2610,12 +2817,12 @@ body {
         margin-bottom: 8px;
     }
 
-    /* 详细信息面板 */
+    /* Bảng thông tin chi tiết */
     .location-detail-panel {
         max-height: 60vh;
     }
 
-    /* 浮动按钮位置 */
+    /* Vị trí nút nổi */
     .toggle-panel-btn {
         bottom: 145px;
     }
@@ -2628,7 +2835,7 @@ body {
         bottom: 155px;
     }
 
-    /* 音乐播放控制 */
+    /* Điều khiển phát nhạc */
     .music-modal {
         max-height: 85vh;
     }
@@ -2638,10 +2845,10 @@ body {
     }
 }
 
-/* 桌面端样式 (≥769px) */
+/* Kiểu Desktop (≥769px) */
 @media (min-width: 769px) {
 
-    /* 隐藏移动端元素 */
+    /* Ẩn phần tử Mobile */
     .toggle-panel-btn {
         display: none !important;
     }
@@ -2662,7 +2869,7 @@ body {
         display: none;
     }
 
-    /* 显示桌面端元素 */
+    /* Hiển thị phần tử Desktop */
     .player-speed {
         display: flex;
     }
@@ -2671,7 +2878,7 @@ body {
         display: flex;
     }
 
-    /* 浮动按钮位置 */
+    /* Vị trí nút nổi */
     .feedback-btn {
         bottom: 20px;
     }
@@ -2680,7 +2887,7 @@ body {
         bottom: 80px;
     }
 
-    /* 面板样式重置 */
+    /* Đặt lại kiểu bảng */
     .panel-header {
         cursor: default;
         touch-action: auto;
@@ -2699,7 +2906,7 @@ body {
         border: 1px solid rgba(52, 152, 219, 0.1);
     }
 
-    /* 弹窗样式 - 居中显示 */
+    /* Kiểu cửa sổ - hiển thị giữa */
     .feedback-modal,
     .music-modal {
         position: fixed;
@@ -2721,7 +2928,7 @@ body {
         transform: translate(-50%, -50%) scale(1);
     }
 
-    /* 弹窗头部样式 */
+    /* Kiểu phần đầu cửa sổ */
     .feedback-modal-header,
     .music-modal-header {
         padding: 20px 24px 16px;
@@ -2742,7 +2949,7 @@ body {
         font-size: 24px;
     }
 
-    /* 弹窗内容样式 */
+    /* Kiểu nội dung cửa sổ */
     .feedback-modal-content,
     .music-modal-content {
         padding: 20px 24px;
@@ -2769,7 +2976,7 @@ body {
         font-size: 16px;
     }
 
-    /* 当前事件详情优化 */
+    /* Tối ưu chi tiết sự kiện hiện tại */
     .current-event-details .event-title {
         font-size: 12px;
         white-space: nowrap;
@@ -2779,7 +2986,7 @@ body {
     }
 }
 
-/* 大屏幕优化 (≥1400px) */
+/* Tối ưu màn hình lớn (≥1400px) */
 @media (min-width: 1400px) {
     .current-event-details .event-title {
         font-size: 13px;

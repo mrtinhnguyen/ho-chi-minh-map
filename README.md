@@ -1,107 +1,102 @@
 <div align="center">
 
-# 📍 跟着教员走遍中国 - 毛主席足迹地图
-
-[![PC端访问](https://img.shields.io/badge/PC端-支持-4285F4?style=flat-square&logo=windows&logoColor=white)](#)
-[![移动端访问](https://img.shields.io/badge/移动端-支持-4285F4?style=flat-square&logo=android&logoColor=white)](#)
-[![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-在线访问-4285F4?style=flat-square&logo=github&logoColor=white)](https://sansan0.github.io/mao-map)
+# 📍 Theo chân Chủ tịch Hồ Chí Minh đi khắp Thế giới - Bản đồ dấu chân Chủ tịch Hồ Chí Minh vĩ đại
 
 </div>
 
-> 读万卷书，行万里路
+> Đọc vạn quyển sách, đi vạn dặm đường
 
-本项目通过数据可视化的力量，将毛泽东主席自 1893 年至 1976 年波澜壮阔的一生，浓缩于一张可交互的动态地图之上。让那段恢弘的历史"活"起来，清晰、生动地展现伟人在中国历史洪流中的每一个关键抉择与地理印记。
+Dự án này thông qua sức mạnh của trực quan hóa dữ liệu, đã thu gọn cuộc đời sóng gió của Chủ tịch Hồ Chí Minh từ năm 1890 đến năm 1969 vào một bản đồ động có thể tương tác. Làm cho lịch sử hùng vĩ đó "sống lại", thể hiện rõ ràng và sinh động mọi quyết định quan trọng và dấu ấn địa lý của vĩ nhân trong hành trình tìm đường cứu nước và giải phóng dân tộc Việt Nam.
 
-**在线体验：[https://sansan0.github.io/mao-map/](https://sansan0.github.io/mao-map/)**
+**Trải nghiệm trực tuyến：[https://dauchanhochiminh.vn/](https://dauchanhochiminh.vn/)**
 
 <p align="center">
-  <img src="docs/images/image.png" alt="电脑效果" />
+  <img src="docs/images/image.png" alt="Hiệu ứng máy tính" />
 </p>
 
-## 🎯 核心功能
+## 🎯 Chức năng cốt lõi
 
-### 🎬 动态历史
+### 🎬 Lịch sử động
 
-- **时间轴播放**：点击 ▶️ 播放按钮，按时间顺序观看毛主席 83 年的人生轨迹动画
-- **时间定位**：拖动底部的时间轴，可以快速定位到特定年份，查看当时的活动
+- **Phát dòng thời gian**：Nhấp vào nút phát ▶️ để xem hoạt ảnh hành trình cuộc đời 79 năm của Chủ tịch Hồ Chí Minh theo thứ tự thời gian
+- **Định vị thời gian**：Kéo thanh thời gian ở phía dưới để nhanh chóng định vị đến năm cụ thể và xem các hoạt động tại thời điểm đó
 
-### 🗺️ 交互式地图
+### 🗺️ Bản đồ tương tác
 
-- **多层级标记**：根据访问次数和事件类型智能显示不同样式的地图标记
-- **详情面板**：点击地图上任意标记，查看该地点的完整历史事件列表
-- **路径高亮**：点击事件列表项可高亮显示对应的移动路径
+- **Đánh dấu đa cấp**：Hiển thị thông minh các đánh dấu bản đồ với các kiểu khác nhau dựa trên số lần truy cập và loại sự kiện
+- **Bảng chi tiết**：Nhấp vào bất kỳ đánh dấu nào trên bản đồ để xem danh sách đầy đủ các sự kiện lịch sử tại địa điểm đó
+- **Làm nổi bật đường đi**：Nhấp vào mục trong danh sách sự kiện để làm nổi bật đường di chuyển tương ứng
 
-### 📊 数据统计
+### 📊 Thống kê dữ liệu
 
-- **实时统计**：动态显示移动次数、访问省市、国际移动等数据
-- **进度追踪**：实时显示当前播放进度、年龄、事件序号等信息
-- **可视化图表**：直观展示历史轨迹的统计信息
+- **Thống kê thời gian thực**：Hiển thị động số lần di chuyển, các tỉnh/thành phố đã đến, di chuyển quốc tế và các dữ liệu khác
+- **Theo dõi tiến độ**：Hiển thị thời gian thực tiến độ phát hiện tại, tuổi tác, số thứ tự sự kiện và các thông tin khác
+- **Biểu đồ trực quan**：Hiển thị trực quan thông tin thống kê về hành trình lịch sử
 
-### PC 端快捷键
+### Phím tắt PC
 
-- **空格键**：播放 / 暂停
-- **← / →**：前一个 / 后一个事件
+- **Phím cách**：Phát / Tạm dừng
+- **← / →**：Sự kiện trước / Sự kiện sau
 - **Home / End**
 
-## 💖 星星之火
+## 💖 Tia lửa nhỏ
 
-无论你是发现了一个错误日期，还是想补充一段被遗漏的足迹，你的每一次贡献，都在让历史画卷更加完整。
+Dù bạn phát hiện một ngày sai, hay muốn bổ sung một dấu chân bị bỏ sót, mỗi đóng góp của bạn đều làm cho bức tranh lịch sử thêm hoàn chỉnh.
 
-感谢诸位同志为项目的完善做出的贡献：
-
-<div align="center">
-<table>
-  <tr>
-    <td align="center" width="150">
-      <a href="https://github.com/sansan0/mao-map/issues?q=author:troilus">
-        <img src="https://github.com/troilus.png?size=64" width="64"/><br/>
-        <sub>@troilus</sub>
-      </a>
-    </td>
-    <td align="center" width="150">
-      <a href="https://github.com/sansan0/mao-map/issues?q=author:9E307">
-        <img src="https://github.com/9E307.png?size=64" width="64"/><br/>
-        <sub>@9E307</sub>
-      </a>
-    </td>
-    <td align="center" width="150">
-      <a href="https://github.com/sansan0/mao-map/issues?q=author:DoWhat6">
-        <img src="https://github.com/DoWhat6.png?size=64" width="64"/><br/>
-        <sub>@DoWhat6</sub>
-      </a>
-    </td>
-  </tr>
-</table>
-</div>
-
-每个考据者都可以在自己的考据中留下你对该事件的 comment, 你可以在 issues 中提交，由项目作者进行录入，以后考据的人多了，评论多了，我会做成弹幕在地图上滚动
 
 ```json
 "userVerification": [
-  // 支持多人协同考据
+  // Hỗ trợ nghiên cứu hợp tác nhiều người
   {
-    "username": "湘江史话", // 考据者署名 (可选)
-    "comment": "一个注定将改变中华民族命运的伟人在韶山冲的农家小院中诞生。此时的中国正值内忧外患，列强瓜分，民族危亡之际。这个婴儿的啼哭声，仿佛是历史的回响，预示着一个新时代的到来。从韶山走向天安门，从农家子弟到开国领袖，毛泽东的一生将与中国人民的解放事业紧密相连，书写出波澜壮阔的历史篇章。", // 考据补充或感言 (可选)
-    "date": "2025-06-30" // 考据日期 (可选)
+    "username": "Câu chuyện lịch sử", // Tên người nghiên cứu (tùy chọn)
+    "comment": "Một vĩ nhân được định mệnh sẽ thay đổi vận mệnh của dân tộc Việt Nam đã được sinh ra tại làng Sen, xã Kim Liên, huyện Nam Đàn, tỉnh Nghệ An. Lúc này, Việt Nam đang ở trong tình trạng nô lệ dưới ách thực dân Pháp, dân tộc đang trong cơn nguy khốn. Từ quê hương Nghệ An, Người đã ra đi tìm đường cứu nước, đi qua nhiều quốc gia trên thế giới, từ Pháp, Anh, Nga, Trung Quốc đến Thái Lan. Từ một người thanh niên yêu nước đến lãnh tụ vĩ đại của dân tộc, cuộc đời của Chủ tịch Hồ Chí Minh sẽ gắn liền chặt chẽ với sự nghiệp giải phóng của nhân dân Việt Nam, viết nên những trang sử sóng gió hùng vĩ.", // Bổ sung nghiên cứu hoặc cảm nghĩ (tùy chọn)
+    "date": "2025-10-30" // Ngày nghiên cứu (tùy chọn)
   }
 ]
 ```
 
-## 🚀 快速开始
+## 🚀 Bắt đầu nhanh
 
-想要贡献或查看详细的参与方式？请查看 [贡献指南](CONTRIBUTING.md)。
+### Chạy local để test
 
-## 📞 交流与联系
+**Cách nhanh nhất (Windows):**
+```bash
+# Double-click file start.bat hoặc chạy trong terminal:
+start.bat
+```
 
-- **提交贡献/BUG**：请统一通过 [GitHub Issues](https://github.com/sansan0/mao-map/issues) 提交，这是追踪和处理问题最高效的方式。
-- **交流与讨论**：欢迎关注公众号 **【硅基茶水间】**，分享你的想法。
+**Cách nhanh nhất (Mac/Linux):**
+```bash
+# Chạy script:
+chmod +x start.sh
+./start.sh
+```
 
-![公众号二维码](https://raw.githubusercontent.com/sansan0/sansan0/refs/heads/master/_image/weixin.png)
+**Hoặc sử dụng Python trực tiếp:**
+```bash
+# Python 3.x
+python -m http.server 8000
 
-## 🌟 项目愿景
+# Python 2.x
+python -m SimpleHTTPServer 8000
+```
 
-**"古为今用"**，希望这个工具能成为大家学习历史、理解历史的得力助手。
+Sau đó mở trình duyệt và truy cập: **http://localhost:8000**
 
-## 📄 开源协议
+⚠️ **Lưu ý:** Không mở trực tiếp file `index.html` vì sẽ gặp lỗi CORS. Luôn sử dụng local server.
 
-本项目采用 [GPL-3.0 License](LICENSE) 协议开源，欢迎一切形式的分享与二次创作。
+📖 Xem thêm chi tiết tại [run-local.md](run-local.md)
+
+### Đóng góp
+
+Muốn đóng góp hoặc xem cách tham gia chi tiết? Vui lòng xem [Hướng dẫn đóng góp](CONTRIBUTING.md).
+
+## 📞 Giao lưu và liên hệ
+**Gửi đóng góp/BUG**：Vui lòng gửi thống nhất qua [GitHub Issues](https://github.com/mrtinhnguyen/ho-chi-minh-map/issues), đây là cách hiệu quả nhất để theo dõi và xử lý vấn đề.
+## 🌟 Tầm nhìn dự án
+
+**"Cổ vi kim dụng"**，hy vọng công cụ này có thể trở thành trợ thủ đắc lực cho mọi người trong việc học lịch sử và hiểu lịch sử.
+
+## 📄 Giấy phép mã nguồn mở
+
+Dự án này sử dụng giấy phép [GPL-3.0 License](LICENSE) để mở mã nguồn, chào mừng mọi hình thức chia sẻ và sáng tạo lại.

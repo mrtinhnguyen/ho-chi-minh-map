@@ -1,0 +1,367 @@
+{
+  "metadata": {
+    "description": "Dữ liệu tọa độ địa lý cho các địa điểm trong hành trình Chủ tịch Hồ Chí Minh",
+    "total_count": 56,
+    "levels": {
+      "0": "Quốc gia",
+      "1": "Tỉnh/Thành phố",
+      "2": "Quận/Huyện"
+    },
+    "coordinate_format": "[longitude, latitude]"
+  },
+  "regions": [
+    {
+      "id": "VN",
+      "pid": "0",
+      "deep": 0,
+      "name": "Việt Nam",
+      "ext_path": "Việt Nam",
+      "coordinates": [108.2772, 14.0583]
+    },
+    {
+      "id": "VN-NA",
+      "pid": "VN",
+      "deep": 1,
+      "name": "Nghệ An",
+      "ext_path": "Việt Nam Nghệ An",
+      "coordinates": [105.5520, 18.6742]
+    },
+    {
+      "id": "VN-NA-ND",
+      "pid": "VN-NA",
+      "deep": 2,
+      "name": "Nam Đàn",
+      "ext_path": "Việt Nam Nghệ An Nam Đàn",
+      "coordinates": [105.5520, 18.6742]
+    },
+    {
+      "id": "VN-NA-ND-KL",
+      "pid": "VN-NA-ND",
+      "deep": 3,
+      "name": "Kim Liên",
+      "ext_path": "Việt Nam Nghệ An Nam Đàn Kim Liên",
+      "coordinates": [105.5520, 18.6742]
+    },
+    {
+      "id": "VN-TTH",
+      "pid": "VN",
+      "deep": 1,
+      "name": "Thừa Thiên Huế",
+      "ext_path": "Việt Nam Thừa Thiên Huế",
+      "coordinates": [107.5359, 16.4534]
+    },
+    {
+      "id": "VN-TTH-HUE",
+      "pid": "VN-TTH",
+      "deep": 2,
+      "name": "Huế",
+      "ext_path": "Việt Nam Thừa Thiên Huế Huế",
+      "coordinates": [107.5359, 16.4534]
+    },
+    {
+      "id": "VN-BT",
+      "pid": "VN",
+      "deep": 1,
+      "name": "Bình Thuận",
+      "ext_path": "Việt Nam Bình Thuận",
+      "coordinates": [108.1027, 11.0464]
+    },
+    {
+      "id": "VN-BT-PT",
+      "pid": "VN-BT",
+      "deep": 2,
+      "name": "Phan Thiết",
+      "ext_path": "Việt Nam Bình Thuận Phan Thiết",
+      "coordinates": [108.1027, 11.0464]
+    },
+    {
+      "id": "VN-HCM",
+      "pid": "VN",
+      "deep": 1,
+      "name": "Thành phố Hồ Chí Minh",
+      "ext_path": "Việt Nam Thành phố Hồ Chí Minh",
+      "coordinates": [106.6297, 10.8231]
+    },
+    {
+      "id": "VN-HCM-SG",
+      "pid": "VN-HCM",
+      "deep": 2,
+      "name": "Sài Gòn",
+      "ext_path": "Việt Nam Thành phố Hồ Chí Minh Sài Gòn",
+      "coordinates": [106.6297, 10.8231]
+    },
+    {
+      "id": "VN-CB",
+      "pid": "VN",
+      "deep": 1,
+      "name": "Cao Bằng",
+      "ext_path": "Việt Nam Cao Bằng",
+      "coordinates": [106.2522, 22.6657]
+    },
+    {
+      "id": "VN-CB-PB",
+      "pid": "VN-CB",
+      "deep": 2,
+      "name": "Pác Bó",
+      "ext_path": "Việt Nam Cao Bằng Pác Bó",
+      "coordinates": [106.2522, 22.6657]
+    },
+    {
+      "id": "VN-TQ",
+      "pid": "VN",
+      "deep": 1,
+      "name": "Tuyên Quang",
+      "ext_path": "Việt Nam Tuyên Quang",
+      "coordinates": [105.2180, 21.8233]
+    },
+    {
+      "id": "VN-TQ-TT",
+      "pid": "VN-TQ",
+      "deep": 2,
+      "name": "Tân Trào",
+      "ext_path": "Việt Nam Tuyên Quang Tân Trào",
+      "coordinates": [105.2180, 21.8233]
+    },
+    {
+      "id": "VN-HN",
+      "pid": "VN",
+      "deep": 1,
+      "name": "Hà Nội",
+      "ext_path": "Việt Nam Hà Nội",
+      "coordinates": [105.8342, 21.0278]
+    },
+    {
+      "id": "VN-HN-HN",
+      "pid": "VN-HN",
+      "deep": 2,
+      "name": "Hà Nội",
+      "ext_path": "Việt Nam Hà Nội Hà Nội",
+      "coordinates": [105.8342, 21.0278]
+    },
+    {
+      "id": "VN-HN-BD",
+      "pid": "VN-HN-HN",
+      "deep": 3,
+      "name": "Ba Đình",
+      "ext_path": "Việt Nam Hà Nội Hà Nội Ba Đình",
+      "coordinates": [105.8342, 21.0278]
+    },
+    {
+      "id": "VN-DB",
+      "pid": "VN",
+      "deep": 1,
+      "name": "Điện Biên",
+      "ext_path": "Việt Nam Điện Biên",
+      "coordinates": [103.0167, 21.3833]
+    },
+    {
+      "id": "VN-DB-DBP",
+      "pid": "VN-DB",
+      "deep": 2,
+      "name": "Điện Biên Phủ",
+      "ext_path": "Việt Nam Điện Biên Điện Biên Phủ",
+      "coordinates": [103.0167, 21.3833]
+    },
+    {
+      "id": "FR",
+      "pid": "0",
+      "deep": 0,
+      "name": "Pháp",
+      "ext_path": "Pháp",
+      "coordinates": [2.3522, 48.8566]
+    },
+    {
+      "id": "FR-PARIS",
+      "pid": "FR",
+      "deep": 1,
+      "name": "Paris",
+      "ext_path": "Pháp Paris",
+      "coordinates": [2.3522, 48.8566]
+    },
+    {
+      "id": "FR-MARSEILLE",
+      "pid": "FR",
+      "deep": 1,
+      "name": "Marseille",
+      "ext_path": "Pháp Marseille",
+      "coordinates": [5.3698, 43.2965]
+    },
+    {
+      "id": "FR-LEHAVRE",
+      "pid": "FR",
+      "deep": 1,
+      "name": "Le Havre",
+      "ext_path": "Pháp Le Havre",
+      "coordinates": [0.1079, 49.4944]
+    },
+    {
+      "id": "FR-TOURS",
+      "pid": "FR",
+      "deep": 1,
+      "name": "Tours",
+      "ext_path": "Pháp Tours",
+      "coordinates": [0.6946, 47.3941]
+    },
+    {
+      "id": "GB",
+      "pid": "0",
+      "deep": 0,
+      "name": "Anh",
+      "ext_path": "Anh",
+      "coordinates": [-0.1276, 51.5074]
+    },
+    {
+      "id": "GB-LONDON",
+      "pid": "GB",
+      "deep": 1,
+      "name": "London",
+      "ext_path": "Anh London",
+      "coordinates": [-0.1276, 51.5074]
+    },
+    {
+      "id": "US",
+      "pid": "0",
+      "deep": 0,
+      "name": "Mỹ",
+      "ext_path": "Mỹ",
+      "coordinates": [-74.0060, 40.7128]
+    },
+    {
+      "id": "US-NY",
+      "pid": "US",
+      "deep": 1,
+      "name": "New York",
+      "ext_path": "Mỹ New York",
+      "coordinates": [-74.0060, 40.7128]
+    },
+    {
+      "id": "RU",
+      "pid": "0",
+      "deep": 0,
+      "name": "Nga",
+      "ext_path": "Nga",
+      "coordinates": [37.6173, 55.7558]
+    },
+    {
+      "id": "RU-MOSCOW",
+      "pid": "RU",
+      "deep": 1,
+      "name": "Moscow",
+      "ext_path": "Nga Moscow",
+      "coordinates": [37.6173, 55.7558]
+    },
+    {
+      "id": "CN",
+      "pid": "0",
+      "deep": 0,
+      "name": "Trung Quốc",
+      "ext_path": "Trung Quốc",
+      "coordinates": [113.2644, 23.1291]
+    },
+    {
+      "id": "CN-GZ",
+      "pid": "CN",
+      "deep": 1,
+      "name": "Quảng Châu",
+      "ext_path": "Trung Quốc Quảng Châu",
+      "coordinates": [113.2644, 23.1291]
+    },
+    {
+      "id": "CN-HK",
+      "pid": "CN",
+      "deep": 1,
+      "name": "Hồng Kông",
+      "ext_path": "Trung Quốc Hồng Kông",
+      "coordinates": [114.1694, 22.3193]
+    },
+    {
+      "id": "CN-SH",
+      "pid": "CN",
+      "deep": 1,
+      "name": "Thượng Hải",
+      "ext_path": "Trung Quốc Thượng Hải",
+      "coordinates": [121.4737, 31.2304]
+    },
+    {
+      "id": "CN-YA",
+      "pid": "CN",
+      "deep": 1,
+      "name": "Diên An",
+      "ext_path": "Trung Quốc Diên An",
+      "coordinates": [109.4897, 36.5965]
+    },
+    {
+      "id": "CN-GX",
+      "pid": "CN",
+      "deep": 1,
+      "name": "Quảng Tây",
+      "ext_path": "Trung Quốc Quảng Tây",
+      "coordinates": [108.3200, 22.8292]
+    },
+    {
+      "id": "TH",
+      "pid": "0",
+      "deep": 0,
+      "name": "Thái Lan",
+      "ext_path": "Thái Lan",
+      "coordinates": [100.5018, 13.7563]
+    },
+    {
+      "id": "TH-BKK",
+      "pid": "TH",
+      "deep": 1,
+      "name": "Bangkok",
+      "ext_path": "Thái Lan Bangkok",
+      "coordinates": [100.5018, 13.7563]
+    },
+    {
+      "id": "DE",
+      "pid": "0",
+      "deep": 0,
+      "name": "Đức",
+      "ext_path": "Đức",
+      "coordinates": [13.4050, 52.5200]
+    },
+    {
+      "id": "DE-BERLIN",
+      "pid": "DE",
+      "deep": 1,
+      "name": "Berlin",
+      "ext_path": "Đức Berlin",
+      "coordinates": [13.4050, 52.5200]
+    },
+    {
+      "id": "BE",
+      "pid": "0",
+      "deep": 0,
+      "name": "Bỉ",
+      "ext_path": "Bỉ",
+      "coordinates": [4.3517, 50.8503]
+    },
+    {
+      "id": "BE-BRUSSELS",
+      "pid": "BE",
+      "deep": 1,
+      "name": "Brussels",
+      "ext_path": "Bỉ Brussels",
+      "coordinates": [4.3517, 50.8503]
+    },
+    {
+      "id": "IT",
+      "pid": "0",
+      "deep": 0,
+      "name": "Ý",
+      "ext_path": "Ý",
+      "coordinates": [12.4964, 41.9028]
+    },
+    {
+      "id": "IT-ROME",
+      "pid": "IT",
+      "deep": 1,
+      "name": "Rome",
+      "ext_path": "Ý Rome",
+      "coordinates": [12.4964, 41.9028]
+    }
+  ]
+}
+

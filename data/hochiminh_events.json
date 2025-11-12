@@ -1,0 +1,909 @@
+{
+  "title": "Hồ Chí Minh - Hành trình tìm đường cứu nước và giải phóng dân tộc (1890-1969)",
+  "events": [
+    {
+      "date": "1890-05-19",
+      "age": 0,
+      "movementType": "Sinh ra",
+      "event": "Chủ tịch Hồ Chí Minh sinh ra tại làng Sen, xã Kim Liên, huyện Nam Đàn, tỉnh Nghệ An, tên khai sinh là Nguyễn Sinh Cung",
+      "coordinates": {
+        "start": null,
+        "end": {
+          "province": "Nghệ An",
+          "city": "Nam Đàn",
+          "district": "Kim Liên"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1901",
+      "age": 11,
+      "movementType": "Di chuyển ngắn",
+      "event": "Theo cha vào Huế học tập",
+      "coordinates": {
+        "start": {
+          "province": "Nghệ An",
+          "city": "Nam Đàn",
+          "district": "Kim Liên"
+        },
+        "end": {
+          "province": "Thừa Thiên Huế",
+          "city": "Huế"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1906",
+      "age": 16,
+      "movementType": "Di chuyển ngắn",
+      "event": "Vào học tại trường Quốc học Huế",
+      "coordinates": {
+        "start": {
+          "province": "Thừa Thiên Huế",
+          "city": "Huế"
+        },
+        "end": {
+          "province": "Thừa Thiên Huế",
+          "city": "Huế"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1910",
+      "age": 20,
+      "movementType": "Di chuyển ngắn",
+      "event": "Dạy học tại trường Dục Thanh, Phan Thiết",
+      "coordinates": {
+        "start": {
+          "province": "Thừa Thiên Huế",
+          "city": "Huế"
+        },
+        "end": {
+          "province": "Bình Thuận",
+          "city": "Phan Thiết"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1911-06-03",
+      "age": 21,
+      "movementType": "Di chuyển ngắn",
+      "event": "Nguyễn Tất Thành nhận thẻ nhân viên lên tàu Amiran Latusơ Tơrêvin với tên \"Văn Ba\", rời cảng Nhà Rồng sang Pháp",
+      "coordinates": {
+        "start": {
+          "province": "Bình Thuận",
+          "city": "Phan Thiết"
+        },
+        "end": {
+          "province": "Thành phố Hồ Chí Minh",
+          "city": "Sài Gòn"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1911-06-05",
+      "age": 21,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Rời Tổ quốc sang phương Tây tìm đường cứu nước trên tàu Amiran Latusơ Tơrêvin",
+      "coordinates": {
+        "start": {
+          "province": "Thành phố Hồ Chí Minh",
+          "city": "Sài Gòn"
+        },
+        "end": {
+          "country": "Pháp",
+          "city": "Marseille"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1912-12",
+      "age": 22,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Sang Hoa Kỳ, đến New York, sống và lao động cùng nhân dân lao động",
+      "coordinates": {
+        "start": {
+          "country": "Pháp",
+          "city": "Marseille"
+        },
+        "end": {
+          "country": "Mỹ",
+          "city": "New York"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1913-12",
+      "age": 23,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Rời nước Mỹ sang nước Anh, làm nghề cào tuyết cho một trường học, đốt lò rồi phụ bếp cho khách sạn",
+      "coordinates": {
+        "start": {
+          "country": "Mỹ",
+          "city": "New York"
+        },
+        "end": {
+          "country": "Anh",
+          "city": "London"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1917-12",
+      "age": 27,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Từ Anh trở lại Pháp, hoạt động trong phong trào Việt kiều và công nhân Pháp",
+      "coordinates": {
+        "start": {
+          "country": "Anh",
+          "city": "London"
+        },
+        "end": {
+          "country": "Pháp",
+          "city": "Paris"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1919-06-18",
+      "age": 29,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Lấy tên Nguyễn Ái Quốc, gửi \"Bản yêu sách của nhân dân An Nam\" đến Hội nghị Versailles (Pháp)",
+      "coordinates": {
+        "start": {
+          "country": "Pháp",
+          "city": "Paris"
+        },
+        "end": {
+          "country": "Pháp",
+          "city": "Paris"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1920-12-25",
+      "age": 30,
+      "movementType": "Di chuyển ngắn",
+      "event": "Tham dự Đại hội XVIII Đảng Xã hội Pháp, bỏ phiếu tán thành gia nhập Quốc tế III, trở thành một trong những người sáng lập Đảng Cộng sản Pháp",
+      "coordinates": {
+        "start": {
+          "country": "Pháp",
+          "city": "Paris"
+        },
+        "end": {
+          "country": "Pháp",
+          "city": "Tours"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1921",
+      "age": 31,
+      "movementType": "Di chuyển ngắn",
+      "event": "Cùng một số người yêu nước ở các thuộc địa Pháp sáng lập Hội Liên hiệp các dân tộc thuộc địa tại Paris",
+      "coordinates": {
+        "start": {
+          "country": "Pháp",
+          "city": "Tours"
+        },
+        "end": {
+          "country": "Pháp",
+          "city": "Paris"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1922-04",
+      "age": 32,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Hội ra báo \"Người cùng khổ\" (Le Paria), Nguyễn Ái Quốc viết nhiều bài quan trọng",
+      "coordinates": {
+        "start": {
+          "country": "Pháp",
+          "city": "Paris"
+        },
+        "end": {
+          "country": "Pháp",
+          "city": "Paris"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1923-06",
+      "age": 33,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Sang Liên Xô làm việc tại Quốc tế Cộng sản ở Moscow",
+      "coordinates": {
+        "start": {
+          "country": "Pháp",
+          "city": "Paris"
+        },
+        "end": {
+          "country": "Nga",
+          "city": "Moscow"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1923-10",
+      "age": 33,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Dự Hội nghị Quốc tế Nông dân lần thứ nhất, được bầu vào Hội đồng Quốc tế Nông dân",
+      "coordinates": {
+        "start": {
+          "country": "Nga",
+          "city": "Moscow"
+        },
+        "end": {
+          "country": "Nga",
+          "city": "Moscow"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1924",
+      "age": 34,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Dự Đại hội V Quốc tế Cộng sản, Đại hội Quốc tế Thanh niên, Đại hội Quốc tế Công hội đỏ",
+      "coordinates": {
+        "start": {
+          "country": "Nga",
+          "city": "Moscow"
+        },
+        "end": {
+          "country": "Nga",
+          "city": "Moscow"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1924-11",
+      "age": 34,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Sang Quảng Châu (Trung Quốc), làm việc trong đoàn cố vấn Bôrôđin của Liên Xô bên cạnh Chính phủ Tôn Dật Tiên",
+      "coordinates": {
+        "start": {
+          "country": "Nga",
+          "city": "Moscow"
+        },
+        "end": {
+          "country": "Trung Quốc",
+          "city": "Quảng Châu"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1925-06",
+      "age": 35,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Thành lập Hội Việt Nam Cách mạng Thanh niên; mở lớp huấn luyện, xuất bản báo \"Thanh niên\", biên soạn \"Đường Kách mệnh\"",
+      "coordinates": {
+        "start": {
+          "country": "Trung Quốc",
+          "city": "Quảng Châu"
+        },
+        "end": {
+          "country": "Trung Quốc",
+          "city": "Quảng Châu"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1925",
+      "age": 35,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Xuất bản tác phẩm \"Bản án chế độ thực dân Pháp\" tại Paris",
+      "coordinates": {
+        "start": {
+          "country": "Trung Quốc",
+          "city": "Quảng Châu"
+        },
+        "end": {
+          "country": "Trung Quốc",
+          "city": "Quảng Châu"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1927-05",
+      "age": 37,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Rời Quảng Châu, đi Moscow, Berlin, Brussels, Italy, rồi trở lại châu Á",
+      "coordinates": {
+        "start": {
+          "country": "Trung Quốc",
+          "city": "Quảng Châu"
+        },
+        "end": {
+          "country": "Nga",
+          "city": "Moscow"
+        },
+        "transit": [
+          {
+            "country": "Đức",
+            "city": "Berlin"
+          },
+          {
+            "country": "Bỉ",
+            "city": "Brussels"
+          },
+          {
+            "country": "Ý",
+            "city": "Rome"
+          }
+        ]
+      },
+      "verification": ""
+    },
+    {
+      "date": "1928-07",
+      "age": 38,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Hoạt động trong phong trào Việt kiều yêu nước tại Xiêm (Thái Lan)",
+      "coordinates": {
+        "start": {
+          "country": "Nga",
+          "city": "Moscow"
+        },
+        "end": {
+          "country": "Thái Lan",
+          "city": "Bangkok"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1930-02-03",
+      "age": 40,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Chủ trì Hội nghị thành lập Đảng Cộng sản Việt Nam tại Cửu Long (Hồng Kông)",
+      "coordinates": {
+        "start": {
+          "country": "Thái Lan",
+          "city": "Bangkok"
+        },
+        "end": {
+          "country": "Trung Quốc",
+          "city": "Hồng Kông"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1931-06-06",
+      "age": 41,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Bị chính quyền Anh bắt giam tại Hồng Kông",
+      "coordinates": {
+        "start": {
+          "country": "Trung Quốc",
+          "city": "Hồng Kông"
+        },
+        "end": {
+          "country": "Trung Quốc",
+          "city": "Hồng Kông"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1933-01",
+      "age": 43,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Được trả tự do, đến Thượng Hải, sau đó trở lại Liên Xô",
+      "coordinates": {
+        "start": {
+          "country": "Trung Quốc",
+          "city": "Hồng Kông"
+        },
+        "end": {
+          "country": "Nga",
+          "city": "Moscow"
+        },
+        "transit": [
+          {
+            "country": "Trung Quốc",
+            "city": "Thượng Hải"
+          }
+        ]
+      },
+      "verification": ""
+    },
+    {
+      "date": "1934",
+      "age": 44,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Nghiên cứu tại Viện Nghiên cứu các vấn đề dân tộc và thuộc địa ở Moscow (Liên Xô)",
+      "coordinates": {
+        "start": {
+          "country": "Nga",
+          "city": "Moscow"
+        },
+        "end": {
+          "country": "Nga",
+          "city": "Moscow"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1938-10",
+      "age": 48,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Rời Liên Xô sang Trung Quốc, liên lạc với tổ chức Đảng để chuẩn bị về nước",
+      "coordinates": {
+        "start": {
+          "country": "Nga",
+          "city": "Moscow"
+        },
+        "end": {
+          "country": "Trung Quốc",
+          "city": "Diên An"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1941-01-28",
+      "age": 51,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Về nước sau hơn 30 năm bôn ba, trở lại Cao Bằng",
+      "coordinates": {
+        "start": {
+          "country": "Trung Quốc",
+          "city": "Diên An"
+        },
+        "end": {
+          "province": "Cao Bằng",
+          "city": "Pác Bó"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1941-05",
+      "age": 51,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Triệu tập Hội nghị Trung ương VIII, thành lập Việt Minh, quyết định đường lối cứu nước trong thời kỳ mới",
+      "coordinates": {
+        "start": {
+          "province": "Cao Bằng",
+          "city": "Pác Bó"
+        },
+        "end": {
+          "province": "Cao Bằng",
+          "city": "Pác Bó"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1942-08",
+      "age": 52,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Lấy tên Hồ Chí Minh, sang Trung Quốc tìm sự liên minh quốc tế, bị bắt giam ở Quảng Tây",
+      "coordinates": {
+        "start": {
+          "province": "Cao Bằng",
+          "city": "Pác Bó"
+        },
+        "end": {
+          "country": "Trung Quốc",
+          "city": "Quảng Tây"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1943-09",
+      "age": 53,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Được trả tự do; trong thời gian tù viết \"Nhật ký trong tù\", trở về căn cứ Cao Bằng",
+      "coordinates": {
+        "start": {
+          "country": "Trung Quốc",
+          "city": "Quảng Tây"
+        },
+        "end": {
+          "province": "Cao Bằng",
+          "city": "Pác Bó"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1944-12-22",
+      "age": 54,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Chỉ thị thành lập Đội Việt Nam Tuyên truyền Giải phóng quân – tiền thân của Quân đội nhân dân Việt Nam",
+      "coordinates": {
+        "start": {
+          "province": "Cao Bằng",
+          "city": "Pác Bó"
+        },
+        "end": {
+          "province": "Cao Bằng",
+          "city": "Pác Bó"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1945-05",
+      "age": 55,
+      "movementType": "Di chuyển ngắn",
+      "event": "Rời Cao Bằng về Tân Trào (Tuyên Quang), chuẩn bị Tổng khởi nghĩa",
+      "coordinates": {
+        "start": {
+          "province": "Cao Bằng",
+          "city": "Pác Bó"
+        },
+        "end": {
+          "province": "Tuyên Quang",
+          "city": "Tân Trào"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1945-08",
+      "age": 55,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Cùng Trung ương Đảng lãnh đạo Cách mạng Tháng Tám giành chính quyền trong cả nước",
+      "coordinates": {
+        "start": {
+          "province": "Tuyên Quang",
+          "city": "Tân Trào"
+        },
+        "end": {
+          "province": "Tuyên Quang",
+          "city": "Tân Trào"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1945-08-16",
+      "age": 55,
+      "movementType": "Di chuyển ngắn",
+      "event": "Rời Tân Trào về Hà Nội",
+      "coordinates": {
+        "start": {
+          "province": "Tuyên Quang",
+          "city": "Tân Trào"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1945-09-02",
+      "age": 55,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Đọc \"Tuyên ngôn độc lập\" tại Quảng trường Ba Đình, thành lập nước Việt Nam Dân chủ Cộng hòa, trở thành Chủ tịch nước kiêm Bộ trưởng Ngoại giao",
+      "coordinates": {
+        "start": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội",
+          "district": "Ba Đình"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1946-01-01",
+      "age": 56,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Thành lập Chính phủ liên hiệp lâm thời do Hồ Chí Minh làm Chủ tịch",
+      "coordinates": {
+        "start": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1946-01",
+      "age": 56,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Quốc hội khóa I bầu Hồ Chí Minh làm Chủ tịch nước Việt Nam Dân chủ Cộng hòa",
+      "coordinates": {
+        "start": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1946-03-02",
+      "age": 56,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Thành lập Chính phủ liên hiệp kháng chiến",
+      "coordinates": {
+        "start": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1946-05-31",
+      "age": 56,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Đến Pháp tham gia Hội nghị Fontainebleau",
+      "coordinates": {
+        "start": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        },
+        "end": {
+          "country": "Pháp",
+          "city": "Paris"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1946-09-14",
+      "age": 56,
+      "movementType": "Di chuyển quốc tế",
+      "event": "Ký Tạm ước Việt-Pháp, trở về nước",
+      "coordinates": {
+        "start": {
+          "country": "Pháp",
+          "city": "Paris"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1946-11",
+      "age": 56,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Là Chủ tịch nước kiêm Thủ tướng, đồng thời kiêm Bộ trưởng Ngoại giao đến năm 1947",
+      "coordinates": {
+        "start": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1946-12-19",
+      "age": 56,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Ra Lời kêu gọi Toàn quốc kháng chiến chống thực dân Pháp",
+      "coordinates": {
+        "start": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1947-10",
+      "age": 57,
+      "movementType": "Di chuyển ngắn",
+      "event": "Rời Hà Nội lên Việt Bắc lãnh đạo kháng chiến",
+      "coordinates": {
+        "start": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        },
+        "end": {
+          "province": "Tuyên Quang",
+          "city": "Tân Trào"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1951-02",
+      "age": 61,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Đại hội II của Đảng – Hồ Chí Minh được bầu làm Chủ tịch Ban Chấp hành Trung ương Đảng",
+      "coordinates": {
+        "start": {
+          "province": "Tuyên Quang",
+          "city": "Tân Trào"
+        },
+        "end": {
+          "province": "Tuyên Quang",
+          "city": "Tân Trào"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1954-05-07",
+      "age": 64,
+      "movementType": "Di chuyển ngắn",
+      "event": "Chiến thắng Điện Biên Phủ – kết thúc kháng chiến chống Pháp",
+      "coordinates": {
+        "start": {
+          "province": "Tuyên Quang",
+          "city": "Tân Trào"
+        },
+        "end": {
+          "province": "Điện Biên",
+          "city": "Điện Biên Phủ"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1954-10-09",
+      "age": 64,
+      "movementType": "Di chuyển ngắn",
+      "event": "Trở về Hà Nội sau chiến thắng",
+      "coordinates": {
+        "start": {
+          "province": "Điện Biên",
+          "city": "Điện Biên Phủ"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1955",
+      "age": 65,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Miền Bắc hoàn toàn giải phóng, bắt đầu xây dựng chủ nghĩa xã hội, đấu tranh giải phóng miền Nam",
+      "coordinates": {
+        "start": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1955-09-23",
+      "age": 65,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Được bầu lại làm Chủ tịch nước",
+      "coordinates": {
+        "start": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1956-10",
+      "age": 66,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Được bầu làm Chủ tịch Đảng kiêm Tổng Bí thư",
+      "coordinates": {
+        "start": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1960-09-05",
+      "age": 70,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Đại hội III Đảng Lao động Việt Nam, tiếp tục được bầu làm Chủ tịch Đảng",
+      "coordinates": {
+        "start": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1964",
+      "age": 74,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Mỹ mở rộng chiến tranh phá hoại miền Bắc; Hồ Chí Minh kêu gọi toàn dân \"Không có gì quý hơn độc lập, tự do\"",
+      "coordinates": {
+        "start": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        }
+      },
+      "verification": ""
+    },
+    {
+      "date": "1969-09-02",
+      "age": 79,
+      "movementType": "Hoạt động tại chỗ",
+      "event": "Chủ tịch Hồ Chí Minh qua đời tại Hà Nội",
+      "coordinates": {
+        "start": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        },
+        "end": {
+          "province": "Hà Nội",
+          "city": "Hà Nội"
+        }
+      },
+      "verification": ""
+    }
+  ]
+}
