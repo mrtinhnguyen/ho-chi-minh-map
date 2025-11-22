@@ -2136,6 +2136,20 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     background-color: #000;
     max-height: none;
+    min-height: 300px;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 10;
+}
+
+.event-popup-youtube-container > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 11;
 }
 
 .event-popup-youtube-container iframe {
@@ -2145,6 +2159,10 @@ body {
     width: 100%;
     height: 100%;
     border: none;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 12;
 }
 
 .event-popup-content::before {
