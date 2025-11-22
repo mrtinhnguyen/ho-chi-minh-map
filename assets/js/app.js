@@ -50,6 +50,7 @@ let eventAudio = null; // Audio element cho event narration
 let currentEventAudio = null; // Audio hiện tại đang phát
 let currentPopupEventIndex = -1; // Event index hiện tại đang hiển thị trong popup
 let userHasInteracted = false; // Đánh dấu user đã tương tác với trang (để phát audio)
+let youtubePlayer = null; // YouTube player instance
 
 let animationConfig = {
   pathDuration: 5000, // Điều khiển tốc độ vẽ đường đi
@@ -2662,16 +2663,32 @@ function showEventPopup(event, eventIndex) {
   popupLocation.textContent = event.endLocation || "Địa điểm không xác định";
   popupTitle.textContent = event.event || "Không có mô tả";
 
-  // Hiển thị hình ảnh nếu có
-  if (popupImage && popupImageContainer) {
-    if (event.image) {
-      popupImage.src = event.image;
-      popupImage.style.display = "block";
-      popupImage.onerror = () => {
-        popupImage.style.display = "none";
-      };
-    } else {
+  // Xử lý YouTube video hoặc hình ảnh
+  const youtubeContainer = document.getElementById("event-popup-youtube-container");
+  
+  if (popupImage && popupImageContainer && youtubeContainer) {
+    // Nếu có YouTube video, hiển thị video thay vì ảnh
+    if (event.youtubeVideo) {
       popupImage.style.display = "none";
+      youtubeContainer.style.display = "block";
+      
+      // Lấy video ID từ URL YouTube
+      const videoId = extractYouTubeVideoId(event.youtubeVideo);
+      if (videoId) {
+        loadYouTubeVideo(videoId, eventIndex);
+      }
+    } else {
+      // Hiển thị hình ảnh nếu có
+      youtubeContainer.style.display = "none";
+      if (event.image) {
+        popupImage.src = event.image;
+        popupImage.style.display = "block";
+        popupImage.onerror = () => {
+          popupImage.style.display = "none";
+        };
+      } else {
+        popupImage.style.display = "none";
+      }
     }
   }
 
@@ -2689,12 +2706,22 @@ function showEventPopup(event, eventIndex) {
       // Đánh dấu user đã tương tác
       userHasInteracted = true;
       console.log("Nút Tiếp tục được click");
+      // Dừng YouTube video nếu đang phát
+      if (youtubePlayer) {
+        try {
+          youtubePlayer.stopVideo();
+        } catch (e) {
+          console.warn("Không thể dừng YouTube video:", e);
+        }
+      }
       continueToNextEvent(eventIndex);
     };
   }
 
-  // Phát audio nếu có (sau khi popup đã hiển thị)
-  playEventAudio(event, eventIndex);
+  // Phát audio nếu có (chỉ khi không có YouTube video)
+  if (!event.youtubeVideo) {
+    playEventAudio(event, eventIndex);
+  }
 }
 
 /**
@@ -2708,6 +2735,24 @@ function hideEventPopup() {
 
   // Dừng audio đang phát
   stopEventAudio();
+
+  // Dừng YouTube video nếu đang phát
+  if (youtubePlayer) {
+    try {
+      youtubePlayer.stopVideo();
+      youtubePlayer.destroy();
+      youtubePlayer = null;
+    } catch (e) {
+      console.warn("Không thể dừng YouTube video:", e);
+    }
+  }
+  
+  // Xóa container YouTube
+  const youtubeContainer = document.getElementById("event-popup-youtube-container");
+  if (youtubeContainer) {
+    youtubeContainer.innerHTML = "";
+    youtubeContainer.style.display = "none";
+  }
 
   if (eventPopupTimeout) {
     clearTimeout(eventPopupTimeout);
@@ -4475,6 +4520,95 @@ function monitorMotionPerformance() {
     },
   };
 }
+
+// ==================== YouTube Video ====================
+/**
+ * Lấy video ID từ URL YouTube
+ */
+function extractYouTubeVideoId(url) {
+  if (!url) return null;
+  
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+/**
+ * Khởi tạo YouTube IFrame API
+ */
+function onYouTubeIframeAPIReady() {
+  console.log("YouTube IFrame API đã sẵn sàng");
+}
+
+/**
+ * Tải và phát video YouTube
+ */
+function loadYouTubeVideo(videoId, eventIndex) {
+  // Xóa player cũ nếu có
+  if (youtubePlayer) {
+    try {
+      youtubePlayer.destroy();
+    } catch (e) {
+      console.warn("Không thể destroy YouTube player cũ:", e);
+    }
+    youtubePlayer = null;
+  }
+
+  const youtubeContainer = document.getElementById("event-popup-youtube-container");
+  if (!youtubeContainer) return;
+
+  // Kiểm tra xem YouTube API đã load chưa
+  if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+    console.warn("YouTube IFrame API chưa sẵn sàng, thử lại sau 1 giây");
+    setTimeout(() => {
+      loadYouTubeVideo(videoId, eventIndex);
+    }, 1000);
+    return;
+  }
+
+  // Tạo iframe container
+  const playerId = `youtube-player-${Date.now()}`;
+  youtubeContainer.innerHTML = `<div id="${playerId}"></div>`;
+  
+  // Tạo YouTube player
+  youtubePlayer = new YT.Player(playerId, {
+    videoId: videoId,
+    playerVars: {
+      autoplay: 1,
+      controls: 1,
+      rel: 0,
+      modestbranding: 1,
+      playsinline: 1
+    },
+    events: {
+      onReady: (event) => {
+        console.log("YouTube video đã sẵn sàng, bắt đầu phát");
+        // Chỉ phát nếu user đã tương tác
+        if (userHasInteracted) {
+          event.target.playVideo();
+        }
+      },
+      onStateChange: (event) => {
+        // Khi video kết thúc (state = 0)
+        if (event.data === YT.PlayerState.ENDED) {
+          console.log("YouTube video đã phát xong");
+          // Tự động đóng popup vì đây là event cuối cùng
+          hideEventPopup();
+        }
+      },
+      onError: (event) => {
+        console.error("Lỗi khi phát YouTube video:", event.data);
+        // Nếu có lỗi, đóng popup sau 2 giây
+        setTimeout(() => {
+          hideEventPopup();
+        }, 2000);
+      }
+    }
+  });
+}
+
+// Gán hàm onYouTubeIframeAPIReady vào window để YouTube API có thể gọi
+window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
 // ==================== Popup chào mừng ====================
 /**

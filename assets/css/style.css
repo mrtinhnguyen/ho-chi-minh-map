@@ -2109,6 +2109,7 @@ body {
     align-items: center;
     justify-content: center;
     background: rgba(0, 0, 0, 0.05);
+    position: relative;
 }
 
 .event-popup-image {
@@ -2122,6 +2123,28 @@ body {
 
 .event-popup-image:hover {
     transform: scale(1.02);
+}
+
+/* YouTube video container */
+.event-popup-youtube-container {
+    width: 100%;
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: #000;
+    max-height: none;
+}
+
+.event-popup-youtube-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
 .event-popup-content::before {

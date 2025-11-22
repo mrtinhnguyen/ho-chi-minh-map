@@ -472,6 +472,7 @@
         <div class="event-popup-content">
           <div class="event-popup-image-container" id="event-popup-image-container">
             <img id="event-popup-image" class="event-popup-image" src="" alt="Hình ảnh sự kiện" style="display: none;">
+            <div id="event-popup-youtube-container" class="event-popup-youtube-container" style="display: none;"></div>
           </div>
           <div class="event-popup-header">
             <div class="event-popup-date" id="event-popup-date">1890-05-19</div>
@@ -489,6 +490,8 @@
     <!-- Phần tử âm thanh cho event narration -->
     <audio id="event-audio" preload="none"></audio>
 
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
     <!-- Plugin hỗ trợ Google Maps cho Leaflet -->
     <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@0.15.0/dist/Leaflet.GoogleMutant.js"></script>
