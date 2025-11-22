@@ -2769,11 +2769,11 @@ function playEventAudio(event, eventIndex) {
 
   // Không có audio thì tự động chuyển sang event tiếp theo sau một chút
   if (!event || !event.audio) {
-    // Nếu không có audio, tự động chuyển sang event tiếp theo sau 2 giây
+    // Nếu không có audio, tự động chuyển sang event tiếp theo sau 8 giây
     if (eventIndex < trajectoryData.events.length - 1) {
       eventPopupTimeout = setTimeout(() => {
         continueToNextEvent(eventIndex);
-      }, 2000);
+      }, 8000);
     }
     return;
   }

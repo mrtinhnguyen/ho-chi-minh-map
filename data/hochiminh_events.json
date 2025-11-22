@@ -42,7 +42,7 @@
       "date": "1906",
       "age": 16,
       "movementType": "Di chuyển ngắn",
-      "event": "Vào học tại trường Quốc học Huế",
+      "event": "Vào học tại trường Quốc học Huế. Trong thời gian học tại Trường Quốc học Huế, Chủ tịch Hồ Chí Minh được tiếp xúc nhiều với sách báo Pháp. Các thầy giáo của Trường Quốc học Huế có người Pháp và cả người Việt Nam, cũng có những người yêu nước như thầy Hoàng Thông, thầy Lê Văn Miến. Chính nhờ ảnh hưởng của các thầy giáo yêu nước và sách báo tiến bộ mà anh được tiếp xúc, ý muốn đi sang phương Tây tìm hiểu tình hình các nước và học hỏi những thành tựu của văn minh nhân loại từng bước lớn dần trong tâm trí của Chủ tịch Hồ Chí Minh",
       "coordinates": {
         "start": {
           "province": "Thừa Thiên Huế",
@@ -61,7 +61,7 @@
       "date": "1910",
       "age": 20,
       "movementType": "Di chuyển ngắn",
-      "event": "Dạy học tại trường Dục Thanh, Phan Thiết",
+      "event": "Dạy học tại trường Dục Thanh, Phan Thiết. Ngoài giờ lên lớp, Chủ tịch Hồ Chí Minh tìm những cuốn sách quý trong tủ sách của cụ Nguyễn Thông để đọc. Lần đầu tiên Chủ tịch Hồ Chí Minh được tiếp cận với những tư tưởng tiến bộ của các nhà khai sáng Pháp như Rútxô (Rousseau), Vônte (Voltair), Môngtétxkiơ (Montesquieu). Sự tiếp cận với những tư tưởng mới đó càng thôi thúc Chủ tịch Hồ Chí Minh tìm đường đi ra nước ngoài.",
       "coordinates": {
         "start": {
           "province": "Thừa Thiên Huế",
@@ -73,14 +73,14 @@
         }
       },
       "verification": "",
-      "image": "assets/images/events/4.jpg",
-      "audio": "assets/audio/events/4.mp3"
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763788822/www-baobinhthuan-com-vn_nguyentatthanh_mvcz2a.jpg",
+      "audio": "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1763788732/khoang_thang_61909_chu_tich_ho_chi_minh_roi_d6323fce-579b-4921-96f4-38850bb75ead_psx1kd.mp3"
     },
     {
       "date": "1911-06-03",
       "age": 21,
       "movementType": "Di chuyển ngắn",
-      "event": "Nguyễn Tất Thành nhận thẻ nhân viên lên tàu Amiran Latusơ Tơrêvin với tên \"Văn Ba\", rời cảng Nhà Rồng sang Pháp",
+      "event": "Trưa ngày 2/6/1911, con tàu Amiral Latouche Tréville (tàu Đô đốc Latútsơ Tơrêvin) từ Hải Phòng cập cảng Sài Gòn. Chủ tịch Hồ Chí Minh xuống tàu và gặp viên thuyền trưởng Lui E-du-a Mai-sen xin việc làm. Ngày 3/6/1911, người chính thức xuống tàu bắt đầu làm phụ bếp, nhận thẻ nhân viên của tàu với tên mới là Văn Ba, mức lương 45 Franc Pháp/tháng. Đây là một trong 6 chiếc tàu cỡ lớn chuyên chạy tuyến đường Pháp - Đông Dương, tàu vừa chở hàng vừa chở khách thuộc quyền sở hữu của hãng Năm Sao, đang chuẩn bị rời cảng Sài Gòn đi Mácxây (Marseille), Pháp. ",
       "coordinates": {
         "start": {
           "province": "Bình Thuận",
@@ -92,14 +92,14 @@
         }
       },
       "verification": "",
-      "image": "assets/images/events/5.jpg",
-      "audio": "assets/audio/events/5.mp3"
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763789147/image001_cwyj5i.jpg",
+      "audio": "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1763789150/thang_21911_chu_tich_ho_chi_minh_roi_phan_thiet_e071c935-4564-493e-8847-b637c01ba66c_wdpqwh.mp3"
     },
     {
       "date": "1911-06-05",
       "age": 21,
       "movementType": "Di chuyển quốc tế",
-      "event": "Rời Tổ quốc sang phương Tây tìm đường cứu nước trên tàu Amiran Latusơ Tơrêvin",
+      "event": "Ngày 5/6/1911, trên con tàu Amiral Latouche Tréville, từ bến cảng Nhà Rồng, thành phố Sài Gòn (nay là thành phố Hồ Chí Minh), Chủ tịch Hồ Chí Minh rời Tổ quốc ra đi tìm đường cứu nước. Về mục đích ra đi của mình, năm 1923, Người đã trả lời một nhà báo Nga rằng: \"Khi tôi độ mười ba tuổi, lần đầu tiên tôi được nghe ba chữ Pháp Tự do, Bình đẳng, Bác ái... Tôi rất muốn làm quen với nền văn minh Pháp, muốn tìm xem những gì ẩn giấu đằng sau những chữ ấy\". Một lần khác trả lời một nhà văn Mỹ, Người nói: \"Nhân dân Việt Nam trong đó có ông cụ thân sinh ra tôi, lúc này thường tự hỏi nhau ai sẽ là người giúp mình thoát khỏi ách thống trị của Pháp. Người này nghĩ là Anh, có người lại cho là Mỹ. Tôi thấy phải đi ra nước ngoài xem cho rõ. Sau khi xem xét họ làm ăn ra sao, tôi sẽ trở về giúp đồng bào tôi\".",
       "coordinates": {
         "start": {
           "province": "Thành phố Hồ Chí Minh",
@@ -111,14 +111,14 @@
         }
       },
       "verification": "",
-      "image": "assets/images/events/6.jpg",
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763789400/%E1%BA%A2nh_ch%E1%BB%A5p_M%C3%A0n_h%C3%ACnh_2021-06-05_l%C3%BAc_23_26_13_orcsl9.png",
       "audio": "assets/audio/events/6.mp3"
     },
     {
       "date": "1912-12",
       "age": 22,
       "movementType": "Di chuyển quốc tế",
-      "event": "Sang Hoa Kỳ, đến New York, sống và lao động cùng nhân dân lao động",
+      "event": "Tại đây, Người có dịp tìm hiểu cuộc đấu tranh giành độc lập của nhân dân Mỹ với bản Tuyên ngôn độc lập nổi tiếng trong lịch sử. Người vừa đi làm thuê để kiếm sống vừa tìm hiểu đời sống của những người lao động Mỹ. Người đã đến thăm quận Brooklyn của thành phố New York. Người đi xe điện ngầm đến khu Harlem để tìm hiểu đời sống và cuộc đấu tranh chống phân biệt chủng tộc của những người da đen. Ở nước Mỹ không lâu nhưng Chủ tịch Hồ Chí Minh đã sớm nhận ra bộ mặt thật của đế quốc Hoa Kỳ. Đằng sau khẩu hiệu “cộng hòa dân chủ” của giai cấp tư sản Mỹ là những thủ đoạn bóc lột rất tàn bạo.",
       "coordinates": {
         "start": {
           "country": "Pháp",
@@ -130,14 +130,14 @@
         }
       },
       "verification": "",
-      "image": "assets/images/events/7.jpg",
-      "audio": "assets/audio/events/7.mp3"
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763789856/bac-ho-4_UMBA_qv5use.jpg",
+      "audio": "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1763789635/de_tiep_tuc_thuc_hien_muc_dich_do_nam_1912_chu_ba480360-0708-4bc2-aec6-9efc0a4c9516_w99wrh.mp3"
     },
     {
       "date": "1913-12",
       "age": 23,
       "movementType": "Di chuyển quốc tế",
-      "event": "Rời nước Mỹ sang nước Anh, làm nghề cào tuyết cho một trường học, đốt lò rồi phụ bếp cho khách sạn",
+      "event": "Rời nước Mỹ sang nước Anh, làm nghề cào tuyết cho một trường học, đốt lò rồi phụ bếp cho khách sạn. Tại Anh, Chủ tịch Hồ Chí Minh đã hăng hái tham dự những cuộc diễn thuyết ngoài trời của nhiều nhà chính trị và triết học, tham gia Hội những người lao động hải ngoại, ủng hộ cuộc đấu tranh yêu nước của nhân dân Airơlen. Cũng trong thời gian này, Người được đọc một tờ báo Anh đưa tin về ông Terence Mac Swiney, Thị trưởng thành phố (Cork-Coóc), nhà đại ái quốc Airơlen, đấu tranh chống đế quốc Anh, bị bắt. Trong tù ông đã tuyệt thực. Ông nằm nghiêng một phía, không ăn, không cử động hơn 40 ngày và hy sinh. Hàng ngàn người Airơlen lưu vong nối nhau thành hàng dài trên đường phố London đưa tiễn ông Mac Swiney về yên nghỉ tại Cork.",
       "coordinates": {
         "start": {
           "country": "Mỹ",
@@ -149,14 +149,14 @@
         }
       },
       "verification": "",
-      "image": "assets/images/events/8.jpg",
-      "audio": "assets/audio/events/8.mp3"
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763789640/Screenshot_2025-11-22_123346_hlon6w.png",
+      "audio": "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1763789888/dau_nam_1913_chu_tich_ho_chi_minh_theo_tau_roi_abc5fb19-fb78-42ec-b4ed-b36563d471d8_utczqj.mp3"
     },
     {
       "date": "1917-12",
       "age": 27,
       "movementType": "Di chuyển quốc tế",
-      "event": "Từ Anh trở lại Pháp, hoạt động trong phong trào Việt kiều và công nhân Pháp",
+      "event": "Cuối năm 1917, Chủ tịch Hồ Chí Minh từ Anh trở lại Pháp để có điều kiện trực tiếp hoạt động trong phong trào Việt kiều và phong trào công nhân Pháp. ",
       "coordinates": {
         "start": {
           "country": "Anh",
@@ -168,14 +168,14 @@
         }
       },
       "verification": "",
-      "image": "assets/images/events/9.jpg",
-      "audio": "assets/audio/events/9.mp3"
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763790095/nguyen-ai-quoc_hhu12j.jpg",
+      "audio": ""
     },
     {
       "date": "1919-06-18",
       "age": 29,
       "movementType": "Hoạt động tại chỗ",
-      "event": "Lấy tên Nguyễn Ái Quốc, gửi \"Bản yêu sách của nhân dân An Nam\" đến Hội nghị Versailles (Pháp)",
+      "event": "Đầu năm 1919, Chủ tịch Hồ Chí Minh gia nhập Đảng Xã hội Pháp, tổ chức được xem là tiếp nối lý tưởng tự do, bình đẳng, bác ái của Cách mạng Pháp. Đại diện Hội những người yêu nước Việt Nam tại Pháp, Người cùng Phan Châu Trinh và Phan Văn Trường soạn bản Yêu sách của nhân dân An Nam gửi Hội nghị Versailles, ký tên Nguyễn Ái Quốc. Bản Yêu sách gồm tám điểm, trong đó có yêu cầu ân xá tù chính trị và đề nghị lập đoàn đại biểu người bản xứ tại Nghị viện Pháp để phản ánh nguyện vọng của nhân dân.",
       "coordinates": {
         "start": {
           "country": "Pháp",
@@ -187,8 +187,8 @@
         }
       },
       "verification": "",
-      "image": "assets/images/events/10.jpg",
-      "audio": "assets/audio/events/10.mp3"
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763790095/nguyen-ai-quoc_hhu12j.jpg",
+      "audio": "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1763790095/cuoi_nam_1917_chu_tich_ho_chi_minh_tu_anh_tro_b97e3368-3038-4deb-afd3-8abbaa8bb77c_ygnfmh.mp3"
     },
     {
       "date": "1920-12-25",
@@ -206,14 +206,14 @@
         }
       },
       "verification": "",
-      "image": "assets/images/events/11.jpg",
-      "audio": "assets/audio/events/11.mp3"
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763790095/nguyen-ai-quoc_hhu12j.jpg",
+      "audio": "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1763790815/dai_hoi_dai_bieu_toan_quoc_lan_thu_xviii_dang_xa_76c1f41d-7ac7-4fab-af8d-30d329b11b40_uxoq2o.mp3"
     },
     {
-      "date": "1921",
-      "age": 31,
+      "date": "1922-02-19",
+      "age": 32,
       "movementType": "Di chuyển ngắn",
-      "event": "Cùng một số người yêu nước ở các thuộc địa Pháp sáng lập Hội Liên hiệp các dân tộc thuộc địa tại Paris",
+      "event": "Ðầu tháng 2/1922, Chủ tịch Hồ Chí Minh  và những người cách mạng Algeria, Tunisia, Maroc, Madagascar ở Paris họp bàn và cùng nhau lập ra Hội hợp tác người cùng khổ, đóng cổ phần để ra một ấn phẩm báo chí thật sự của các thuộc địa bằng tiếng Pháp. Như Chủ tịch Hồ Chí Minh  khẳng định: Ðây chính là “một luồng gió mới thổi đến nhân dân các nước bị áp bức”.",
       "coordinates": {
         "start": {
           "country": "Pháp",
@@ -225,8 +225,8 @@
         }
       },
       "verification": "",
-      "image": "assets/images/events/12.jpg",
-      "audio": "assets/audio/events/12.mp3"
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763790632/4_bao_02-1641777414038_zfycwy.jpg",
+      "audio": "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1763791070/au_thang_21922_chu_tich_ho_chi_minh_va_nhung_3b4f0a9f-7d4a-4b1f-ae82-56465abc2002_dnb6aa.mp3"
     },
     {
       "date": "1922-04",
@@ -244,7 +244,7 @@
         }
       },
       "verification": "",
-      "image": "assets/images/events/13.jpg",
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763790682/anh_minh_hoa_lmz1th.png",
       "audio": "assets/audio/events/13.mp3"
     },
     {
