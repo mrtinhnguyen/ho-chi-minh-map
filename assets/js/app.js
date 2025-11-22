@@ -66,6 +66,17 @@ let animationConfig = {
   },
 };
 
+// Cấu hình tốc độ cho replay mode (nhanh hơn)
+const replayAnimationConfig = {
+  pathDuration: 1000, // 1 giây cho vẽ đường đi
+  cameraFollowDuration: 300, // Rất nhanh cho camera theo dõi
+  cameraPanDuration: 300, // Rất nhanh cho camera di chuyển
+  eventTransitionDelay: 100, // Delay ngắn giữa các event (rất nhanh)
+};
+
+// Lưu cấu hình gốc để restore sau khi replay
+let originalAnimationConfig = null;
+
 // Cấu hình mức tốc độ camera
 const CAMERA_SPEED_LEVELS = [
   {
@@ -2010,8 +2021,15 @@ function createMotionPath(
     dashArray: isConnectionPath ? "4, 8" : "8, 8",
   };
 
-  // Khi kéo, sử dụng thời gian animation cực ngắn để hiển thị nhanh
-  let effectiveDuration = isDragging ? 1 : animationConfig.pathDuration;
+  // Khi kéo hoặc replay, sử dụng thời gian animation ngắn hơn
+  let effectiveDuration;
+  if (isDragging) {
+    effectiveDuration = 1;
+  } else if (isReplaying) {
+    effectiveDuration = replayAnimationConfig.pathDuration;
+  } else {
+    effectiveDuration = animationConfig.pathDuration;
+  }
 
   const motionOptions = {
     auto: isDragging ? true : false,
@@ -2334,9 +2352,11 @@ function showEventAtIndex(index, animated = true, isUserDrag = false) {
 
   if (animated && (isMovingForward || isMovingBackward)) {
     animationConfig.isAnimating = true;
+    // Sử dụng tốc độ replay nếu đang replay
+    const pathDuration = isReplaying ? replayAnimationConfig.pathDuration : animationConfig.pathDuration;
     setTimeout(() => {
       animationConfig.isAnimating = false;
-    }, animationConfig.pathDuration + 100);
+    }, pathDuration + 100);
   }
 
   updateCurrentEventInfo(event);
@@ -2354,13 +2374,15 @@ function showEventAtIndex(index, animated = true, isUserDrag = false) {
   }
 
   if (animated) {
+    // Sử dụng tốc độ replay nếu đang replay
+    const pathDuration = isReplaying ? replayAnimationConfig.pathDuration : animationConfig.pathDuration;
     setTimeout(() => {
       ensureMarkersInteractivity();
       // Hiển thị popup event sau khi animation đường đi hoàn thành (trừ khi đang replay)
       if (isMovingForward && !isUserDrag && !isReplaying) {
         showEventPopup(event, index);
       }
-    }, animationConfig.pathDuration + 100);
+    }, pathDuration + 100);
   } else if (!isUserDrag && !isReplaying) {
     // Hiển thị popup ngay cả khi không có animation (khi tải trang lần đầu), trừ khi đang replay
     showEventPopup(event, index);
@@ -2369,16 +2391,73 @@ function showEventAtIndex(index, animated = true, isUserDrag = false) {
 
 // ==================== Điều khiển camera theo dõi ====================
 /**
+ * Zoom out về tỷ lệ nhỏ nhất để nhìn thấy toàn bộ bản đồ sau khi replay
+ */
+function zoomOutToShowAllMap() {
+  console.log("Zoom out về tỷ lệ nhỏ nhất để nhìn thấy toàn bộ bản đồ");
+  
+  if (!map) return;
+  
+  // Tính bounds của tất cả các đường đi đã được vẽ
+  const bounds = L.latLngBounds([]);
+  
+  // Thêm bounds của tất cả paths
+  pathLayers.forEach((path) => {
+    if (path._map && path.getBounds) {
+      try {
+        const pathBounds = path.getBounds();
+        if (pathBounds && pathBounds.isValid()) {
+          bounds.extend(pathBounds);
+        }
+      } catch (e) {
+        console.warn("Không thể lấy bounds của path:", e);
+      }
+    }
+  });
+  
+  // Thêm bounds của tất cả markers
+  eventMarkers.forEach((marker) => {
+    if (marker._map && marker.getLatLng) {
+      try {
+        bounds.extend(marker.getLatLng());
+      } catch (e) {
+        console.warn("Không thể lấy latlng của marker:", e);
+      }
+    }
+  });
+  
+  // Nếu có bounds hợp lệ, zoom về đó với padding
+  if (bounds.isValid()) {
+    map.fitBounds(bounds, {
+      animate: true,
+      duration: 1.5,
+      padding: [50, 50],
+      maxZoom: 5, // Giới hạn zoom tối đa để đảm bảo nhìn thấy toàn bộ
+    });
+  } else {
+    // Nếu không có bounds hợp lệ, zoom về minZoom
+    map.setView([16.0544, 108.2772], map.getMinZoom(), {
+      animate: true,
+      duration: 1.5,
+    });
+  }
+}
+
+/**
  * Xử lý logic camera theo dõi
  */
 function handleCameraFollow(currentEvent, previousIndex, animated = true) {
   if (!currentEvent) return;
 
+  // Sử dụng tốc độ replay nếu đang replay
+  const cameraFollowDuration = isReplaying ? replayAnimationConfig.cameraFollowDuration : animationConfig.cameraFollowDuration;
+  const cameraPanDuration = isReplaying ? replayAnimationConfig.cameraPanDuration : animationConfig.cameraPanDuration;
+
   const bounds = calculatePathBounds(currentEvent, previousIndex);
   if (bounds && bounds.isValid()) {
     const panOptions = {
       animate: animated,
-      duration: animated ? animationConfig.cameraFollowDuration / 1000 : 0, // Thời lượng camera
+      duration: animated ? cameraFollowDuration / 1000 : 0, // Thời lượng camera
       paddingTopLeft: [50, 50],
       paddingBottomRight: [50, 100],
       maxZoom: 8,
@@ -2390,7 +2469,7 @@ function handleCameraFollow(currentEvent, previousIndex, animated = true) {
     const [lng, lat] = currentEvent.endCoords;
     const panOptions = {
       animate: animated,
-      duration: animated ? animationConfig.cameraPanDuration / 1000 : 0, // Thời lượng di chuyển
+      duration: animated ? cameraPanDuration / 1000 : 0, // Thời lượng di chuyển
       easeLinearity: 0.5,
     };
     map.setView([lat, lng], Math.max(map.getZoom(), 6), panOptions);
@@ -3115,11 +3194,18 @@ function playNextEvent() {
     if (currentEventIndex >= trajectoryData.events.length - 1) {
       isPlaying = false;
       // Reset flag replay khi đến event cuối cùng
+      const wasReplaying = isReplaying;
       isReplaying = false;
+      
       const btn = document.getElementById("play-btn");
       if (btn) {
         btn.textContent = "▶";
         btn.title = "Phát";
+      }
+      
+      // Nếu vừa hoàn thành replay, zoom out về tỷ lệ nhỏ nhất để nhìn thấy toàn bộ bản đồ
+      if (wasReplaying) {
+        zoomOutToShowAllMap();
       }
     }
     return;
@@ -3138,8 +3224,8 @@ function playNextEvent() {
 
   // Khi đang replay, tự động chuyển sang event tiếp theo sau một khoảng thời gian ngắn (chỉ animation, không có popup/audio)
   if (isReplaying) {
-    // Tự động chuyển sau khi animation đường đi hoàn thành
-    const delay = animationConfig.pathDuration + 200;
+    // Tự động chuyển sau khi animation đường đi hoàn thành (sử dụng tốc độ replay)
+    const delay = replayAnimationConfig.pathDuration + replayAnimationConfig.eventTransitionDelay;
     console.log("Replay mode: Sẽ chuyển sang event tiếp theo sau", delay, "ms");
     playInterval = setTimeout(() => {
       if (isPlaying && isReplaying) {
@@ -4854,13 +4940,13 @@ function replayFullAnimation() {
     console.log("Bắt đầu replay từ event 0, isReplaying:", isReplaying);
     // Hiển thị event đầu tiên
     showEventAtIndex(0, true);
-    // Sau đó tự động chuyển sang event tiếp theo để bắt đầu chuỗi animation
+    // Sau đó tự động chuyển sang event tiếp theo để bắt đầu chuỗi animation (sử dụng tốc độ replay)
     setTimeout(() => {
       if (isPlaying && isReplaying) {
         console.log("Bắt đầu chuỗi animation tự động");
         playNextEvent();
       }
-    }, animationConfig.pathDuration + 300);
+    }, replayAnimationConfig.pathDuration + replayAnimationConfig.eventTransitionDelay);
   }, 1000);
 }
 
