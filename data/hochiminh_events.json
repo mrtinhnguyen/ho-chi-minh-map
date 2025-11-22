@@ -251,7 +251,7 @@
       "date": "1923-06",
       "age": 33,
       "movementType": "Di chuyển quốc tế",
-      "event": "Sang Liên Xô làm việc tại Quốc tế Cộng sản ở Moscow",
+      "event": "Tháng 6/1923, Chủ tịch Hồ Chí Minh được Ðảng Cộng sản Pháp cử đi Liên Xô dự đại hội lần thứ năm của Quốc tế Cộng sản với danh nghĩa là đại biểu dân tộc thuộc địa, Chủ tịch Hồ Chí Minh bí mật khẩn trương chủ động sắp xếp chu đáo, bàn giao lại cho tổ chức công việc, tài sản của báo Le Paria một cách cụ thể, rõ ràng",
       "coordinates": {
         "start": {
           "country": "Pháp",
@@ -263,14 +263,14 @@
         }
       },
       "verification": "",
-      "image": "assets/images/events/14.jpg",
-      "audio": "assets/audio/events/14.mp3"
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763791295/Tintuc_cgs_vn_20146109h37m29s_ahcbru.jpg",
+      "audio": "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1763791293/thang_61923_chu_tich_ho_chi_minh_duoc_ang_cong_efcf41b8-e513-406c-8096-9054e7db0901_dttw9j.mp3"
     },
     {
-      "date": "1923-10",
+      "date": "1923-10-10",
       "age": 33,
       "movementType": "Hoạt động tại chỗ",
-      "event": "Dự Hội nghị Quốc tế Nông dân lần thứ nhất, được bầu vào Hội đồng Quốc tế Nông dân",
+      "event": "Ngày 10/10/2923, Chủ tịch Hồ Chí Minh dự Hội nghị lần thứ nhất Quốc tế Nông dân khai mạc tại Cung Anđrâyépxki trong Điện Kremli (Mátxcơva) với tư cách đại biểu chính thức của nông dân Đông Dương. Từ diễn đàn, Người đã tố cáo tội ác của thực dân Pháp đối với các thuộc địa, nêu lên nỗi khổ cực của người nông dân và kêu gọi: “Thưa các đồng chí, khi các đồng chí được tổ chức lại, các đồng chí cần phải nêu gương cho chúng tôi, giúp đỡ chúng tôi, dang rộng cánh tay anh em đón chúng tôi để chúng tôi cũng có thể bước vào gia đình vô sản quốc tế”",
       "coordinates": {
         "start": {
           "country": "Nga",
@@ -282,14 +282,14 @@
         }
       },
       "verification": "",
-      "image": "assets/images/events/15.jpg",
-      "audio": "assets/audio/events/15.mp3"
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763791448/hqdefault_ylwbdq.jpg",
+      "audio": "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1763791449/ngay_10102923_chu_tich_ho_chi_minh_du_hoi_nghi_fc923ca5-b36e-4de4-8a6b-2a739d23e1af_q76hw0.mp3"
     },
     {
-      "date": "1924",
+      "date": "1924-07",
       "age": 34,
       "movementType": "Hoạt động tại chỗ",
-      "event": "Dự Đại hội V Quốc tế Cộng sản, Đại hội Quốc tế Thanh niên, Đại hội Quốc tế Công hội đỏ",
+      "event": "Tháng 7/1924, Chủ tịch Hồ Chí Minh được mời tham dự Đại hội lần thứ III Quốc tế Công hội Đỏ họp từ ngày 7 đến ngày 22-7-1924 tại Mátxcơva với tư cách là đại biểu Đông Dương. Trong phiên họp thứ 15, ngày 21-7, Chủ tịch Hồ Chí Minh đã đọc tham luận về sản xuất công nghiệp ở Đông Dương và tình hình công nhân tại một số xí nghiệp lớn. Tố cáo chế độ bóc lột thuộc địa nặng nề và sự áp bức tàn bạo của thực dân Pháp, Chủ tịch Hồ Chí Minh nói: “Với sự giúp đỡ hào hiệp của chủ nghĩa đế quốc Pháp, ở Đông Dương thật ra là đã phục hồi chế độ nô lệ”.",
       "coordinates": {
         "start": {
           "country": "Nga",
@@ -301,8 +301,8 @@
         }
       },
       "verification": "",
-      "image": "assets/images/events/16.jpg",
-      "audio": "assets/audio/events/16.mp3"
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763791772/61147_298_m7uzui.jpg",
+      "audio": "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1763791772/thang_71924_chu_tich_ho_chi_minh_duoc_moi_tham_bca618f0-774e-4999-ab53-662e3ae7b241_1_rk3pxq.mp3"
     },
     {
       "date": "1924-11",
