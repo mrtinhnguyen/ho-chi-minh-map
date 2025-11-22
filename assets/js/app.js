@@ -2873,12 +2873,12 @@ function playEventAudio(event, eventIndex) {
         });
     }
   } else {
-    // Nếu user chưa tương tác, tự động chuyển sau 2 giây
-    console.log("User chưa tương tác, bỏ qua audio và tự động chuyển sau 2 giây");
+    // Nếu user chưa tương tác, tự động chuyển sau 8 giây
+    console.log("User chưa tương tác, bỏ qua audio và tự động chuyển sau 8 giây");
     if (eventIndex < trajectoryData.events.length - 1) {
       eventPopupTimeout = setTimeout(() => {
         continueToNextEvent(eventIndex);
-      }, 2000);
+      }, 8000);
     }
   }
   
