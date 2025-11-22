@@ -14,7 +14,9 @@
           "district": "Kim Liên"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763785458/chu-tich-ho-chi-minh-1_zsvhnx.jpg",
+      "audio": "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1763788239/chu_tich_ho_chi_minh_thoi_tho_au_ten_la_nguyen_0569c8e2-a144-4097-b183-376722178c80_j7n05j.mp3"
     },
     {
       "date": "1901",
@@ -32,7 +34,9 @@
           "city": "Huế"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763786458/24-6-001-100416-240619-71_xlize9.jpg",
+      "audio": "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1763787879/nam_1895_chu_tich_ho_chi_minh_cung_voi_gia_dinh_ed52e821-53cc-41bc-bc32-d4377c3824c8_sl7vxb.mp3"
     },
     {
       "date": "1906",
@@ -49,7 +53,9 @@
           "city": "Huế"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "https://res.cloudinary.com/dlrqtr4gs/image/upload/v1763787405/1_BUSW.jpg_q2ktiw.jpg",
+      "audio": "https://res.cloudinary.com/dlrqtr4gs/video/upload/v1763786998/cuoi_thang_51906_ong_nguyen_sinh_huy_vao_kinh_9e3815f2-10ba-4d4e-af9a-fcc074c00e08_o8kt6r.mp3"
     },
     {
       "date": "1910",
@@ -66,7 +72,9 @@
           "city": "Phan Thiết"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/4.jpg",
+      "audio": "assets/audio/events/4.mp3"
     },
     {
       "date": "1911-06-03",
@@ -83,7 +91,9 @@
           "city": "Sài Gòn"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/5.jpg",
+      "audio": "assets/audio/events/5.mp3"
     },
     {
       "date": "1911-06-05",
@@ -100,7 +110,9 @@
           "city": "Marseille"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/6.jpg",
+      "audio": "assets/audio/events/6.mp3"
     },
     {
       "date": "1912-12",
@@ -117,7 +129,9 @@
           "city": "New York"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/7.jpg",
+      "audio": "assets/audio/events/7.mp3"
     },
     {
       "date": "1913-12",
@@ -134,7 +148,9 @@
           "city": "London"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/8.jpg",
+      "audio": "assets/audio/events/8.mp3"
     },
     {
       "date": "1917-12",
@@ -151,7 +167,9 @@
           "city": "Paris"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/9.jpg",
+      "audio": "assets/audio/events/9.mp3"
     },
     {
       "date": "1919-06-18",
@@ -168,7 +186,9 @@
           "city": "Paris"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/10.jpg",
+      "audio": "assets/audio/events/10.mp3"
     },
     {
       "date": "1920-12-25",
@@ -185,7 +205,9 @@
           "city": "Tours"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/11.jpg",
+      "audio": "assets/audio/events/11.mp3"
     },
     {
       "date": "1921",
@@ -202,7 +224,9 @@
           "city": "Paris"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/12.jpg",
+      "audio": "assets/audio/events/12.mp3"
     },
     {
       "date": "1922-04",
@@ -219,7 +243,9 @@
           "city": "Paris"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/13.jpg",
+      "audio": "assets/audio/events/13.mp3"
     },
     {
       "date": "1923-06",
@@ -236,7 +262,9 @@
           "city": "Moscow"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/14.jpg",
+      "audio": "assets/audio/events/14.mp3"
     },
     {
       "date": "1923-10",
@@ -253,7 +281,9 @@
           "city": "Moscow"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/15.jpg",
+      "audio": "assets/audio/events/15.mp3"
     },
     {
       "date": "1924",
@@ -270,7 +300,9 @@
           "city": "Moscow"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/16.jpg",
+      "audio": "assets/audio/events/16.mp3"
     },
     {
       "date": "1924-11",
@@ -287,7 +319,9 @@
           "city": "Quảng Châu"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/17.jpg",
+      "audio": "assets/audio/events/17.mp3"
     },
     {
       "date": "1925-06",
@@ -304,7 +338,9 @@
           "city": "Quảng Châu"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/18.jpg",
+      "audio": "assets/audio/events/18.mp3"
     },
     {
       "date": "1925",
@@ -321,7 +357,9 @@
           "city": "Quảng Châu"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/19.jpg",
+      "audio": "assets/audio/events/19.mp3"
     },
     {
       "date": "1927-05",
@@ -352,7 +390,9 @@
           }
         ]
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/20.jpg",
+      "audio": "assets/audio/events/20.mp3"
     },
     {
       "date": "1928-07",
@@ -369,7 +409,9 @@
           "city": "Bangkok"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/21.jpg",
+      "audio": "assets/audio/events/21.mp3"
     },
     {
       "date": "1930-02-03",
@@ -386,7 +428,9 @@
           "city": "Hồng Kông"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/22.jpg",
+      "audio": "assets/audio/events/22.mp3"
     },
     {
       "date": "1931-06-06",
@@ -403,7 +447,9 @@
           "city": "Hồng Kông"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/23.jpg",
+      "audio": "assets/audio/events/23.mp3"
     },
     {
       "date": "1933-01",
@@ -426,7 +472,9 @@
           }
         ]
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/24.jpg",
+      "audio": "assets/audio/events/24.mp3"
     },
     {
       "date": "1934",
@@ -443,7 +491,9 @@
           "city": "Moscow"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/25.jpg",
+      "audio": "assets/audio/events/25.mp3"
     },
     {
       "date": "1938-10",
@@ -460,7 +510,9 @@
           "city": "Diên An"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/26.jpg",
+      "audio": "assets/audio/events/26.mp3"
     },
     {
       "date": "1941-01-28",
@@ -477,7 +529,9 @@
           "city": "Pác Bó"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/27.jpg",
+      "audio": "assets/audio/events/27.mp3"
     },
     {
       "date": "1941-05",
@@ -494,7 +548,9 @@
           "city": "Pác Bó"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/28.jpg",
+      "audio": "assets/audio/events/28.mp3"
     },
     {
       "date": "1942-08",
@@ -511,7 +567,9 @@
           "city": "Quảng Tây"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/29.jpg",
+      "audio": "assets/audio/events/29.mp3"
     },
     {
       "date": "1943-09",
@@ -528,7 +586,9 @@
           "city": "Pác Bó"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/30.jpg",
+      "audio": "assets/audio/events/30.mp3"
     },
     {
       "date": "1944-12-22",
@@ -545,7 +605,9 @@
           "city": "Pác Bó"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/31.jpg",
+      "audio": "assets/audio/events/31.mp3"
     },
     {
       "date": "1945-05",
@@ -562,7 +624,9 @@
           "city": "Tân Trào"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/32.jpg",
+      "audio": "assets/audio/events/32.mp3"
     },
     {
       "date": "1945-08",
@@ -579,7 +643,9 @@
           "city": "Tân Trào"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/33.jpg",
+      "audio": "assets/audio/events/33.mp3"
     },
     {
       "date": "1945-08-16",
@@ -596,7 +662,9 @@
           "city": "Hà Nội"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/34.jpg",
+      "audio": "assets/audio/events/34.mp3"
     },
     {
       "date": "1945-09-02",
@@ -614,7 +682,9 @@
           "district": "Ba Đình"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/35.jpg",
+      "audio": "assets/audio/events/35.mp3"
     },
     {
       "date": "1946-01-01",
@@ -631,7 +701,9 @@
           "city": "Hà Nội"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/36.jpg",
+      "audio": "assets/audio/events/36.mp3"
     },
     {
       "date": "1946-01",
@@ -648,7 +720,9 @@
           "city": "Hà Nội"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/37.jpg",
+      "audio": "assets/audio/events/37.mp3"
     },
     {
       "date": "1946-03-02",
@@ -665,7 +739,9 @@
           "city": "Hà Nội"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/38.jpg",
+      "audio": "assets/audio/events/38.mp3"
     },
     {
       "date": "1946-05-31",
@@ -682,7 +758,9 @@
           "city": "Paris"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/39.jpg",
+      "audio": "assets/audio/events/39.mp3"
     },
     {
       "date": "1946-09-14",
@@ -699,7 +777,9 @@
           "city": "Hà Nội"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/40.jpg",
+      "audio": "assets/audio/events/40.mp3"
     },
     {
       "date": "1946-11",
@@ -716,7 +796,9 @@
           "city": "Hà Nội"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/41.jpg",
+      "audio": "assets/audio/events/41.mp3"
     },
     {
       "date": "1946-12-19",
@@ -733,7 +815,9 @@
           "city": "Hà Nội"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/42.jpg",
+      "audio": "assets/audio/events/42.mp3"
     },
     {
       "date": "1947-10",
@@ -750,7 +834,9 @@
           "city": "Tân Trào"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/43.jpg",
+      "audio": "assets/audio/events/43.mp3"
     },
     {
       "date": "1951-02",
@@ -767,7 +853,9 @@
           "city": "Tân Trào"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/44.jpg",
+      "audio": "assets/audio/events/44.mp3"
     },
     {
       "date": "1954-05-07",
@@ -784,7 +872,9 @@
           "city": "Điện Biên Phủ"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/45.jpg",
+      "audio": "assets/audio/events/45.mp3"
     },
     {
       "date": "1954-10-09",
@@ -801,7 +891,9 @@
           "city": "Hà Nội"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/46.jpg",
+      "audio": "assets/audio/events/46.mp3"
     },
     {
       "date": "1955",
@@ -818,7 +910,9 @@
           "city": "Hà Nội"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/47.jpg",
+      "audio": "assets/audio/events/47.mp3"
     },
     {
       "date": "1955-09-23",
@@ -835,7 +929,9 @@
           "city": "Hà Nội"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/48.jpg",
+      "audio": "assets/audio/events/48.mp3"
     },
     {
       "date": "1956-10",
@@ -852,7 +948,9 @@
           "city": "Hà Nội"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/49.jpg",
+      "audio": "assets/audio/events/49.mp3"
     },
     {
       "date": "1960-09-05",
@@ -869,7 +967,9 @@
           "city": "Hà Nội"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/50.jpg",
+      "audio": "assets/audio/events/50.mp3"
     },
     {
       "date": "1964",
@@ -886,7 +986,9 @@
           "city": "Hà Nội"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/51.jpg",
+      "audio": "assets/audio/events/51.mp3"
     },
     {
       "date": "1969-09-02",
@@ -903,7 +1005,9 @@
           "city": "Hà Nội"
         }
       },
-      "verification": ""
+      "verification": "",
+      "image": "assets/images/events/52.jpg",
+      "audio": "assets/audio/events/52.mp3"
     }
   ]
 }

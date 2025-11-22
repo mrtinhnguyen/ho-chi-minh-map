@@ -418,27 +418,47 @@
         <div class="loading-text">Đang tải dữ liệu hành trình...</div>
       </div>
 
+      <!-- Popup chào mừng khi vào trang -->
+      <div id="welcome-popup" class="welcome-popup">
+        <div class="welcome-popup-content">
+          <div class="welcome-popup-header">
+            <h2>Chào mừng đến với</h2>
+            <h1>Hành trình tìm đường cứu nước</h1>
+            <p class="welcome-subtitle">Chủ tịch Hồ Chí Minh (1890-1969)</p>
+          </div>
+          <div class="welcome-popup-body">
+            <p class="welcome-description">
+              Khám phá hành trình vĩ đại của Chủ tịch Hồ Chí Minh qua các địa điểm lịch sử, 
+              từ làng Sen quê hương đến những chuyến đi bôn ba tìm đường cứu nước.
+            </p>
+            <button class="welcome-explore-btn" id="welcome-explore-btn">
+              Khám phá ngay
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Popup hiển thị thông tin event khi đến địa điểm -->
       <div id="event-popup" class="event-popup">
         <div class="event-popup-content">
+          <div class="event-popup-image-container" id="event-popup-image-container">
+            <img id="event-popup-image" class="event-popup-image" src="" alt="Hình ảnh sự kiện" style="display: none;">
+          </div>
           <div class="event-popup-header">
             <div class="event-popup-date" id="event-popup-date">1890-05-19</div>
             <div class="event-popup-age" id="event-popup-age">Tuổi: 0</div>
           </div>
           <div class="event-popup-location" id="event-popup-location">Địa điểm</div>
           <div class="event-popup-title" id="event-popup-title">Sự kiện</div>
-          <div class="event-popup-progress">
-            <div class="event-popup-progress-bar">
-              <div class="event-popup-progress-fill" id="event-popup-progress-fill"></div>
-            </div>
-            <div class="event-popup-progress-text" id="event-popup-progress-text">6s</div>
-          </div>
+          <button class="event-popup-continue-btn" id="event-popup-continue-btn">Tiếp tục</button>
         </div>
       </div>
     </div>
 
     <!-- Phần tử âm thanh -->
     <audio id="music-audio" preload="none"></audio>
+    <!-- Phần tử âm thanh cho event narration -->
+    <audio id="event-audio" preload="none"></audio>
 
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
     <!-- Plugin hỗ trợ Google Maps cho Leaflet -->

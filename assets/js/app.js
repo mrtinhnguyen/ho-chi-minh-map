@@ -32,7 +32,7 @@ let currentMusicIndex = 0;
 let isMusicPlaying = false;
 let musicAudio = null;
 let musicProgressInterval = null;
-let musicVolume = 0.2; // Volume mặc định 20%
+let musicVolume = 0.06; // Volume mặc định 6%
 
 // Thêm biến quản lý trạng thái âm thanh
 let audioLoadingPromise = null;
@@ -46,6 +46,10 @@ let currentHighlightedEventIndex = -1;
 let eventPopupTimeout = null;
 let eventPopupProgressInterval = null;
 let eventPopupRemainingTime = 0;
+let eventAudio = null; // Audio element cho event narration
+let currentEventAudio = null; // Audio hiện tại đang phát
+let currentPopupEventIndex = -1; // Event index hiện tại đang hiển thị trong popup
+let userHasInteracted = false; // Đánh dấu user đã tương tác với trang (để phát audio)
 
 let animationConfig = {
   pathDuration: 5000, // Điều khiển tốc độ vẽ đường đi
@@ -915,10 +919,17 @@ function showDetailPanel(locationGroup) {
           break;
       }
 
+      const imageHtml = event.image 
+        ? `<div class="event-item-image-container">
+             <img src="${event.image}" alt="Hình ảnh sự kiện" class="event-item-image" onerror="this.style.display='none';">
+           </div>`
+        : "";
+      
       return `
       <div class="${itemClass} ${visitTypeClass}" data-event-index="${
         event.index
       }">
+        ${imageHtml}
         <div class="event-header">
           <span class="visit-order-number">${orderNumber}</span>
           <span class="event-date-item">${event.date}</span>
@@ -941,6 +952,15 @@ function showDetailPanel(locationGroup) {
 
     item.addEventListener("click", (e) => {
       e.stopPropagation();
+
+      // Đánh dấu user đã tương tác
+      userHasInteracted = true;
+
+      // Phát audio khi click vào event
+      const event = trajectoryData.events.find(ev => ev.index === eventIndex);
+      if (event) {
+        playEventAudio(event, eventIndex);
+      }
 
       if (currentHighlightedEventIndex === eventIndex) {
         clearPathHighlight();
@@ -2623,10 +2643,14 @@ function showEventPopup(event, eventIndex) {
   const popupAge = document.getElementById("event-popup-age");
   const popupLocation = document.getElementById("event-popup-location");
   const popupTitle = document.getElementById("event-popup-title");
-  const popupProgressFill = document.getElementById("event-popup-progress-fill");
-  const popupProgressText = document.getElementById("event-popup-progress-text");
+  const popupImage = document.getElementById("event-popup-image");
+  const popupImageContainer = document.getElementById("event-popup-image-container");
+  const continueBtn = document.getElementById("event-popup-continue-btn");
 
   if (!popup || !popupDate || !popupAge || !popupLocation || !popupTitle) return;
+
+  // Lưu event index hiện tại
+  currentPopupEventIndex = eventIndex;
 
   // Định dạng ngày tháng
   const dateStr = event.date || "Không xác định";
@@ -2638,31 +2662,39 @@ function showEventPopup(event, eventIndex) {
   popupLocation.textContent = event.endLocation || "Địa điểm không xác định";
   popupTitle.textContent = event.event || "Không có mô tả";
 
+  // Hiển thị hình ảnh nếu có
+  if (popupImage && popupImageContainer) {
+    if (event.image) {
+      popupImage.src = event.image;
+      popupImage.style.display = "block";
+      popupImage.onerror = () => {
+        popupImage.style.display = "none";
+      };
+    } else {
+      popupImage.style.display = "none";
+    }
+  }
+
   // Hiển thị popup với animation
   popup.classList.add("visible");
 
-  // Đếm ngược 6 giây
-  eventPopupRemainingTime = 6;
-  updatePopupProgress();
+  // Thêm event listener cho nút Tiếp tục (phải làm trước khi phát audio)
+  if (continueBtn) {
+    // Xóa event listener cũ
+    continueBtn.onclick = null;
+    // Thêm event listener mới
+    continueBtn.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      // Đánh dấu user đã tương tác
+      userHasInteracted = true;
+      console.log("Nút Tiếp tục được click");
+      continueToNextEvent(eventIndex);
+    };
+  }
 
-  // Cập nhật thanh tiến độ mỗi giây
-  eventPopupProgressInterval = setInterval(() => {
-    eventPopupRemainingTime--;
-    updatePopupProgress();
-
-    if (eventPopupRemainingTime <= 0) {
-      hideEventPopup();
-      // Nếu đang phát tự động, tiếp tục với event tiếp theo
-      if (isPlaying && eventIndex < trajectoryData.events.length - 1) {
-        // playNextEvent sẽ được gọi tự động
-      }
-    }
-  }, 1000);
-
-  // Tự động ẩn sau 6 giây
-  eventPopupTimeout = setTimeout(() => {
-    hideEventPopup();
-  }, 6000);
+  // Phát audio nếu có (sau khi popup đã hiển thị)
+  playEventAudio(event, eventIndex);
 }
 
 /**
@@ -2673,6 +2705,9 @@ function hideEventPopup() {
   if (popup) {
     popup.classList.remove("visible");
   }
+
+  // Dừng audio đang phát
+  stopEventAudio();
 
   if (eventPopupTimeout) {
     clearTimeout(eventPopupTimeout);
@@ -2685,6 +2720,138 @@ function hideEventPopup() {
   }
 
   eventPopupRemainingTime = 0;
+  currentPopupEventIndex = -1;
+}
+
+/**
+ * Chuyển sang event tiếp theo
+ */
+function continueToNextEvent(eventIndex) {
+  console.log("continueToNextEvent được gọi với eventIndex:", eventIndex, "isPlaying:", isPlaying);
+  
+  // Clear timeout trong playNextEvent nếu có
+  if (playInterval) {
+    clearTimeout(playInterval);
+    playInterval = null;
+  }
+  
+  // Dừng audio và đóng popup
+  hideEventPopup();
+  
+  // Kiểm tra xem có event tiếp theo không
+  if (eventIndex < trajectoryData.events.length - 1) {
+    const nextIndex = eventIndex + 1;
+    
+    // Nếu đang phát tự động, gọi playNextEvent để tiếp tục chuỗi
+    if (isPlaying) {
+      if (typeof playNextEvent === 'function') {
+        console.log("Gọi playNextEvent (đang phát tự động)");
+        playNextEvent();
+      } else {
+        console.error("playNextEvent không tồn tại");
+      }
+    } else {
+      // Nếu không đang phát tự động, chỉ chuyển sang event tiếp theo mà không tự động tiếp tục
+      console.log("Chuyển sang event tiếp theo (không phát tự động):", nextIndex);
+      showEventAtIndex(nextIndex, true);
+    }
+  } else {
+    console.log("Đã đến event cuối cùng, không có event tiếp theo");
+  }
+}
+
+/**
+ * Phát audio cho event
+ */
+function playEventAudio(event, eventIndex) {
+  // Dừng audio cũ nếu có
+  stopEventAudio();
+
+  // Không có audio thì tự động chuyển sang event tiếp theo sau một chút
+  if (!event || !event.audio) {
+    // Nếu không có audio, tự động chuyển sang event tiếp theo sau 2 giây
+    if (eventIndex < trajectoryData.events.length - 1) {
+      eventPopupTimeout = setTimeout(() => {
+        continueToNextEvent(eventIndex);
+      }, 2000);
+    }
+    return;
+  }
+
+  // Khởi tạo audio element nếu chưa có
+  if (!eventAudio) {
+    eventAudio = document.getElementById("event-audio");
+    if (!eventAudio) {
+      eventAudio = document.createElement("audio");
+      eventAudio.id = "event-audio";
+      eventAudio.preload = "auto";
+      document.body.appendChild(eventAudio);
+    }
+  }
+
+  // Xóa event listener cũ nếu có
+  eventAudio.onended = null;
+  
+  // Thêm event listener khi audio kết thúc - luôn tự động chuyển sang event tiếp theo
+  eventAudio.onended = () => {
+    console.log("Audio đã phát xong, tự động chuyển sang event tiếp theo");
+    // Tự động chuyển sang event tiếp theo khi audio phát xong (không phụ thuộc vào isPlaying)
+    if (eventIndex < trajectoryData.events.length - 1) {
+      continueToNextEvent(eventIndex);
+    }
+  };
+
+  // Phát file audio MP3
+  eventAudio.src = event.audio;
+  eventAudio.volume = 0.7; // Volume 70% cho narration
+  
+  // Load audio
+  eventAudio.load();
+  
+  // Chỉ phát audio nếu user đã tương tác với trang
+  if (userHasInteracted) {
+    const playPromise = eventAudio.play();
+    
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          console.log("Audio đang phát:", event.audio);
+        })
+        .catch((error) => {
+          console.warn("Không thể phát audio:", error);
+          // Nếu không phát được audio, tự động chuyển sang event tiếp theo
+          if (eventIndex < trajectoryData.events.length - 1) {
+            setTimeout(() => {
+              continueToNextEvent(eventIndex);
+            }, 1000);
+          }
+        });
+    }
+  } else {
+    // Nếu user chưa tương tác, tự động chuyển sau 2 giây
+    console.log("User chưa tương tác, bỏ qua audio và tự động chuyển sau 2 giây");
+    if (eventIndex < trajectoryData.events.length - 1) {
+      eventPopupTimeout = setTimeout(() => {
+        continueToNextEvent(eventIndex);
+      }, 2000);
+    }
+  }
+  
+  currentEventAudio = eventAudio;
+}
+
+/**
+ * Dừng audio đang phát
+ */
+function stopEventAudio() {
+  if (eventAudio) {
+    eventAudio.pause();
+    eventAudio.currentTime = 0;
+    eventAudio.onended = null;
+    // Không xóa src để tránh lỗi khi load lại
+  }
+  
+  currentEventAudio = null;
 }
 
 /**
@@ -2844,6 +3011,9 @@ function togglePlay() {
   const btn = document.getElementById("play-btn");
   if (!btn) return;
 
+  // Đánh dấu user đã tương tác
+  userHasInteracted = true;
+
   if (isPlaying) {
     isPlaying = false;
     if (playInterval) {
@@ -2875,17 +3045,23 @@ function playNextEvent() {
     return;
   }
 
+  // Clear timeout cũ nếu có
+  if (playInterval) {
+    clearTimeout(playInterval);
+    playInterval = null;
+  }
+
   showEventAtIndex(currentEventIndex + 1, true);
 
-  // Chờ popup hiển thị 6 giây + thời gian animation đường đi trước khi chuyển event tiếp theo
-  const waitTime = Math.max(
-    currentPlaySpeed,
-    animationConfig.pathDuration + 6000 + 200 // 6 giây cho popup + animation đường đi
-  );
-
+  // Không cần setTimeout nữa vì audio sẽ tự động chuyển khi phát xong
+  // Chỉ đặt timeout dự phòng nếu không có audio hoặc audio quá dài (tối đa 5 phút)
   playInterval = setTimeout(() => {
-    playNextEvent();
-  }, waitTime);
+    // Chỉ chuyển nếu popup vẫn đang hiển thị (có thể audio đã kết thúc nhưng popup chưa đóng)
+    if (currentPopupEventIndex === currentEventIndex && isPlaying) {
+      console.log("Timeout dự phòng: chuyển sang event tiếp theo");
+      playNextEvent();
+    }
+  }, 300000); // Timeout dự phòng 5 phút
 }
 
 /**
@@ -4049,13 +4225,13 @@ function restoreMusicSettings() {
       musicVolume = parseFloat(savedVolume);
       setMusicVolume(musicVolume);
     } else {
-      // Nếu chưa có volume trong localStorage, đặt mặc định 20%
-      setMusicVolume(0.2);
+      // Nếu chưa có volume trong localStorage, đặt mặc định 6%
+      setMusicVolume(0.06);
     }
   } catch (error) {
     console.warn("Không thể đọc cài đặt nhạc:", error);
-    // Nếu có lỗi, đặt volume mặc định 20%
-    setMusicVolume(0.2);
+    // Nếu có lỗi, đặt volume mặc định 6%
+    setMusicVolume(0.06);
   }
 }
 
@@ -4300,6 +4476,70 @@ function monitorMotionPerformance() {
   };
 }
 
+// ==================== Popup chào mừng ====================
+/**
+ * Hiển thị popup chào mừng khi vào trang
+ */
+function showWelcomePopup() {
+  const welcomePopup = document.getElementById("welcome-popup");
+  const exploreBtn = document.getElementById("welcome-explore-btn");
+  
+  if (!welcomePopup) return;
+  
+  // Hiển thị popup
+  welcomePopup.classList.remove("hidden");
+  
+  // Thêm event listener cho nút Khám phá
+  if (exploreBtn) {
+    exploreBtn.onclick = () => {
+      // Đánh dấu user đã tương tác
+      userHasInteracted = true;
+      
+      // Ẩn popup chào mừng
+      welcomePopup.classList.add("hidden");
+      
+      // Hiển thị event đầu tiên
+      if (trajectoryData && trajectoryData.events.length > 0) {
+        showEventAtIndex(0, false);
+      }
+      
+      // Bắt đầu phát nhạc nền
+      startBackgroundMusic();
+      
+      console.log("User đã tương tác, bắt đầu hành trình");
+    };
+  }
+}
+
+/**
+ * Ẩn popup chào mừng
+ */
+function hideWelcomePopup() {
+  const welcomePopup = document.getElementById("welcome-popup");
+  if (welcomePopup) {
+    welcomePopup.classList.add("hidden");
+  }
+}
+
+/**
+ * Bắt đầu phát nhạc nền sau khi user đã tương tác
+ */
+function startBackgroundMusic() {
+  if (MUSIC_PLAYLIST.length > 0 && musicAudio && userHasInteracted) {
+      console.log("Bắt đầu phát nhạc nền với volume 6%");
+      // Đảm bảo volume là 6%
+      if (Math.abs(musicVolume - 0.06) > 0.01) {
+        setMusicVolume(0.06);
+      }
+      // Đảm bảo musicAudio có volume đúng
+      if (musicAudio) {
+        musicAudio.volume = 0.06;
+      }
+    // Tự động phát bài đầu tiên
+    selectSong(0, true);
+  }
+}
+
 // ==================== Liên kết sự kiện ====================
 /**
  * Liên kết tất cả trình nghe sự kiện
@@ -4497,7 +4737,8 @@ async function initApp() {
       });
 
       updateStatistics();
-      showEventAtIndex(0, false);
+      // Không tự động hiển thị event đầu tiên, đợi user click "Khám phá ngay"
+      // showEventAtIndex(0, false);
 
       setTimeout(() => {
         optimizeMotionPerformance();
@@ -4521,27 +4762,13 @@ async function initApp() {
       mapEl.classList.add("panel-visible");
     }
 
-    // Tự động phát nhạc nền sau khi trang đã load xong
+    // Hiển thị popup chào mừng sau khi app đã load xong
     setTimeout(() => {
-      if (MUSIC_PLAYLIST.length > 0 && musicAudio) {
-        console.log("Tự động phát nhạc nền với volume 20%");
-        // Đảm bảo volume là 20% (nếu chưa được set)
-        if (Math.abs(musicVolume - 0.2) > 0.01) {
-          setMusicVolume(0.2);
-        }
-        // Đảm bảo musicAudio có volume đúng
-        if (musicAudio) {
-          musicAudio.volume = 0.2;
-        }
-        // Tự động phát bài đầu tiên
-        selectSong(0, true);
-      } else {
-        console.warn("Không thể tự động phát nhạc:", {
-          playlistLength: MUSIC_PLAYLIST.length,
-          musicAudio: !!musicAudio
-        });
-      }
-    }, 2000); // Đợi 2 giây để đảm bảo music player đã được khởi tạo hoàn toàn
+      showWelcomePopup();
+    }, 500);
+
+    // Không tự động phát nhạc nền khi trang load để tránh autoplay policy
+    // Nhạc sẽ được phát sau khi user click "Khám phá ngay" trong popup chào mừng
 
     window.addEventListener("beforeunload", () => {
       forceStopPoetryAnimation();
