@@ -51,6 +51,7 @@ let currentEventAudio = null; // Audio hiện tại đang phát
 let currentPopupEventIndex = -1; // Event index hiện tại đang hiển thị trong popup
 let userHasInteracted = false; // Đánh dấu user đã tương tác với trang (để phát audio)
 let youtubePlayer = null; // YouTube player instance
+let isReplaying = false; // Đánh dấu đang trong chế độ replay (không hiển thị popup và audio)
 const FINAL_EVENT_YOUTUBE_VIDEO = "https://www.youtube.com/watch?v=3WwUFLMCVtk"; // Video YouTube cho event cuối cùng
 
 let animationConfig = {
@@ -2320,7 +2321,7 @@ function ensureMarkersInteractivity() {
 function showEventAtIndex(index, animated = true, isUserDrag = false) {
   if (!trajectoryData || index >= trajectoryData.events.length || index < 0)
     return;
-  if (animationConfig.isAnimating && !isUserDrag) return;
+  if (animationConfig.isAnimating && !isUserDrag && !isReplaying) return; // Cho phép animation khi đang replay
 
   const isMovingForward = index > currentEventIndex;
   const isMovingBackward = index < currentEventIndex;
@@ -2328,6 +2329,8 @@ function showEventAtIndex(index, animated = true, isUserDrag = false) {
   previousEventIndex = currentEventIndex;
   currentEventIndex = index;
   const event = trajectoryData.events[index];
+  
+  console.log(`showEventAtIndex: index=${index}, currentEventIndex=${previousEventIndex}->${currentEventIndex}, isReplaying=${isReplaying}, animated=${animated}, isMovingForward=${isMovingForward}`);
 
   if (animated && (isMovingForward || isMovingBackward)) {
     animationConfig.isAnimating = true;
@@ -2353,13 +2356,13 @@ function showEventAtIndex(index, animated = true, isUserDrag = false) {
   if (animated) {
     setTimeout(() => {
       ensureMarkersInteractivity();
-      // Hiển thị popup event sau khi animation đường đi hoàn thành
-      if (isMovingForward && !isUserDrag) {
+      // Hiển thị popup event sau khi animation đường đi hoàn thành (trừ khi đang replay)
+      if (isMovingForward && !isUserDrag && !isReplaying) {
         showEventPopup(event, index);
       }
     }, animationConfig.pathDuration + 100);
-  } else if (!isUserDrag) {
-    // Hiển thị popup ngay cả khi không có animation (khi tải trang lần đầu)
+  } else if (!isUserDrag && !isReplaying) {
+    // Hiển thị popup ngay cả khi không có animation (khi tải trang lần đầu), trừ khi đang replay
     showEventPopup(event, index);
   }
 }
@@ -3111,6 +3114,8 @@ function playNextEvent() {
   if (!isPlaying || currentEventIndex >= trajectoryData.events.length - 1) {
     if (currentEventIndex >= trajectoryData.events.length - 1) {
       isPlaying = false;
+      // Reset flag replay khi đến event cuối cùng
+      isReplaying = false;
       const btn = document.getElementById("play-btn");
       if (btn) {
         btn.textContent = "▶";
@@ -3126,17 +3131,35 @@ function playNextEvent() {
     playInterval = null;
   }
 
-  showEventAtIndex(currentEventIndex + 1, true);
+  const nextIndex = currentEventIndex + 1;
+  console.log("playNextEvent: Chuyển từ event", currentEventIndex, "sang event", nextIndex, "isReplaying:", isReplaying);
+  
+  showEventAtIndex(nextIndex, true);
 
-  // Không cần setTimeout nữa vì audio sẽ tự động chuyển khi phát xong
-  // Chỉ đặt timeout dự phòng nếu không có audio hoặc audio quá dài (tối đa 5 phút)
-  playInterval = setTimeout(() => {
-    // Chỉ chuyển nếu popup vẫn đang hiển thị (có thể audio đã kết thúc nhưng popup chưa đóng)
-    if (currentPopupEventIndex === currentEventIndex && isPlaying) {
-      console.log("Timeout dự phòng: chuyển sang event tiếp theo");
-    playNextEvent();
-    }
-  }, 300000); // Timeout dự phòng 5 phút
+  // Khi đang replay, tự động chuyển sang event tiếp theo sau một khoảng thời gian ngắn (chỉ animation, không có popup/audio)
+  if (isReplaying) {
+    // Tự động chuyển sau khi animation đường đi hoàn thành
+    const delay = animationConfig.pathDuration + 200;
+    console.log("Replay mode: Sẽ chuyển sang event tiếp theo sau", delay, "ms");
+    playInterval = setTimeout(() => {
+      if (isPlaying && isReplaying) {
+        console.log("Replay: Tự động chuyển sang event tiếp theo");
+        playNextEvent();
+      } else {
+        console.log("Replay: Không chuyển vì isPlaying:", isPlaying, "isReplaying:", isReplaying);
+      }
+    }, delay); // Đợi animation hoàn thành + một chút
+  } else {
+    // Không cần setTimeout nữa vì audio sẽ tự động chuyển khi phát xong
+    // Chỉ đặt timeout dự phòng nếu không có audio hoặc audio quá dài (tối đa 5 phút)
+    playInterval = setTimeout(() => {
+      // Chỉ chuyển nếu popup vẫn đang hiển thị (có thể audio đã kết thúc nhưng popup chưa đóng)
+      if (currentPopupEventIndex === currentEventIndex && isPlaying) {
+        console.log("Timeout dự phòng: chuyển sang event tiếp theo");
+        playNextEvent();
+      }
+    }, 300000); // Timeout dự phòng 5 phút
+  }
 }
 
 /**
@@ -4761,7 +4784,13 @@ function showFinalYouTubeVideo() {
  * Chạy lại animation từ đầu đến cuối (từ event 0 đến event cuối cùng)
  */
 function replayFullAnimation() {
-  console.log("Bắt đầu chạy lại animation từ đầu đến cuối");
+  console.log("Bắt đầu chạy lại animation từ đầu đến cuối (không có popup và audio)");
+  
+  // Đánh dấu đang trong chế độ replay
+  isReplaying = true;
+  
+  // Đóng popup nếu đang mở
+  hideEventPopup();
   
   // Dừng tất cả animation và audio đang phát
   stopEventAudio();
@@ -4797,6 +4826,12 @@ function replayFullAnimation() {
   currentEventIndex = -1;
   previousEventIndex = -1;
   
+  // Clear playInterval cũ nếu có
+  if (playInterval) {
+    clearTimeout(playInterval);
+    playInterval = null;
+  }
+  
   // Reset camera về vị trí ban đầu
   map.setView([16.0544, 108.2772], 5, {
     animate: true,
@@ -4814,9 +4849,18 @@ function replayFullAnimation() {
   // Tiếp tục phát nhạc nền khi replay animation
   resumeBackgroundMusic();
   
-  // Bắt đầu từ event đầu tiên sau khi camera đã reset
+  // Bắt đầu từ event đầu tiên sau khi camera đã reset và tự động tiếp tục
   setTimeout(() => {
+    console.log("Bắt đầu replay từ event 0, isReplaying:", isReplaying);
+    // Hiển thị event đầu tiên
     showEventAtIndex(0, true);
+    // Sau đó tự động chuyển sang event tiếp theo để bắt đầu chuỗi animation
+    setTimeout(() => {
+      if (isPlaying && isReplaying) {
+        console.log("Bắt đầu chuỗi animation tự động");
+        playNextEvent();
+      }
+    }, animationConfig.pathDuration + 300);
   }, 1000);
 }
 
