@@ -8,12 +8,6 @@
 
 Dự án này thông qua sức mạnh của trực quan hóa dữ liệu, đã thu gọn cuộc đời sóng gió của Chủ tịch Hồ Chí Minh từ năm 1890 đến năm 1969 vào một bản đồ động có thể tương tác. Làm cho lịch sử hùng vĩ đó "sống lại", thể hiện rõ ràng và sinh động mọi quyết định quan trọng và dấu ấn địa lý của vĩ nhân trong hành trình tìm đường cứu nước và giải phóng dân tộc Việt Nam.
 
-**Trải nghiệm trực tuyến：[https://dauchanhochiminh.vn/](https://dauchanhochiminh.vn/)**
-
-<p align="center">
-  <img src="docs/images/image.png" alt="Hiệu ứng máy tính" />
-</p>
-
 ## 🎯 Chức năng cốt lõi
 
 ### 🎬 Lịch sử động
